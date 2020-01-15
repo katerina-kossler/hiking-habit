@@ -1,0 +1,24 @@
+## Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+
+## Flask Related
+instance/
+.webassets-cache
+
+
+## Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+## Other
+*secret.*
+*.pyc
+.DS_Store
