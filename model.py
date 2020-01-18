@@ -6,7 +6,7 @@ db = SQLAlchemy()
 # Need to add references between tables 
 
 
-class User(db.model):
+class User(db.Model):
     """Users of the web app"""
     __tablename__ = 'users'
 
@@ -27,12 +27,17 @@ class User(db.model):
                           nullable=False)
     bio = db.Column(db.String(1024),
                     nullable=True)
-    image_url = db.Column(db.String(1024)
+    image_url = db.Column(db.String(1024),
                           nullable=True)
     zipcode = db.Column(db.String(10),
                         nullable=True)
     canceled_by_user = db.Column(db.Boolean(), 
                                  nullable=False)
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+        return f"""<User user_id={self.user_id}
+                    username={self.username}
+                    email={self.email}>"""
 
 class GoalType(enum.Enum):
     number_hikes = 1
@@ -46,7 +51,7 @@ class Progress(enum.Enum):
     in_progress = 2
     complete = 3
 
-class Goal(db.model):
+class Goal(db.Model):
     """General; hiking related goals"""
     __tablename__ = 'goals'
 
@@ -55,11 +60,11 @@ class Goal(db.model):
                         primary_key=True,
                         nullable=False)
     user_id = db.Column(db.BigInteger(), 
-                        db.ForeignKey('users.user_id'),
+                        db.ForeignKey(User.user_id),
                         nullable=False)
     title = db.Column(db.String(1024),
                       nullable=False)
-    goal = db.Column(Enum(GoalType),
+    goal = db.Column(db.Enum(GoalType),
                      nullable=False)
     numerical_value = db.Column(db.Float(),
                                 nullable=False)
@@ -71,12 +76,18 @@ class Goal(db.model):
                               nullable=False) 
     goal_end_on = db.Column(db.DateTime(),
                             nullable=False)
-    status = db.Column(Enum(Progress),
+    status = db.Column(db.Enum(Progress),
                        nullable=False)
     canceled_by_user = db.Column(db.Boolean(), 
                                  nullable=False)
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+        return f"""<Goal goal_id={self.goal_id}
+                    user_id={self.user_id}
+                    title={self.title}
+                    status={self.status}>"""
 
-class Trail(db.model):
+class Trail(db.Model):
     """Trail identifying information"""
     __tablename__ = 'trails'
 
@@ -84,6 +95,8 @@ class Trail(db.model):
                         autoincrement=True, 
                         primary_key=True,
                         nullable=False)
+    api_trail_id = db.Column(db.BigInteger(),
+                             nullable=False)
     trail_name = db.Column(db.String(256), 
                            nullable=False)
     description = db.Column(db.String(1024),
@@ -105,13 +118,19 @@ class Trail(db.model):
     rating = db.Column(db.Float(),
                        nullable=True)
 
-class TrailStatus(db.model):
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+        return f"""<Trail trail_id={self.trail_id}
+                    trail_name={self.trail_name}
+                    distance_in_miles={self.distance_in_miles}>"""
+
+class TrailStatus(db.Model):
     """Give trail status (quality / safety) information by trail id"""
     __tablename__ = 'status_of_trails'
 
-    trail_id = db.Column(db.BigInteger(), 
+    trail_id = db.Column(db.BigInteger(),
+                         db.ForeignKey(Trail.trail_id), 
                          autoincrement=True,
-                         db.ForeignKey('status_of_trails.trail_id'), 
                          primary_key=True,
                          nullable=False)
     status = db.Column(db.String(256),
@@ -121,7 +140,13 @@ class TrailStatus(db.model):
     status_at = db.Column(db.DateTime(),
                           nullable=False)
 
-class Hike(db.model):
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+        return f"""<TrailStatus trail_id={self.trail_id}
+                    status={self.status}
+                    status_at={self.status_at}>"""    
+
+class Hike(db.Model):
     """An instance of going on a trail of movement activity"""
     __tablename__ = 'hikes'
     
@@ -130,12 +155,12 @@ class Hike(db.model):
                         primary_key=True,
                         nullable=False)
     user_id = db.Column(db.BigInteger(), 
-                        db.ForeignKey('users.user_id'),
+                        db.ForeignKey(User.user_id),
                         nullable=False)
     trail_id = db.Column(db.BigInteger(), 
-                         db.ForeignKey('trails.trail_id'),
+                         db.ForeignKey(Trail.trail_id),
                          nullable=True)
-    status = db.Column(Enum(Progress),
+    status = db.Column(db.Enum(Progress),
                        nullable=False)
     details = db.Column(db.String(1024),
                         nullable=True)
@@ -144,6 +169,13 @@ class Hike(db.model):
     canceled_by_user = db.Column(db.Boolean(), 
                                  nullable=False)
 
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+        return f"""<Hike hike_id={self.hike_id}
+                    user_id={self.user_id}
+                    trail_id={self.trail_id}
+                    status={self.status}>"""
+
 class ResultRating(enum.Enum):
     very_easy = 1
     easy = 2
@@ -151,7 +183,7 @@ class ResultRating(enum.Enum):
     difficult = 4
     very_difficult = 5
 
-class HikeResult(db.model):
+class HikeResult(db.Model):
     """Results of a hike instance"""
     __tablename__ = 'hike_results'
 
@@ -160,20 +192,45 @@ class HikeResult(db.model):
                         primary_key=True,
                         nullable=False)
     hike_id = db.Column(db.BigInteger(), 
-                        autoincrement=True, 
-                        db.ForeignKey('hikes.hike_id'),
+                        db.ForeignKey(Hike.hike_id),
+                        autoincrement=True,
                         nullable=False)
     description = db.Column(db.String(1024),
                             nullable=True)
-    ascent_rating = db.Column(Enum(HikeResult),
-                              nullable=True)
-    distance_rating = db.Column(Enum(HikeResult),
+    ascent_rating = db.Column(db.Enum(ResultRating),
+                              nullable=False)
+    distance_rating = db.Column(db.Enum(ResultRating),
                                 nullable=False)
-    challenge_rating = db.Column(Enum(HikeResult),
+    challenge_rating = db.Column(db.Enum(ResultRating),
                                  nullable=False)
     hike_time = db.Column(db.Float(),
                           nullable=False)
-    image_url = db.Column(db.String(1024)
+    image_url = db.Column(db.String(1024),
                           nullable=True)
-    cenceled_by_user = db.Column(db.Boolean(), 
+    canceled_by_user = db.Column(db.Boolean(), 
                                  nullable=False)
+
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+        return f"""<HikeResult result_id={self.result_id}
+                    hike_id={self.hike_id}
+                    description={self.description}
+                    distance_in_miles={self.distance_in_miles}
+                    ascent_rating={self.ascent_rating}
+                    distance_rating={self.distance_rating}
+                    challenge_rating={self.challenge_rating}>"""
+
+
+def connect_to_db(app):
+    """Connect the database using Flask"""
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///hiking-habit'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    db.app = app
+    db.init_app(app)
+
+
+if __name__ == "__main__":
+    from server import app
+    connect_to_db(app)
+    print("Connected to DB.")
+
