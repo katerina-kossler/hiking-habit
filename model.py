@@ -115,7 +115,7 @@ class Trail(db.Model):
                          nullable=False)
     longitude = db.Column(db.Float(),
                           nullable=False)
-    rating = db.Column(db.Float(),
+    api_rating = db.Column(db.Float(),
                        nullable=True)
 
     def __repr__(self):
@@ -128,23 +128,30 @@ class TrailStatus(db.Model):
     """Give trail status (quality / safety) information by trail id"""
     __tablename__ = 'status_of_trails'
 
-    trail_id = db.Column(db.BigInteger(),
-                         db.ForeignKey(Trail.trail_id), 
+    status_id = db.Column(db.BigInteger(), 
                          autoincrement=True,
                          primary_key=True,
                          nullable=False)
-    status = db.Column(db.String(256),
-                       nullable=False)
-    description = db.Column(db.String(1024),
-                            nullable=False)
-    status_at = db.Column(db.DateTime(),
-                          nullable=False)
+    trail_id = db.Column(db.BigInteger(),
+                         db.ForeignKey(Trail.trail_id), 
+                         nullable=False)
+    trail_status = db.Column(db.String(256),
+                       nullable=True)
+    trail_status_details = db.Column(db.String(1024),
+                        nullable=True)
+    trail_status_color = db.Column(db.String(256),
+                                   nullable=True)
+    trail_status_at = db.Column(db.DateTime(),
+                          nullable=True)
 
     def __repr__(self):
         """Provide helpful representation when printed."""
-        return f"""<TrailStatus trail_id={self.trail_id}
-                    status={self.status}
-                    status_at={self.status_at}>"""    
+        return f"""<TrailStatus status_id={self.status_id}
+                    trail_id={self.trail_id}
+                    trail_status={self.trail_status}
+                    trail_status_details={self.trail_status_details}
+                    trail_status_color={self.trail_status_color}
+                    trail_status_at={self.trail_status_at}>"""    
 
 class Hike(db.Model):
     """An instance of going on a trail of movement activity"""
