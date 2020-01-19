@@ -19,25 +19,22 @@ class User(db.Model):
                       nullable=False)
     password = db.Column(db.String(64), 
                          nullable=False) # hash with salt
-    created_at = db.Column(db.DateTime(), 
+    created_on = db.Column(db.DateTime(), 
                            nullable=False)
     first_name = db.Column(db.String(64), 
                            nullable=False)
     last_name = db.Column(db.String(64), 
                           nullable=False)
-    bio = db.Column(db.String(1024),
-                    nullable=True)
     image_url = db.Column(db.String(1024),
                           nullable=True)
-    zipcode = db.Column(db.String(10),
-                        nullable=True)
     canceled_by_user = db.Column(db.Boolean(), 
                                  nullable=False)
     def __repr__(self):
         """Provide helpful representation when printed."""
         return f"""<User user_id={self.user_id}
                     username={self.username}
-                    email={self.email}>"""
+                    email={self.email}
+                    canceled_by_user={self.canceled_by_user}>"""
 
 class GoalType(enum.Enum):
     number_hikes = 1
@@ -68,14 +65,10 @@ class Goal(db.Model):
                      nullable=False)
     numerical_value = db.Column(db.Float(),
                                 nullable=False)
-    units = db.Column(db.String(32),
-                      nullable=False)
     description = db.Column(db.String(512),
                             nullable=True)
-    goal_start_on = db.Column(db.DateTime(),
+    goal_made_on = db.Column(db.DateTime(),
                               nullable=False) 
-    goal_end_on = db.Column(db.DateTime(),
-                            nullable=False)
     status = db.Column(db.Enum(Progress),
                        nullable=False)
     canceled_by_user = db.Column(db.Boolean(), 
@@ -135,6 +128,8 @@ class TrailStatus(db.Model):
     trail_id = db.Column(db.BigInteger(),
                          db.ForeignKey(Trail.trail_id), 
                          nullable=False)
+    api_trail_id = db.Column(db.BigInteger(), 
+                             nullable=False)
     trail_status = db.Column(db.String(256),
                        nullable=True)
     trail_status_details = db.Column(db.String(1024),
@@ -202,7 +197,7 @@ class HikeResult(db.Model):
                         db.ForeignKey(Hike.hike_id),
                         autoincrement=True,
                         nullable=False)
-    description = db.Column(db.String(1024),
+    assessment = db.Column(db.String(1024),
                             nullable=True)
     ascent_rating = db.Column(db.Enum(ResultRating),
                               nullable=False)
