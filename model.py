@@ -115,7 +115,10 @@ class Trail(db.Model):
         """Provide helpful representation when printed."""
         return f"""<Trail trail_id={self.trail_id}
                     trail_name={self.trail_name}
-                    distance_in_miles={self.distance_in_miles}>"""
+                    distance_in_miles={self.distance_in_miles}
+                    location={self.location}
+                    latitude={self.latitude}
+                    longitude={self.longitude}>"""
 
 class TrailStatus(db.Model):
     """Give trail status (quality / safety) information by trail id"""
@@ -144,8 +147,6 @@ class TrailStatus(db.Model):
         return f"""<TrailStatus status_id={self.status_id}
                     trail_id={self.trail_id}
                     trail_status={self.trail_status}
-                    trail_status_details={self.trail_status_details}
-                    trail_status_color={self.trail_status_color}
                     trail_status_at={self.trail_status_at}>"""    
 
 class Hike(db.Model):
@@ -167,7 +168,7 @@ class Hike(db.Model):
     details = db.Column(db.String(1024),
                         nullable=True)
     hiked_on = db.Column(db.DateTime(),
-                         nullable=True)
+                         nullable=False)
     canceled_by_user = db.Column(db.Boolean(), 
                                  nullable=False)
 
@@ -176,7 +177,8 @@ class Hike(db.Model):
         return f"""<Hike hike_id={self.hike_id}
                     user_id={self.user_id}
                     trail_id={self.trail_id}
-                    status={self.status}>"""
+                    status={self.status}
+                    canceled_by_user={self.canceled_by_user}>"""
 
 class ResultRating(enum.Enum):
     very_easy = 1
@@ -216,11 +218,8 @@ class HikeResult(db.Model):
         """Provide helpful representation when printed."""
         return f"""<HikeResult result_id={self.result_id}
                     hike_id={self.hike_id}
-                    description={self.description}
-                    distance_in_miles={self.distance_in_miles}
-                    ascent_rating={self.ascent_rating}
-                    distance_rating={self.distance_rating}
-                    challenge_rating={self.challenge_rating}>"""
+                    description={self.description}>
+                    canceled_by_user={self.canceled_by_user}"""
 
 
 def connect_to_db(app):

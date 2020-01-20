@@ -33,8 +33,8 @@ def load_users():
                     password=password,
                     first_name=first_name,
                     last_name=last_name,
-                    image_url=image_url,
                     created_on=created_on,
+                    image_url=image_url,
                     canceled_by_user=canceled_by_user)
 
         db.session.add(user)
@@ -190,7 +190,6 @@ def load_results():
         hike_time = items[6]
         image_url = items[7]
         canceled_by_user = items[8]
-        canceled_by_user = items[6]
         if canceled_by_user == 'true':
             canceled_by_user = True
         else:
@@ -222,5 +221,5 @@ if __name__ == "__main__":
     load_goals()
     # load_trails()
     # load_status_of_trails()
-    # load_hikes()
-    # load_results()
+    load_hikes()
+    load_results()
