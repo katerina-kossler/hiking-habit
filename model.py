@@ -3,11 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
-# Need to add references between tables 
-
-
 class User(db.Model):
-    """Users of the web app"""
+    """Users."""
     __tablename__ = 'users'
 
     user_id = db.Column(db.BigInteger(), 
@@ -36,6 +33,9 @@ class User(db.Model):
                     email={self.email}
                     canceled_by_user={self.canceled_by_user}>"""
 
+    goals = db.relationship('Goal')
+    hikes = db.relationship('Hike')
+
 class GoalType(enum.Enum):
     number_hikes = 1
     miles_hiked = 2
@@ -49,7 +49,7 @@ class Progress(enum.Enum):
     complete = 3
 
 class Goal(db.Model):
-    """General; hiking related goals"""
+    """Goals. A user can have 0 to many goals."""
     __tablename__ = 'goals'
 
     goal_id = db.Column(db.BigInteger(), 
@@ -73,6 +73,9 @@ class Goal(db.Model):
                        nullable=False)
     canceled_by_user = db.Column(db.Boolean(), 
                                  nullable=False)
+
+    user = db.relationship('User')
+
     def __repr__(self):
         """Provide helpful representation when printed."""
         return f"""<Goal goal_id={self.goal_id}
@@ -111,6 +114,9 @@ class Trail(db.Model):
     api_rating = db.Column(db.Float(),
                        nullable=True)
 
+    trail_status = db.relationship('TrailStatus')
+    hikes = db.relationship('Hike')
+
     def __repr__(self):
         """Provide helpful representation when printed."""
         return f"""<Trail trail_id={self.trail_id}
@@ -121,7 +127,7 @@ class Trail(db.Model):
                     longitude={self.longitude}>"""
 
 class TrailStatus(db.Model):
-    """Give trail status (quality / safety) information by trail id"""
+    """Status of a trail; trail can have multiple status entries."""
     __tablename__ = 'status_of_trails'
 
     status_id = db.Column(db.BigInteger(), 
@@ -140,6 +146,8 @@ class TrailStatus(db.Model):
     trail_status_at = db.Column(db.DateTime(),
                           nullable=True)
 
+    trail = db.relationship('Trail')
+
     def __repr__(self):
         """Provide helpful representation when printed."""
         return f"""<TrailStatus status_id={self.status_id}
@@ -148,7 +156,7 @@ class TrailStatus(db.Model):
                     trail_status_at={self.trail_status_at}>"""    
 
 class Hike(db.Model):
-    """An instance of going on a trail of movement activity"""
+    """An instance of a hike; a hike can have one user & one trail"""
     __tablename__ = 'hikes'
     
     hike_id = db.Column(db.BigInteger(), 
@@ -170,6 +178,10 @@ class Hike(db.Model):
     canceled_by_user = db.Column(db.Boolean(), 
                                  nullable=False)
 
+    user = db.relationship('User')
+    trail = db.relationship('Trail')
+    result = db.relationship('HikeResult')
+
     def __repr__(self):
         """Provide helpful representation when printed."""
         return f"""<Hike hike_id={self.hike_id}
@@ -186,7 +198,7 @@ class ResultRating(enum.Enum):
     very_difficult = 5
 
 class HikeResult(db.Model):
-    """Results of a hike instance"""
+    """Results of a hike instance for a hike."""
     __tablename__ = 'hike_results'
 
     result_id = db.Column(db.BigInteger(), 
@@ -211,6 +223,8 @@ class HikeResult(db.Model):
                           nullable=True)
     canceled_by_user = db.Column(db.Boolean(), 
                                  nullable=False)
+
+    hike = db.relationship('Hike')
 
     def __repr__(self):
         """Provide helpful representation when printed."""
