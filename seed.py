@@ -1,3 +1,4 @@
+import json
 from sqlalchemy import func
 from model import User, Goal, Trail, TrailStatus, Hike, HikeResult
 from model import connect_to_db, db
@@ -79,61 +80,39 @@ def load_goals():
 
     db.session.commit()
 
-def load_trails():
+def load_trails_and_status():
     """Load trail data obtained from an API request from trails.csv"""
+    trail_json = json.load(open("seed_data/trails_94703.json"))
+
     num = 0
     Trail.query.delete()
-
-    for row in open("seed_data/trails.csv"):
-        row = row.rstrip()
-        items = re.split(r',',row)
-        
-        trail_id = num
-        api_trail_id = items[0]
-        trail_name = items[1]
-        description = items[2]
-        difficulty = items[3]
-        distance_in_miles = items[4]
-        total_ascent = items[5]
-        total_descent = items[6]
-        location = items[7]
-        latitude = items[8]
-        longitude = items[9]
-        api_rating = items[10]
-
-        trail = Trail(
-            )
-
+    for trail_obj in trail_json['trails']:
+        trail = Trail(trail_id=num,
+                      api_trail_id = trail_obj['id'],
+                      trail_name = trail_obj['name'],
+                      description = trail_obj['summary'],
+                      difficulty = trail_obj['difficulty'],
+                      distance_in_miles = trail_obj['length'],
+                      total_ascent = trail_obj['ascent'],
+                      total_descent = trail_obj['descent'],
+                      location = trail_obj['location'],
+                      latitude = trail_obj['latitude'],
+                      longitude = trail_obj['longitude'],
+                      api_rating = trail_obj['stars'])
         db.session.add(trail)
         num += 1
 
     db.session.commit()
 
-def load_status_of_trails():
-    """Load trail statuses obtained from an API request from status.csv"""
     num = 0
     TrailStatus.query.delete()
-
-    for row in open("seed_data/status.csv"):
-        row = row.rstrip()
-        items = re.split(r',',row)
-        
-        status_id = num
-        trail_id = num
-        api_trail_id = items[0]
-        trail_status = items[1]
-        trail_status_details = items[2]
-        trail_status_color = items[3]
-        trail_status_at = items[4]
-
-        status = TrailStatus(status_id=status_id,
-                             trail_id=trail_id,
-                             api_trail_id=api_trail_id,
-                             trail_status=trail_status,
-                             trail_status_details=trail_status_details,
-                             trail_status_color=trail_status_color,
-                             trail_status_at=trail_status_at)
-
+    for trail_obj in trail_json['trails']:
+        status = TrailStatus(status_id=num,
+                             trail_id=num,
+                             api_trail_id=trail_obj['id'],
+                             trail_status=trail_obj['conditionStatus'],
+                             trail_status_details=trail_obj['conditionDetails'],
+                             trail_status_at=trail_obj['conditionDate'])       
         db.session.add(status)
         num += 1
 
@@ -154,6 +133,9 @@ def load_hikes():
         status = items[3]
         details = items[4]
         hiked_on = items[5]
+        if hiked_on == "":
+            hiked_on = '00/00/0000'
+
         canceled_by_user = items[6]
         if canceled_by_user == 'true':
             canceled_by_user = True
@@ -181,7 +163,7 @@ def load_results():
         row = row.rstrip()
         items = re.split(r',',row)
         
-        results_id = items[0]
+        result_id = items[0]
         hike_id = items[1]
         assessment = items[2]
         ascent_rating = items[3]
@@ -196,7 +178,7 @@ def load_results():
             canceled_by_user = False
 
 
-        result = HikeResult(results_id=results_id,
+        result = HikeResult(result_id=result_id,
                             hike_id=hike_id,
                             assessment=assessment,
                             ascent_rating=ascent_rating,
@@ -216,10 +198,9 @@ if __name__ == "__main__":
     # In case tables haven't been created, create them
     db.create_all()
 
-    # Import different types of data
+    # # Import different types of data
     load_users()
     load_goals()
-    # load_trails()
-    # load_status_of_trails()
+    load_trails_and_status()
     load_hikes()
     load_results()

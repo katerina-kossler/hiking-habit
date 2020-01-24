@@ -137,8 +137,6 @@ class TrailStatus(db.Model):
                        nullable=True)
     trail_status_details = db.Column(db.String(1024),
                         nullable=True)
-    trail_status_color = db.Column(db.String(256),
-                                   nullable=True)
     trail_status_at = db.Column(db.DateTime(),
                           nullable=True)
 
@@ -162,7 +160,7 @@ class Hike(db.Model):
                         nullable=False)
     trail_id = db.Column(db.BigInteger(), 
                          db.ForeignKey(Trail.trail_id),
-                         nullable=True)
+                         nullable=False)
     status = db.Column(db.Enum(Progress),
                        nullable=False)
     details = db.Column(db.String(1024),
