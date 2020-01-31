@@ -178,7 +178,7 @@ class Hike(db.Model):
     canceled_by_user = db.Column(db.Boolean(), 
                                  nullable=False)
 
-    user = db.relationship('User')
+    user = db.relationship('User ')
     trail = db.relationship('Trail')
     result = db.relationship('HikeResult')
 
