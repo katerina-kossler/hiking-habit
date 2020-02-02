@@ -1,5 +1,6 @@
 </!DOCTYPE html>
 <html>
+
 <head>
     <title>
         {% block title %}{% endblock %}
@@ -12,9 +13,14 @@
     {% endblock %}
 </head>
 <body>
-    <h1> Hiking Habit </h1>
+    <h1>
+        <a href="/">Hiking Habit</a>
+    </h1>
 
     {% block body %}
     {% endblock %}
+    <footer>
+        <a href="/about">About</a>
+    </footer>
 </body>
 </html>
