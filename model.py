@@ -37,16 +37,16 @@ class User(db.Model):
     hikes = db.relationship('Hike')
 
 class GoalType(enum.Enum):
-    number_hikes = 1
-    miles_hiked = 2
-    feet_ascended = 3
-    hikeable_miles = 4
-    hike_difficulty = 5
+    NUMBER_HIKES = 1
+    MILES_HIKED = 2
+    FEET_ASCENDED = 3
+    MILES_PER_HIKE = 4
+    DIFFICULTY = 5
 
 class Progress(enum.Enum):
-    not_started = 1
-    in_progress = 2
-    complete = 3
+    NOT_STARTED = 1
+    IN_PROGRESS = 2
+    COMPLETE = 3
 
 class Goal(db.Model):
     """Goals. A user can have 0 to many goals."""
@@ -191,11 +191,11 @@ class Hike(db.Model):
                     canceled_by_user={self.canceled_by_user}>"""
 
 class ResultRating(enum.Enum):
-    very_easy = 1
-    easy = 2
-    average = 3
-    difficult = 4
-    very_difficult = 5
+    VERY_EASY = 1
+    EASY = 2
+    AVERAGE = 3
+    DIFFICULT = 4
+    VERY_DIFFICULT = 5
 
 class HikeResult(db.Model):
     """Results of a hike instance for a hike."""
