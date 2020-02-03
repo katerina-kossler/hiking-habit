@@ -19,7 +19,6 @@ app.jinja_env.undefined = jinja2.StrictUndefined
 @app.route("/")
 def show_homepage():
     """Show the application's homepage with links to other routes."""
-
     return render_template("homepage.html")
 
 @app.route("/login", methods=["GET"])
@@ -27,13 +26,35 @@ def show_login_form():
     """Shows the login info for taking in username and/or email and password"""
     return render_template("login.html")
 
-# @app.route("/login", methods=["POST"])
-# def login_to_site():
-#     """Take in user credentials and compare to existing if available"""
+@app.route("/login", methods=["POST"])
+def authenticate_user():
+    """Take in user credentials and compare to existing if available"""
+    user = request.form.get("username")
+    email = request.form.get("email")
+    password = request.form.get("password")
+
+    user_in_system = User.query.filter_by(usernanme=username).first()
+    user_password = user_in_system.password
+
+    email_in_system = User.query.filter_by(email=email).first()
+    email_password = email_in_system.password
+
+    if (user_password == password) or (email_password == password):
+        if user_in_system:
+            session['current_user'] = user_in_system.user_id
+        else:
+            session['current_user'] = email_in_system.user_id
+
+        flash('Successfully Logged in')
+        return redirect('/profile')
+
+    else:
+        flash('Incorrect login information; try again')
+        return redirect('/login')
 
 @app.route("/register", methods=["GET"])
 def show_user_form():
-
+    """Displays the form to register a new user"""
     return render_template("sign-up.html")
 
 @app.route("/register", methods=["POST"])
@@ -80,13 +101,18 @@ def intake_user_info():
                     canceled_by_user=False)
         db.session.add(user)
         db.session.commit()
-        
+
         return redirect("/login")
 
-# @app.route("/profile", methods=["GET"])
-# def show_profile():
-#     """Loads a user's profile from initial intake info"""
+@app.route("/profile", methods=["GET"])
+def show_profile():
+    """Loads a user's profile from initial intake info"""
 
+    user_id = session["current_user"]
+    user = User.query.get(user_id)
+    goals = Goal.query.filter_by(user_id=user_id).all()
+
+    return render_template("profile.html", user=user, goals=goals)
 # # add option to change this later
 
 # @app.route("/trails", methods=["POST"])
