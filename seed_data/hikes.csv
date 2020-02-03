@@ -1,4 +1,4 @@
-0,329,23,NOT_STARTED,I just want to get outside!,04/20/2019,true
+1,329,23,NOT_STARTED,I just want to get outside!,04/20/2019,true
 1,329,756,COMPLETE,Organized human-resource policy,04/13/2019,true
 2,622,66,COMPLETE,Team-oriented scalable moratorium,09/03/2019,true
 3,680,522,IN_PROGRESS,Front-line didactic challenge,12/24/2019,true
@@ -32,7 +32,7 @@
 31,435,231,COMPLETE,,06/06/2019,false
 32,518,950,NOT_STARTED,Managed actuating function,02/18/2019,true
 33,440,584,COMPLETE,Digitized bandwidth-monitored Graphical User Interface,08/30/2019,false
-34,821,0,IN_PROGRESS,Devolved asynchronous forecast,04/04/2019,false
+34,821,1,IN_PROGRESS,Devolved asynchronous forecast,04/04/2019,false
 35,49,983,NOT_STARTED,Balanced coherent application,03/23/2019,true
 36,817,341,COMPLETE,Distributed exuding data-warehouse,09/07/2019,false
 37,483,964,COMPLETE,Progressive fresh-thinking forecast,01/19/2020,true
@@ -115,7 +115,7 @@
 114,796,641,NOT_STARTED,Reactive mobile strategy,05/04/2019,true
 115,19,203,NOT_STARTED,Centralized discrete installation,09/23/2019,false
 116,295,837,COMPLETE,Ergonomic local functionalities,08/15/2019,true
-117,0,79,COMPLETE,Expanded dedicated encryption,08/10/2019,false
+117,1,79,COMPLETE,Expanded dedicated encryption,08/10/2019,false
 118,977,723,NOT_STARTED,Total exuding neural-net,10/21/2019,false
 119,295,583,NOT_STARTED,User-friendly eco-centric function,04/12/2019,true
 120,403,169,IN_PROGRESS,Devolved explicit moratorium,04/02/2019,false
@@ -662,7 +662,7 @@
 661,248,549,NOT_STARTED,Horizontal 24/7 leverage,03/14/2019,true
 662,235,371,IN_PROGRESS,,10/23/2019,true
 663,254,351,IN_PROGRESS,,01/29/2019,true
-664,66,0,IN_PROGRESS,Synergistic transitional knowledge user,05/10/2019,false
+664,66,1,IN_PROGRESS,Synergistic transitional knowledge user,05/10/2019,false
 665,785,50,IN_PROGRESS,,02/17/2019,true
 666,837,260,COMPLETE,Vision-oriented context-sensitive system engine,02/20/2019,true
 667,611,719,COMPLETE,Advanced demand-driven throughput,11/28/2019,false

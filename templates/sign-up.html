@@ -3,10 +3,21 @@
 {% block title %} Hiking Habit {% endblock %}
 
 {% block body %}
-  <h2> Reaching goals on the trail</h2>
+  <h2>Register as a new user</h2>
 
-  <!-- React Components! -->
-  <div id="app"></div>
+  <form action="/register" method="POST">
+
+    Username:<input type="text" name="username">
+    Email:<input type="text" name="email"><br>
+    Password:<input type="text" name="password"><br>
+    First Name:<input type="text" name="first">
+    Last Name:<input type="text" name="last"><br>
+    <!-- display optional images that have values or urls or give the option to input a url -->
+    Profile Picture:<input type="url" name="url" id="url" placeholder="https://example.com" pattern="https://.*" size="30">
+
+    <input type='submit' value='Submit'>
+
+  </form>
 
 {% endblock %}
 

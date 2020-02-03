@@ -10,10 +10,11 @@ def load_users():
 
     User.query.delete()
 
+
     for row in open("seed_data/users.csv"):
         row = row.rstrip()
         items = re.split(r',',row)
-        user_id = int(items[0])
+
         username = items[1]
         email = items[2]
         password = items[3] 
@@ -27,8 +28,7 @@ def load_users():
         else:
             canceled_by_user = False
 
-        user = User(user_id=user_id,
-                    username=username,
+        user = User(username=username,
                     email=email,
                     password=password,
                     first_name=first_name,
@@ -49,8 +49,7 @@ def load_goals():
     for row in open("seed_data/goals.csv"):
         row = row.rstrip()
         items = re.split(r',',row)
-        
-        goal_id = items[0]
+
         user_id = items[1]
         title = items[2]
         goal = items[3]
@@ -65,8 +64,7 @@ def load_goals():
         else:
             canceled_by_user = False
 
-        goal = Goal(goal_id=goal_id, 
-                    user_id=user_id, 
+        goal = Goal(user_id=user_id, 
                     title=title,
                     goal=goal, 
                     numerical_value=numerical_value, 
@@ -83,11 +81,10 @@ def load_trails_and_status():
     """Load trail data obtained from an API request from trails.csv"""
     trail_json = json.load(open("seed_data/trails_94703.json"))
 
-    num = 0
     Trail.query.delete()
+
     for trail_obj in trail_json['trails']:
-        trail = Trail(trail_id=num,
-                      api_trail_id = trail_obj['id'],
+        trail = Trail(api_trail_id = trail_obj['id'],
                       trail_name = trail_obj['name'],
                       description = trail_obj['summary'],
                       difficulty = trail_obj['difficulty'],
@@ -99,15 +96,13 @@ def load_trails_and_status():
                       longitude = trail_obj['longitude'],
                       api_rating = trail_obj['stars'])
         db.session.add(trail)
-        num += 1
 
     db.session.commit()
 
-    num = 0
+    num = 1
     TrailStatus.query.delete()
     for trail_obj in trail_json['trails']:
-        status = TrailStatus(status_id=num,
-                             trail_id=num,
+        status = TrailStatus(trail_id=num,
                              api_trail_id=trail_obj['id'],
                              trail_status=trail_obj['conditionStatus'],
                              trail_status_details=trail_obj['conditionDetails'],
@@ -125,8 +120,7 @@ def load_hikes():
     for row in open("seed_data/hikes.csv"):
         row = row.rstrip()
         items = re.split(r',',row)
-        
-        hike_id = items[0]
+
         user_id = items[1]
         trail_id = items[2]
         status = items[3]
@@ -141,8 +135,7 @@ def load_hikes():
         else:
             canceled_by_user = False
 
-        hike = Hike(hike_id=hike_id,
-                    user_id=user_id,
+        hike = Hike(user_id=user_id,
                     trail_id=trail_id,
                     status=status,
                     details=details,
@@ -157,12 +150,14 @@ def load_results():
     """Load a fake set of hike results from a results.csv"""
 
     HikeResult.query.delete()
+    result_id = 0
 
     for row in open("seed_data/results.csv"):
         row = row.rstrip()
         items = re.split(r',',row)
         
-        result_id = items[0]
+
+        result_id += 1
         hike_id = items[1]
         assessment = items[2]
         ascent_rating = items[3]
