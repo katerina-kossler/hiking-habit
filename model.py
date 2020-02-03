@@ -40,8 +40,8 @@ class GoalType(enum.Enum):
     NUMBER_HIKES = 1
     MILES_HIKED = 2
     FEET_ASCENDED = 3
-    MILES_PER_HIKE = 4
-    DIFFICULTY = 5
+    HIKEABLE_MILES = 4
+    HIKE_DIFFICULTY = 5
 
 class Progress(enum.Enum):
     NOT_STARTED = 1

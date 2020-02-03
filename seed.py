@@ -1,7 +1,6 @@
 import json
 from sqlalchemy import func
-from model import User, Goal, Trail, TrailStatus, Hike, HikeResult
-from model import connect_to_db, db
+from model import User, Goal, Trail, TrailStatus, Hike, HikeResult, connect_to_db, db
 from server import app
 from datetime import datetime
 import re

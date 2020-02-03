@@ -1,7 +1,11 @@
 from flask import Flask, render_template, redirect, flash, session
+from flask_debugtoolbar import DebugToolbarExtension
+import json
+from sqlalchemy import func
+from model import User, Goal, Trail, TrailStatus, Hike, HikeResult, connect_to_db, db
+from datetime import datetime
 import jinja2
-
-import model
+import re
 
 app = Flask(__name__)
 
@@ -17,7 +21,7 @@ def show_homepage():
 
     return render_template("homepage.html")
 
-@app.route("/login", methods=["GET"])
+# @app.route("/login", methods=["GET"])
 
 
 # @app.route("/login", methods=["POST"])
@@ -83,4 +87,15 @@ def show_homepage():
 #     return render_template("about.html")
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0")
+    app.debug = True
+    # make sure templates, etc. are not cached in debug mode
+    app.jinja_env.auto_reload = app.debug
+
+    connect_to_db(app)
+
+    # Use the DebugToolbar
+    DebugToolbarExtension(app)
+
+    app.run(port=5000, host='0.0.0.0')
+
+
