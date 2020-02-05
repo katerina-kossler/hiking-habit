@@ -7,7 +7,10 @@ from datetime import date
 import jinja2
 import re
 from os import urandom
+import pgeocode
+import requests
 
+coordinates = pgeocode.Nominatim('us')
 app = Flask(__name__)
 
 # A secret key is needed to use Flask sessioning features
@@ -113,7 +116,12 @@ def show_profile():
     goals = Goal.query.filter_by(user_id=user_id).all()
 
     return render_template("profile.html", user=user, goals=goals)
-# # add option to change this later
+
+def edit_profile():
+    """give user the option to edit their information"""
+    pass
+
+@app.route("/profile", methods=["POST"])
 
 # @app.route("/trails", methods=["POST"])
 # def show_search_form():
@@ -125,9 +133,43 @@ def show_profile():
 #         - max trail distance (miles)
 #     """
 
-# @app.route("/trails", methods=["GET"])
-# def load_search_results():
-#     """shows results from API for trails available given specifications"""
+@app.route("/trails", methods=["GET"])
+def show_search_form():
+    """Shows user a search form for a trail"""
+
+    return render_template("trails.html")
+
+    # need to import private key os and store it somehow
+#     
+
+# key - Your private key
+# lat - Latitude for a given area
+# lon - Longitude for a given area
+
+# Optional Arguments:
+# maxDistance - Max distance, in miles, from lat, lon. Default: 30. Max: 200.
+# maxResults - Max number of trails to return. Default: 10. Max: 500.
+# sort - Values can be 'quality', 'distance'. Default: quality.
+# minLength - Min trail length, in miles. Default: 0 (no minimum).
+
+
+@app.route("/trails", methods=["POST"])
+def load_search_results():
+    """shows results from API for trails available given specifications"""
+
+
+    zipcode = request.form.get("zipcode")
+
+    details = coordinates.query_postal_code(zipcode)
+    latitude = details["latitude"]
+    longitude = details["longitude"]
+
+    search_distance = request.form.get("max_radius")
+    min_length = request.form.get("length")
+    sort = request.form.get("sort")
+    max_results = request.form.get("max_results")
+
+
 
 # @app.route("/goals", methods=["POST"])
 # def change_goals():

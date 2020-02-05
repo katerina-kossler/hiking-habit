@@ -3,10 +3,21 @@
 {% block title %} Hiking Habit {% endblock %}
 
 {% block body %}
-  <h2> Reaching goals on the trail</h2>
+  <h2>Let's find a trail!</h2>
 
-  <!-- React Components! -->
-  <div id="app"></div>
+  <form action="/trails" method="POST">
+
+    Zipcode:<input type="text" name="zipcode" pattern="\d*" minlength="5" maxlength="5">required>
+    Search Distance (Miles):<input type="number" name="max_radius" min="30" max="200"><br>
+    Minimum Trail Length (Miles):<input type="integer" name="length" min="0"><br>
+    Sort by:
+    <input type="radio" name="sort" value="length" checked> Length<br>
+    <input type="radio" name="sort" value="quality"> Quality<br>
+    Maximum Number Results:<input type="number" name="max_results" min="10" max="500"><br>
+
+    <input type='submit' value='Search'>
+
+  </form>
 
 {% endblock %}
 

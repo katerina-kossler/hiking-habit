@@ -19,6 +19,7 @@ env.bak/
 venv.bak/
 
 ## Other
+secrets.sh
 *secret.*
 *.pyc
 .DS_Store
