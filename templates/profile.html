@@ -3,11 +3,17 @@
 {% block title %} Hiking Habit {% endblock %}
 
 {% block body %}
-  <h2>Profile</h2>
+  <h2> Hi {{ user.first_name }}, here's what you have going on: </h2>
 
-  <!-- React Components! -->
-  <div id="app"></div>
+  <ul>
+  {% for goal in goals %}
 
+    <li>{{ goal.title }} : {{goal.goal}} ({{ goal.numerical_value }})
+    </li>
+
+  {% endfor %}
+  </ul>
+  
 {% endblock %}
 
 

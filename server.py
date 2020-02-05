@@ -6,7 +6,7 @@ from model import User, Goal, Trail, TrailStatus, Hike, HikeResult, connect_to_d
 from datetime import date
 import jinja2
 import re
-from os import urandom
+import os
 import pgeocode
 import requests
 
@@ -32,15 +32,17 @@ def show_login_form():
 @app.route("/login", methods=["POST"])
 def authenticate_user():
     """Take in user credentials and compare to existing if available"""
-    user = request.form.get("username")
+    username = request.form.get("username")
     email = request.form.get("email")
     password = request.form.get("password")
 
-    user_in_system = User.query.filter_by(usernanme=username).first()
-    user_password = user_in_system.password
+    user_in_system = User.query.filter_by(username=username).first()
+    if user_in_system:
+        user_password = user_in_system.password
 
     email_in_system = User.query.filter_by(email=email).first()
-    email_password = email_in_system.password
+    if email_in_system:
+        email_password = email_in_system.password
 
     if (user_password == password) or (email_password == password):
         if user_in_system:
@@ -54,6 +56,16 @@ def authenticate_user():
     else:
         flash('Incorrect login information; try again')
         return redirect('/login')
+
+@app.route("/logout", methods=["GET"])
+def logout():
+    """Logs the user out and returns to homepage"""
+
+    session.pop('current_user', None)
+    session.modified = True
+
+    return render_template("homepage.html")
+
 
 @app.route("/register", methods=["GET"])
 def show_user_form():
@@ -110,47 +122,34 @@ def intake_user_info():
 @app.route("/profile", methods=["GET"])
 def show_profile():
     """Loads a user's profile from initial intake info"""
+    if not 'current_user' in session:
+        return redirect('/')
 
     user_id = session["current_user"]
     user = User.query.get(user_id)
     goals = Goal.query.filter_by(user_id=user_id).all()
-
+    print(user)
+    print(goals)
     return render_template("profile.html", user=user, goals=goals)
 
 def edit_profile():
     """give user the option to edit their information"""
-    pass
+    user_id = session["current_user"]
+    user = User.query.get(user_id)
+
+    return render_template("edit-profile.html", user=user)
+    # still in progress
 
 @app.route("/profile", methods=["POST"])
-
-# @app.route("/trails", methods=["POST"])
-# def show_search_form():
-#     """Shows a form to search API for trails given a 
-#         - specific zipcode,
-#         - distance from zipcode,
-#         - trail name (? see if compatible with api get requests?)
-#         - trail difficulty
-#         - max trail distance (miles)
-#     """
+def update_profile():
+    """Updates a registered, active user's profile information"""
+    pass
 
 @app.route("/trails", methods=["GET"])
 def show_search_form():
     """Shows user a search form for a trail"""
 
     return render_template("trails.html")
-
-    # need to import private key os and store it somehow
-#     
-
-# key - Your private key
-# lat - Latitude for a given area
-# lon - Longitude for a given area
-
-# Optional Arguments:
-# maxDistance - Max distance, in miles, from lat, lon. Default: 30. Max: 200.
-# maxResults - Max number of trails to return. Default: 10. Max: 500.
-# sort - Values can be 'quality', 'distance'. Default: quality.
-# minLength - Min trail length, in miles. Default: 0 (no minimum).
 
 
 @app.route("/trails", methods=["POST"])
@@ -169,40 +168,53 @@ def load_search_results():
     sort = request.form.get("sort")
     max_results = request.form.get("max_results")
 
+    pass
+
+@app.route("/goals", methods=["GET"])
+def show_current_goals_and_progress():
+    """View active goals and see graphs for current progress towards the goal"""
+    pass
 
 
-# @app.route("/goals", methods=["POST"])
-# def change_goals():
-#     """Add, modify, or cancel a selected, active goal"""
+@app.route("/goals", methods=["POST"])
+def change_goals():
+    """Add, modify, or cancel a selected, active goal"""
+    pass
 
-# @app.route("/goals", methods=["GET"])
-# def show_current_goals_and_progress():
-#     """View active goals and see graphs for current progress towards the goal"""
+@app.route("/hikes", methods=["GET"])
+def show_current_hikes():
+    """Show a list of all hikes assocatied with the user:
+        - status of each hike
+        - links to edit status
+        - link to add/ modify results if complete"""
 
-# @app.route("/hikes", methods=["GET"])
-# def show_current_hikes():
-#     """Show a list of all hikes assocatied with the user:
-#         - status of each hike
-#         - links to edit status
-#         - link to add/ modify results if complete"""
+    pass
 
-# @app.route("/hikes", methods=["POST"])
-# def add_hike():
-#     """Add a trail to a list of hikes the user wants to go on;
-#        if trail is already in hikes and is not complete display an alert that
-#        hike is already in list"""
+@app.route("/hikes", methods=["POST"])
+def add_hike():
+    """Add a trail to a list of hikes the user wants to go on;
+       if trail is already in hikes and is not complete display an alert that
+       hike is already in list"""
+    pass
 
-# @app.route("/results", methods=["GET"])
-# def show_completed_hike_results():
-#     """Shows """
+@app.route("/results", methods=["GET"])
+def show_completed_hike_results():
+    """Shows all hike results"""
 
-# @app.route("/results", methods=["POST"])
-# def add_hike_result():
-#     """Posts any changes to or adds a hike result for a completed hike"""
+    pass
 
-# @app.route("/about")
-# def show_about_page():
-#     return render_template("about.html")
+@app.route("/results", methods=["POST"])
+def add_hike_result():
+    """Posts any changes to or adds a hike result for a completed hike"""
+
+    pass
+
+@app.route("/about")
+def show_about_page():
+    return render_template("about.html")
+
+
+
 
 if __name__ == "__main__":
     app.debug = True

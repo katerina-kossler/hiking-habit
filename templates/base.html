@@ -14,22 +14,28 @@
 
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
-            Warning(s):
+            Note(s):
             <ul class=flashes>
             {% for category, message in messages %}
-              <li class="{{ category }}">{{ message }}</li>
+              <li class="{{ category }}">{{message}}</li>
             {% endfor %}
             </ul>
         {% endif %}
     {% endwith %}
 </head>
 <body>
+    <header>
+        {% if session.get('current_user') %}
+            <a href="/logout">Logout</a>
+        {% endif %}
+    </header>
     <h1>
         <a href="/">Hiking Habit</a>
     </h1>
 
     {% block body %}
     {% endblock %}
+
     <footer>
         <a href="/about">About</a>
     </footer>
