@@ -64,7 +64,7 @@ def logout():
     session.pop('current_user', None)
     session.modified = True
 
-    return render_template("homepage.html")
+    return redirect('/')
 
 
 @app.route("/register", methods=["GET"])
