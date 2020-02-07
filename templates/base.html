@@ -26,16 +26,21 @@
 <body>
     <header>
         {% if session.get('current_user') %}
-            <a href="/logout">Logout</a>
+            <a href="/logout">Logout</a> | <a href="/profile">View Profile</a>
         {% endif %}
     </header>
     <h1>
-        <a href="/">Hiking Habit</a>
+        {% if session.get('current_user') %}
+            <a href="/profile">Hiking Habit</a>
+        {% else %}
+            <a href="/">Hiking Habit</a>
+        {% endif %}
     </h1>
 
     {% block body %}
     {% endblock %}
 
+    <hr>
     <footer>
         <a href="/about">About</a>
     </footer>

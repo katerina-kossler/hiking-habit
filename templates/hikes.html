@@ -3,10 +3,18 @@
 {% block title %} Hiking Habit {% endblock %}
 
 {% block body %}
-  <h2> Reaching goals on the trail</h2>
+  <h2>Here are your hikes:</h2>
 
-  <!-- React Components! -->
-  <div id="app"></div>
+    <ul>
+    {% for hike in hikes %}
+        {% if not hike.canceled_by_user %}
+        <li id={{hike.hike_id}}> {{hike.trail.trail_name}} on {{hike.hiked_on}} : {{hike.status}} ({{hike.details}})</li>
+
+        {% endif %}
+    {% endfor %}
+
+    </ul>
+
 
 {% endblock %}
 

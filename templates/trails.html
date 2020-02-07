@@ -4,21 +4,33 @@
 
 {% block body %}
   <h2>Let's find a trail!</h2>
-
   <form action="/trails" method="POST">
-
-    Zipcode:<input type="text" name="zipcode" pattern="\d*" minlength="5" maxlength="5">required>
+    Zipcode:<input type="text" name="zipcode" pattern="\d*" minlength="5" maxlength="5" required>
     Search Distance (Miles):<input type="number" name="max_radius" min="30" max="200"><br>
-    Minimum Trail Length (Miles):<input type="integer" name="length" min="0"><br>
+    Minimum Trail Length (Miles):<input type="integer" name="length" min="0" max="200"><br>
     Sort by:
-    <input type="radio" name="sort" value="length" checked> Length<br>
+    <input type="radio" name="sort" value="length" checked> Length
     <input type="radio" name="sort" value="quality"> Quality<br>
     Maximum Number Results:<input type="number" name="max_results" min="10" max="500"><br>
-
     <input type='submit' value='Search'>
-
   </form>
-
+  <hr>
+  {% if trails %}
+  <ul>
+    {% for trail in trails %}
+      <li id={{trail.id}}><a href="/">{{trail.name}}</a> ({{trail.difficulty}}): {{trail.summary}}</li>
+      <ul>
+        <li>{{trail.location}}</li>
+        <li>{{trail.length}} miles long</li>
+        <li>Ascent: {{trail.ascent}} feet</li>
+        <li>Descent: {{trail.descent}} feet</li>
+        <li>Status on: {{trail.conditionDate}}: {{trail.conditionStatus}}, {{trail.conditionDetails}} </li>
+      </ul>
+    {% endfor %}
+  </ul>
+  {% else %}
+    "I took a walk in the woods and came out taller than trees." - Henry David Thoreau
+  {% endif %}
 {% endblock %}
 
 
