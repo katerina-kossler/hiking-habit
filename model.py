@@ -22,8 +22,6 @@ class User(db.Model):
                            nullable=False)
     last_name = db.Column(db.String(64), 
                           nullable=False)
-    image_url = db.Column(db.String(1024),
-                          nullable=True)
     canceled_by_user = db.Column(db.Boolean(), 
                                  nullable=False)
     def __repr__(self):
@@ -67,7 +65,7 @@ class Goal(db.Model):
                                 nullable=False)
     description = db.Column(db.String(512),
                             nullable=True)
-    goal_made_on = db.Column(db.DateTime(),
+    created_on = db.Column(db.DateTime(),
                               nullable=False) 
     status = db.Column(db.Enum(Progress),
                        nullable=False)
@@ -113,8 +111,13 @@ class Trail(db.Model):
                           nullable=False)
     api_rating = db.Column(db.Float(),
                        nullable=True)
+    trail_status = db.Column(db.String(256),
+                       nullable=True)
+    trail_status_details = db.Column(db.String(1024),
+                        nullable=True)
+    trail_status_at = db.Column(db.DateTime(),
+                          nullable=True)
 
-    trail_status = db.relationship('TrailStatus')
     hikes = db.relationship('Hike')
 
     def __repr__(self):
@@ -123,37 +126,7 @@ class Trail(db.Model):
                     trail_name={self.trail_name}
                     distance_in_miles={self.distance_in_miles}
                     location={self.location}
-                    latitude={self.latitude}
-                    longitude={self.longitude}>"""
-
-class TrailStatus(db.Model):
-    """Status of a trail; trail can have multiple status entries."""
-    __tablename__ = 'status_of_trails'
-
-    status_id = db.Column(db.BigInteger(), 
-                         autoincrement=True,
-                         primary_key=True,
-                         nullable=False)
-    trail_id = db.Column(db.BigInteger(),
-                         db.ForeignKey(Trail.trail_id), 
-                         nullable=False)
-    api_trail_id = db.Column(db.BigInteger(), 
-                             nullable=False)
-    trail_status = db.Column(db.String(256),
-                       nullable=True)
-    trail_status_details = db.Column(db.String(1024),
-                        nullable=True)
-    trail_status_at = db.Column(db.DateTime(),
-                          nullable=True)
-
-    trail = db.relationship('Trail')
-
-    def __repr__(self):
-        """Provide helpful representation when printed."""
-        return f"""<TrailStatus status_id={self.status_id}
-                    trail_id={self.trail_id}
-                    trail_status={self.trail_status}
-                    trail_status_at={self.trail_status_at}>"""    
+                    status={self.trail_status}>"""    
 
 class Hike(db.Model):
     """An instance of a hike; a hike can have one user & one trail"""
@@ -219,8 +192,6 @@ class HikeResult(db.Model):
                                  nullable=False)
     hike_time = db.Column(db.Float(),
                           nullable=False)
-    image_url = db.Column(db.String(1024),
-                          nullable=True)
     canceled_by_user = db.Column(db.Boolean(), 
                                  nullable=False)
 
