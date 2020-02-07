@@ -2,7 +2,7 @@ from flask import Flask, render_template, redirect, flash, session, request
 from flask_debugtoolbar import DebugToolbarExtension
 import json
 from sqlalchemy import func
-from model import User, Goal, Trail, TrailStatus, Hike, HikeResult, connect_to_db, db
+from model import User, Goal, Trail, Hike, connect_to_db, db
 from datetime import date
 import jinja2
 import re
@@ -37,10 +37,8 @@ def authenticate_user():
     username = request.form.get("username")
     email = request.form.get("email")
     password = request.form.get("password")
-
     user_in_system = User.query.filter_by(username=username).first()
     email_in_system = User.query.filter_by(email=email).first()
-
     if user_in_system:
         user_password = user_in_system.password
         if (user_password == password):
@@ -59,17 +57,14 @@ def authenticate_user():
         else:
             flash('Incorrect login information; try again')
             return redirect('/login')
-
     flash('Incorrect login information; try again')
     return redirect('/login')
 
 @app.route("/logout", methods=["GET"])
 def logout():
     """Logs the user out and returns to homepage"""
-
     session.pop('current_user', None)
     session.modified = True
-
     return redirect('/')
 
 
@@ -81,17 +76,14 @@ def show_user_form():
 @app.route("/register", methods=["POST"])
 def intake_user_info():
     """Add new user information to the users DB """
-
     username = request.form.get("username")
     email = request.form.get("email")
-
     username_in_system = User.query.filter_by(username=username).first()
     email_in_system = User.query.filter_by(email=email).first()
     password = request.form.get("password") # hash with salt
     created_on = date.today()
     first_name = request.form.get("first")
     last_name = request.form.get("last")
-    image_url = "https://images.pexels.com/photos/807598/pexels-photo-807598.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
     # might give option for radio buttons of profile image_url if time
     username_in_system = User.query.filter_by(username=username).first()
     email_in_system = User.query.filter_by(email=email).first()
@@ -114,7 +106,6 @@ def intake_user_info():
                     created_on=created_on,
                     first_name=first_name,
                     last_name=last_name,
-                    image_url=image_url,
                     canceled_by_user=False)
         db.session.add(user)
         db.session.commit()
@@ -130,22 +121,9 @@ def show_profile():
     user_id = session["current_user"]
     user = User.query.get(user_id)
     goals = Goal.query.filter_by(user_id=user_id).all()
-    print(user)
-    print(goals)
+    hikes = Goal.query.filter_by(user_id=user_id).all()
+    # need to think about how I want to connect in the hike results 
     return render_template("profile.html", user=user, goals=goals)
-
-# def edit_profile():
-#     """give user the option to edit their information"""
-#     user_id = session["current_user"]
-#     user = User.query.get(user_id)
-
-#     return render_template("edit-profile.html", user=user)
-#     # still in progress
-
-# @app.route("/profile", methods=["POST"])
-# def update_profile():
-#     """Updates a registered, active user's profile information"""
-#     pass
 
 @app.route("/trails", methods=["GET"])
 def show_search_form():
@@ -159,11 +137,9 @@ def show_search_form():
 def load_search_results():
     """shows results from API for trails available given specifications"""
     zipcode = request.form.get("zipcode")
-
     details = coordinates.query_postal_code(zipcode)
     latitude = details["latitude"]
     longitude = details["longitude"]
-
     search_distance = request.form.get("max_radius")
     min_length = request.form.get("length")
     sort = request.form.get("sort")
@@ -175,11 +151,9 @@ def load_search_results():
                "minLength":min_length,
                "sort":sort,
                "maxResults":max_results}
-
-    r_trails = requests.get("https://www.hikingproject.com/data/get-trails", params=payload)
-    j_trails = r_trails.json()
-    trails = j_trails['trails']
-
+    r_trails = requests.get("https://www.hikingproject.com/data/get-trails", 
+                            params=payload)
+    trails = r_trails.json()['trails']
     return render_template("trails.html", trails=trails)
 
 @app.route("/hikes", methods=["GET"])
@@ -190,13 +164,10 @@ def show_current_hikes():
         - link to add/ modify results if complete"""
     if not 'current_user' in session:
         return redirect('/')
-    
-    user_id = session["current_user"]
-    hikes = Hike.query.filter_by(user_id=user_id).all()
-    # should join hikes and trails tables to see / link to the t
+    hikes = Hike.query.filter_by(user_id=session["current_user"]).all()
     return render_template("hikes.html", hikes=hikes)
 
-@app.route("/hikes", methods=["POST"])
+@app.route("/hikes/{trail_id}", methods=["POST"])
 def add_hike():
     """Add a trail to a list of hikes the user wants to go on;
        if trail is already in hikes and is not complete display an alert that
@@ -206,13 +177,15 @@ def add_hike():
     # user should redirect to the new hike info after added to db
     
     print("add a hike")
-    return redirect('/trails')
+    return redirect('/hikes')
 
-# @app.route("/results", methods=["GET"])
-# def show_completed_hike_results():
-#     """Shows all hike results"""
-
-#     pass
+@app.route("/results", methods=["GET"])
+def show_completed_hike_results():
+    """Shows all hike results"""
+    if not 'current_user' in session:
+        return redirect('/')
+    results = HikeResult.query.filter_by(user_id=session["current_user"]).all()
+    pass
 
 # @app.route("/results", methods=["POST"])
 # def add_hike_result():
@@ -225,10 +198,8 @@ def show_current_goals_and_progress():
     """View active goals and see graphs for current progress towards the goal"""
     if not 'current_user' in session:
         return redirect('/')
-
-    user_id = session["current_user"]
-
-    return render_template("goals.html")
+    goals = Goal.query.filter_by(user_id=session["current_user"]).all()
+    return render_template("goals.html", goals=goals)
 
 
 # @app.route("/goals", methods=["POST"])
@@ -243,7 +214,7 @@ def show_current_goals_and_progress():
 
 # #  add similar route for submitting changes
 
-@app.route("/check_status", methods=["GET"])
+@app.route("/check_status/{trail_id}", methods=["GET"])
 def check_current_trail_status():
     """Checks for the current status of a trail"""
 # maybe I want to rethink my model in this respect as pulling trail data 
