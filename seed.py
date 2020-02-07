@@ -20,7 +20,6 @@ def load_users():
         password = items[3] 
         first_name = items[4]
         last_name = items[5]
-        image_url = items[6]
         created_on = items[7]
         canceled_by_user = items[8]
         if canceled_by_user == 'true':
@@ -34,7 +33,6 @@ def load_users():
                     first_name=first_name,
                     last_name=last_name,
                     created_on=created_on,
-                    image_url=image_url,
                     canceled_by_user=canceled_by_user)
 
         db.session.add(user)
@@ -55,7 +53,7 @@ def load_goals():
         goal = items[3]
         numerical_value = items[4]
         description = items[5]
-        goal_made_on = items[6]
+        created_on = items[6]
         status = items[7]
         canceled_by_user = items[8]
 
@@ -69,7 +67,7 @@ def load_goals():
                     goal=goal, 
                     numerical_value=numerical_value, 
                     description=description,
-                    goal_made_on=goal_made_on,
+                    created_on=created_on,
                     status=status,
                     canceled_by_user=canceled_by_user)
 
@@ -94,23 +92,14 @@ def load_trails_and_status():
                       location = trail_obj['location'],
                       latitude = trail_obj['latitude'],
                       longitude = trail_obj['longitude'],
-                      api_rating = trail_obj['stars'])
+                      api_rating = trail_obj['stars'],
+                      status=trail_obj['conditionStatus'],
+                      status_details=trail_obj['conditionDetails'],
+                      status_at=trail_obj['conditionDate'])
         db.session.add(trail)
 
     db.session.commit()
 
-    num = 1
-    TrailStatus.query.delete()
-    for trail_obj in trail_json['trails']:
-        status = TrailStatus(trail_id=num,
-                             api_trail_id=trail_obj['id'],
-                             trail_status=trail_obj['conditionStatus'],
-                             trail_status_details=trail_obj['conditionDetails'],
-                             trail_status_at=trail_obj['conditionDate'])       
-        db.session.add(status)
-        num += 1
-
-    db.session.commit()
 
 def load_hikes():
     """Load a fake set of hike from a hikes.csv"""
@@ -164,7 +153,6 @@ def load_results():
         distance_rating = items[4]
         challenge_rating = items[5]
         hike_time = items[6]
-        image_url = items[7]
         canceled_by_user = items[8]
         if canceled_by_user == 'true':
             canceled_by_user = True
@@ -179,7 +167,6 @@ def load_results():
                             distance_rating=distance_rating,
                             challenge_rating=challenge_rating,
                             hike_time=hike_time,
-                            image_url=image_url,
                             canceled_by_user=canceled_by_user)
 
         db.session.add(result)

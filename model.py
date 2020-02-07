@@ -111,11 +111,11 @@ class Trail(db.Model):
                           nullable=False)
     api_rating = db.Column(db.Float(),
                        nullable=True)
-    trail_status = db.Column(db.String(256),
+    status = db.Column(db.String(256),
                        nullable=True)
-    trail_status_details = db.Column(db.String(1024),
+    status_details = db.Column(db.String(1024),
                         nullable=True)
-    trail_status_at = db.Column(db.DateTime(),
+    status_at = db.Column(db.DateTime(),
                           nullable=True)
 
     hikes = db.relationship('Hike')
