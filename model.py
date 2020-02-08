@@ -9,7 +9,8 @@ class User(db.Model):
 
     user_id = db.Column(db.BigInteger(), 
                         autoincrement=True, 
-                        primary_key=True)
+                        primary_key=True,
+                        nullable=False)
     username = db.Column(db.String(128),
                          nullable=False)
     email = db.Column(db.String(256), 

@@ -8,8 +8,7 @@
   <ul>
   {% for goal in goals %}
 
-    <li>{{ goal.title }} : {{goal.goal}} ({{ goal.numerical_value }})
-    </li>
+    <li>{{ goal.title }} : {{goal.goal}} ({{ goal.numerical_value }}) <a href="edit_goal/{{goal.goal_id}}">Edit</li>
 
   {% endfor %}
   </ul>
@@ -18,7 +17,7 @@
   |
   <a href="/hikes">View Current Hikes</a>
   |
-  <a href="/goals">Add / Edit Goals</a>
+  <a href="/new_goal">Add A Goal</a>
 
 
 {% endblock %}

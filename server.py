@@ -156,29 +156,57 @@ def show_current_hikes():
     hikes = Hike.query.filter_by(user_id=session["current_user"]).all()
     return render_template("hikes.html", hikes=hikes)
 
-@app.route("/hikes/{trail_id}", methods=["POST"])
-def add_hike():
-    """Add a trail to a list of hikes the user wants to go on;
-       if trail is already in hikes and is not complete display an alert that
-       hike is already in list"""
-
-    # this should occur when user selects a trail from the search trail page,
-    # user should redirect to the new hike info after added to db
-    print(trail_id)
-    # check if trail is in the db
-    # if yes, check status date 
-    # if status can be updated , do so
-
-    # can edit hike (status, date, etc)
+@app.route("/hikes/<api_trail_id>", methods=["GET"])
+def add_hike(api_trail_id):
+    if not 'current_user' in session:
+        return redirect('/')
+    user = User.query.filter_by(user_id=session["current_user"]).first()
+    payload = {"key":key,
+               "ids":api_trail_id}
+    r_trail = requests.get("https://www.hikingproject.com/data/get-trails-by-id", 
+                            params=payload)
+    trail_obj = r_trail.json()['trails'][0]
+    trail_in_db = Trail.query.filter_by(api_trail_id=api_trail_id).first()
+    if trail_in_db:
+        current_status_at = trail_in_db.status_at
+        if not current_status_at == trail_obj["conditionDate"]:
+            trail_in_db.status=trail_obj['conditionStatus']
+            trail_in_db.status_details=trail_obj['conditionDetails']
+            trail_in_db.status_at=trail_obj['conditionDate']
+            db.session.commit()
+    else:
+        trail = Trail(api_trail_id = trail_obj['id'],
+                      trail_name = trail_obj['name'],
+                      description = trail_obj['summary'],
+                      difficulty = trail_obj['difficulty'],
+                      distance_in_miles = trail_obj['length'],
+                      total_ascent = trail_obj['ascent'],
+                      total_descent = trail_obj['descent'],
+                      location = trail_obj['location'],
+                      latitude = trail_obj['latitude'],
+                      longitude = trail_obj['longitude'],
+                      api_rating = trail_obj['stars'],
+                      status=trail_obj['conditionStatus'],
+                      status_details=trail_obj['conditionDetails'],
+                      status_at=trail_obj['conditionDate'])
+        db.session.add(trail)
+        db.session.commit()
+        trail_in_db = Trail.query.filter_by(api_trail_id=api_trail_id).first()
     
-    # if hike is complete / updated to complete open new results options to review
-        # details
-        # hiked_on
-        # ascent_rating
-        # distance_rating
-        # challenge_rating
-        # hike_time
-    pass
+    hike = Hike(user_id=user.user_id,
+                    trail_id=trail_in_db.trail_id,
+                    status="NOT_STARTED",
+                    details="",
+                    hiked_on=date.today(),
+                    ascent_rating="AVERAGE",
+                    distance_rating="AVERAGE",
+                    challenge_rating="AVERAGE",
+                    hike_time=0,
+                    canceled_by_user=False)
+    db.session.add(hike)
+    db.session.commit()
+    return render_template("new_hike.html", hike=hike)
+
 
 @app.route("/goals", methods=["GET"])
 def show_current_goals_and_progress():
@@ -188,15 +216,15 @@ def show_current_goals_and_progress():
     goals = Goal.query.filter_by(user_id=session["current_user"]).all()
     return render_template("goals.html", goals=goals)
 
-@app.route("/edit_goal/{goal_id}", methods=["GET"])
-def modify_goal():
+@app.route("/edit_goal/{goal_id}", methods=["POST"])
+def show_existing_goal():
     """Modify or cancel a selected goal """
-
+    pass
 #  add similar route for submitting changes
 
 
 @app.route("/edit_goal/{goal_id}", methods=["POST"])
-def modify_goal():
+def modify_existing_goal():
     """Modify or cancel a selected goal """
     pass
 #  add similar route for submitting changes
@@ -207,14 +235,9 @@ def show_goal_form():
     return render_template("new_goal.html")
 
 @app.route("/add_goal", methods=["POST"])
-def show_goal_form():
+def add_new_goal():
     """Verify and add goal to the database for a user"""
     pass
-
-@app.route("/check_status/{trail_id}", methods=["GET"])
-def check_current_trail_status():
-    """Checks for the current status of a trail"""
-# maybe I want to rethink my model in this respect as pulling trail data 
 
 @app.route("/about")
 def show_about_page():

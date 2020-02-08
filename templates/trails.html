@@ -6,25 +6,26 @@
   <h2>Let's find a trail!</h2>
   <form action="/trails" method="POST">
     Zipcode:<input type="text" name="zipcode" pattern="\d*" minlength="5" maxlength="5" required>
-    Search Distance (Miles):<input type="number" name="max_radius" min="30" max="200" value="30"><br>
+    Search Distance (Miles):<input type="number" name="maxRadius" min="30" max="200" value="30"><br>
     Minimum Trail Length (Miles):<input type="integer" name="length" min="0" max="200" value="0"><br>
     Sort by:
     <input type="radio" name="sort" value="length" checked> Length
     <input type="radio" name="sort" value="quality"> Quality<br>
-    Maximum Number Results:<input type="number" name="max_results" min="10" max="500" value="10"><br>
+    Maximum Number Results:<input type="number" name="maxResults" min="10" max="500" value="10"><br>
     <input type='submit' value='Search'>
   </form>
   <hr>
   {% if trails %}
   <ul>
     {% for trail in trails %}
-      <li id={{trail.id}}><a href="/hikes">{{trail.name}}</a> ({{trail.difficulty}}): {{trail.summary}}</li>
+      <li id={{trail.id}}><a href="/hikes/{trail.id}">{{trail.name}}</a> ({{trail.difficulty}}): {{trail.summary}}</li>
       <ul>
         <li>{{trail.location}}</li>
         <li>{{trail.length}} miles long</li>
         <li>Ascent: {{trail.ascent}} feet</li>
         <li>Descent: {{trail.descent}} feet</li>
         <li>Status on: {{trail.conditionDate}}: {{trail.conditionStatus}}, {{trail.conditionDetails}} </li>
+        <li><a href="/hikes/{{trail.id}}">Let's Hike it!</a></li>
       </ul>
     {% endfor %}
   </ul>
