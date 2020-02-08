@@ -3,21 +3,8 @@
 {% block title %} Hiking Habit {% endblock %}
 
 {% block body %}
-  <h2> Hi {{ user.first_name }}, here's what you have going on: </h2>
 
-  <ul>
-  {% for goal in goals %}
-
-    <li>{{ goal.title }} : {{goal.goal}} ({{ goal.numerical_value }}) <a href="edit_goal/{{goal.goal_id}}">Edit</li>
-
-  {% endfor %}
-  </ul>
-  
-  <a href="/trails">Search for Trails</a>
-  |
-  <a href="/hikes">View Current Hikes</a>
-  |
-  <a href="/new_goal">Add A Goal</a>
+  <p>User's Profile</p>
 
 
 {% endblock %}

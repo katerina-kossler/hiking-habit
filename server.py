@@ -13,20 +13,21 @@ import requests
 key = os.environ["HIKINGPROJECT_KEY"]
 coordinates = pgeocode.Nominatim('us')
 app = Flask(__name__)
-
-# To-do: make actual key and store locally until full deployment
 app.secret_key = 'this-should-be-something-unguessable'
 app.jinja_env.undefined = jinja2.StrictUndefined
+
 
 @app.route("/")
 def show_homepage():
     """Show the application's homepage with links to other routes."""
     return render_template("homepage.html")
 
+
 @app.route("/login", methods=["GET"])
 def show_login_form():
     """Shows the login info for taking in username and/or email and password"""
     return render_template("login.html")
+
 
 @app.route("/login", methods=["POST"])
 def authenticate_user():
@@ -41,7 +42,7 @@ def authenticate_user():
         if (user_password == password):
             session['current_user'] = user_in_system.user_id
             flash('Successfully Logged in')
-            return redirect('/profile')
+            return redirect('/home')
         else:
             flash('Incorrect login information; try again')
             return redirect('/login')
@@ -50,12 +51,13 @@ def authenticate_user():
         if (email_password == password):
             session['current_user'] = email_in_system.user_id
             flash('Successfully Logged in')
-            return redirect('/profile')
+            return redirect('/home')
         else:
             flash('Incorrect login information; try again')
             return redirect('/login')
     flash('Incorrect login information; try again')
     return redirect('/login')
+
 
 @app.route("/logout", methods=["GET"])
 def logout():
@@ -69,6 +71,7 @@ def logout():
 def show_user_form():
     """Displays the form to register a new user"""
     return render_template("sign-up.html")
+
 
 @app.route("/register", methods=["POST"])
 def intake_user_info():
@@ -102,17 +105,30 @@ def intake_user_info():
     session["current_user"] = user.user_id
     return redirect("/profile")
 
+
 @app.route("/profile", methods=["GET"])
 def show_profile():
     """Loads a user's profile from initial intake info"""
     if not 'current_user' in session:
         return redirect('/')
-    user_id = session["current_user"]
-    user = User.query.get(user_id)
-    goals = Goal.query.filter_by(user_id=user_id).all()
-    hikes = Goal.query.filter_by(user_id=user_id).all()
-    # need to think about how I want to connect in the hike results 
-    return render_template("profile.html", user=user, goals=goals)
+    return render_template("profile.html")
+
+
+@app.route("/edit-profile", methods=["GET"])
+def show_profile_form():
+    """Puts some of the user information into a form to change the info"""
+    if not 'current_user' in session:
+        return redirect('/')
+    return render_template("edit-profile.html")
+
+
+@app.route("/edit-profile", methods=["POST"])
+def edit_user_profile():
+    """Submit changes to the user profile"""
+    if not 'current_user' in session:
+        return redirect('/')
+    return redirect("/profile")
+
 
 @app.route("/trails", methods=["GET"])
 def show_search_form():
@@ -125,6 +141,8 @@ def show_search_form():
 @app.route("/trails", methods=["POST"])
 def load_search_results():
     """shows results from API for trails available given specifications"""
+    if not 'current_user' in session:
+        return redirect('/')
     zipcode = request.form.get("zipcode")
     details = coordinates.query_postal_code(zipcode)
     latitude = details["latitude"]
@@ -145,6 +163,7 @@ def load_search_results():
     trails = r_trails.json()['trails']
     return render_template("trails.html", trails=trails)
 
+
 @app.route("/hikes", methods=["GET"])
 def show_current_hikes():
     """Show a list of all hikes assocatied with the user:
@@ -155,6 +174,7 @@ def show_current_hikes():
         return redirect('/')
     hikes = Hike.query.filter_by(user_id=session["current_user"]).all()
     return render_template("hikes.html", hikes=hikes)
+
 
 @app.route("/hikes/<api_trail_id>", methods=["GET"])
 def add_hike(api_trail_id):
@@ -205,7 +225,8 @@ def add_hike(api_trail_id):
                     canceled_by_user=False)
     db.session.add(hike)
     db.session.commit()
-    return render_template("new_hike.html", hike=hike)
+    flash('Hike Added!')
+    return render_template("/hikes")
 
 
 @app.route("/goals", methods=["GET"])
@@ -215,6 +236,7 @@ def show_current_goals_and_progress():
         return redirect('/')
     goals = Goal.query.filter_by(user_id=session["current_user"]).all()
     return render_template("goals.html", goals=goals)
+
 
 @app.route("/edit_goal/{goal_id}", methods=["POST"])
 def show_existing_goal():

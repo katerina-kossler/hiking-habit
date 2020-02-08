@@ -1,13 +1,16 @@
 {% extends 'base.html' %}
 
-{% block title %} Hiking Habit {% endblock %}
+{% block title %}Goals{% endblock %}
 
 {% block body %}
 
   {% if goals: %}
-    Edit a goal:
+    
     {{goals}}
-    <!-- list goals with links to go to an edit goal method which gives option to cancel or change the numerical value -->
+    <p>go through all goals and have the option to edit any of them</p>
+    <p>somehow visualize of connect completed hikes to all possible goals</p>
+    <p>if the aggregate of all hikes meet a goal, goal is complete</p>
+    <p>maybe need a complete hike button</p>
   {% endif %}
 {% endblock %}
 

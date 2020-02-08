@@ -13,12 +13,21 @@
 </head>
 <body>
 <h2> Reaching goals on the trail</h2>
+  <div class='options'>
+  {% if session.get('current_user') %}
+    <a href="/goals">View Goals</a>
+    |
+    <a href="/trails">Search for Trails</a>
+    |
+    <a href="/hikes">View Hikes</a>
 
-<div>
-  <a href="/login">Log-in</a>
-  |
-  <a href="/register">Sign-up</a>
-</div>
+  {% else %}
+    <a href="/login">Log-in</a>
+    |
+    <a href="/register">Sign-up</a>
+  </div>
+
+  {% endif %}
 
 </body>
 </html>
