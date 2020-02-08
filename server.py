@@ -214,19 +214,13 @@ def add_hike(api_trail_id):
         trail_in_db = Trail.query.filter_by(api_trail_id=api_trail_id).first()
     
     hike = Hike(user_id=user.user_id,
-                    trail_id=trail_in_db.trail_id,
-                    status="NOT_STARTED",
-                    details="",
-                    hiked_on=date.today(),
-                    ascent_rating="AVERAGE",
-                    distance_rating="AVERAGE",
-                    challenge_rating="AVERAGE",
-                    hike_time=0,
-                    canceled_by_user=False)
+                trail_id=trail_in_db.trail_id,
+                is_complete=False,
+                canceled_by_user=False)
     db.session.add(hike)
     db.session.commit()
     flash('Hike Added!')
-    return render_template("/hikes")
+    return redirect("/hikes")
 
 
 @app.route("/goals", methods=["GET"])

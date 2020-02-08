@@ -8,7 +8,8 @@
     <ul>
     {% for hike in hikes %}
         {% if not hike.canceled_by_user %}
-        <li id={{hike.hike_id}}> {{hike.trail.trail_name}} on {{hike.hiked_on}} : {{hike.status}} ({{hike.details}})</li>
+            
+        <li id={{hike.hike_id}}> {{hike.trail.trail_name}} (Completed? {{hike.is_complete}})</li>
 
         {% endif %}
     {% endfor %}

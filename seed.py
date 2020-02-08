@@ -7,7 +7,6 @@ import re
 
 def load_users():
     """Load a fake set of users from a users.csv"""
-
     User.query.delete()
     for row in open("seed_data/users.csv"):
         row = row.rstrip()
@@ -30,14 +29,12 @@ def load_users():
                     last_name=last_name,
                     created_on=created_on,
                     canceled_by_user=canceled_by_user)
-
         db.session.add(user)
-
     db.session.commit()
+
 
 def load_goals():
     """Load a fake set of users from a users.csv"""
-
     Goal.query.delete()
     for row in open("seed_data/goals.csv"):
         row = row.rstrip()
@@ -62,10 +59,9 @@ def load_goals():
                     created_on=created_on,
                     status=status,
                     canceled_by_user=canceled_by_user)
-
         db.session.add(goal)
-
     db.session.commit()
+
 
 def load_trails_and_status():
     """Load trail data obtained from an API request from trails.csv"""
@@ -87,13 +83,11 @@ def load_trails_and_status():
                       status_details=trail_obj['conditionDetails'],
                       status_at=trail_obj['conditionDate'])
         db.session.add(trail)
-
     db.session.commit()
 
 
 def load_hikes():
     """Load a fake set of hikes and results from a hikes.csv"""
-
     Hike.query.delete()
     HikeResult.query.delete()
     hike_id = 0
@@ -129,15 +123,15 @@ def load_hikes():
                             challenge_rating=challenge_rating,
                             hike_time=hike_time,
                             canceled_by_user=canceled_by_user)
-
         db.session.add(hike)
         db.session.add(result)
     db.session.commit()
 
+
 if __name__ == "__main__":
     connect_to_db(app)
 
-    # In case tables haven't been created, create them
+    # If tables haven't been created, create them
     db.create_all()
 
     # # Import different types of data
