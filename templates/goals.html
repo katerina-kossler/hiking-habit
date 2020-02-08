@@ -3,20 +3,10 @@
 {% block title %} Hiking Habit {% endblock %}
 
 {% block body %}
-  Add a Goal:
-  <form action="/goals" method="POST">
-    Zipcode:<input type="text" name="zipcode" pattern="\d*" minlength="5" maxlength="5" required>
-    Search Distance (Miles):<input type="number" name="max_radius" min="30" max="200"><br>
-    Minimum Trail Length (Miles):<input type="integer" name="length" min="0" max="200"><br>
-    Sort by:
-    <input type="radio" name="sort" value="length" checked> Length
-    <input type="radio" name="sort" value="quality"> Quality<br>
-    Maximum Number Results:<input type="number" name="max_results" min="10" max="500"><br>
-    <input type='submit' value='Search'>
-  </form>
 
   {% if goals: %}
     Edit a goal:
+    {{goals}}
     <!-- list goals with links to go to an edit goal method which gives option to cancel or change the numerical value -->
   {% endif %}
 {% endblock %}

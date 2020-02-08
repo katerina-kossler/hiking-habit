@@ -12,10 +12,7 @@ import requests
  
 key = os.environ["HIKINGPROJECT_KEY"]
 coordinates = pgeocode.Nominatim('us')
-
 app = Flask(__name__)
-
-# A secret key is needed to use Flask sessioning features
 
 # To-do: make actual key and store locally until full deployment
 app.secret_key = 'this-should-be-something-unguessable'
@@ -84,40 +81,32 @@ def intake_user_info():
     created_on = date.today()
     first_name = request.form.get("first")
     last_name = request.form.get("last")
-    # might give option for radio buttons of profile image_url if time
     username_in_system = User.query.filter_by(username=username).first()
     email_in_system = User.query.filter_by(email=email).first()
-
-# once basics work we want to salt and hash the input password before
-#  saving in db, then might want to generate hashed passwords and update for current users
-#  salted = password + salt (stored externally)
-#  os.urandom(size) -- need to append salt and the hashed password to the db / model
-
     if username_in_system:
         flash("That username is taken, please choose a different one.")
         return redirect("/register") # maybe keep most of info in redirect
-    elif email_in_system and email_in_system.canceled_by_user == False:
-        flash("There is already an active account with that email!")
+    elif email_in_system:
+        flash("That email is taken, please choose a different one")
         return redirect("/register")
-
-        user = User(username=username,
-                    email=email,
-                    password=password,
-                    created_on=created_on,
-                    first_name=first_name,
-                    last_name=last_name,
-                    canceled_by_user=False)
-        db.session.add(user)
-        db.session.commit()
-
-        return redirect("/login")
+    user = User(username=username,
+                email=email,
+                password=password,
+                created_on=created_on,
+                first_name=first_name,
+                last_name=last_name,
+                canceled_by_user=False)
+    db.session.add(user)
+    db.session.commit()
+    user = User.query.filter_by(username=username).first()
+    session["current_user"] = user.user_id
+    return redirect("/profile")
 
 @app.route("/profile", methods=["GET"])
 def show_profile():
     """Loads a user's profile from initial intake info"""
     if not 'current_user' in session:
         return redirect('/')
-
     user_id = session["current_user"]
     user = User.query.get(user_id)
     goals = Goal.query.filter_by(user_id=user_id).all()
@@ -140,10 +129,10 @@ def load_search_results():
     details = coordinates.query_postal_code(zipcode)
     latitude = details["latitude"]
     longitude = details["longitude"]
-    search_distance = request.form.get("max_radius")
+    search_distance = request.form.get("maxRadius")
     min_length = request.form.get("length")
     sort = request.form.get("sort")
-    max_results = request.form.get("max_results")
+    max_results = request.form.get("maxResults")
     payload = {"key":key,
                "lon":longitude,
                "lat":latitude,
@@ -175,23 +164,21 @@ def add_hike():
 
     # this should occur when user selects a trail from the search trail page,
     # user should redirect to the new hike info after added to db
+    print(trail_id)
+    # check if trail is in the db
+    # if yes, check status date 
+    # if status can be updated , do so
+
+    # can edit hike (status, date, etc)
     
-    print("add a hike")
-    return redirect('/hikes')
-
-@app.route("/results", methods=["GET"])
-def show_completed_hike_results():
-    """Shows all hike results"""
-    if not 'current_user' in session:
-        return redirect('/')
-    results = HikeResult.query.filter_by(user_id=session["current_user"]).all()
+    # if hike is complete / updated to complete open new results options to review
+        # details
+        # hiked_on
+        # ascent_rating
+        # distance_rating
+        # challenge_rating
+        # hike_time
     pass
-
-# @app.route("/results", methods=["POST"])
-# def add_hike_result():
-#     """Posts any changes to or adds a hike result for a completed hike"""
-
-#     pass
 
 @app.route("/goals", methods=["GET"])
 def show_current_goals_and_progress():
@@ -201,18 +188,28 @@ def show_current_goals_and_progress():
     goals = Goal.query.filter_by(user_id=session["current_user"]).all()
     return render_template("goals.html", goals=goals)
 
+@app.route("/edit_goal/{goal_id}", methods=["GET"])
+def modify_goal():
+    """Modify or cancel a selected goal """
 
-# @app.route("/goals", methods=["POST"])
-# def change_goals():
-#     """Add, modify, or cancel a selected, active goal"""
+#  add similar route for submitting changes
 
-#     pass
 
-# @app.route("/edit_goal/{goal_id}", methods=["GET"])
-# def modify_goal():
-#     """Modify a selected goal """
+@app.route("/edit_goal/{goal_id}", methods=["POST"])
+def modify_goal():
+    """Modify or cancel a selected goal """
+    pass
+#  add similar route for submitting changes
 
-# #  add similar route for submitting changes
+@app.route("/add_goal", methods=["GET"])
+def show_goal_form():
+    """Render a form to make a new goal"""
+    return render_template("new_goal.html")
+
+@app.route("/add_goal", methods=["POST"])
+def show_goal_form():
+    """Verify and add goal to the database for a user"""
+    pass
 
 @app.route("/check_status/{trail_id}", methods=["GET"])
 def check_current_trail_status():
