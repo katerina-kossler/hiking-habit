@@ -2,7 +2,7 @@ from flask import Flask, render_template, redirect, flash, session, request
 from flask_debugtoolbar import DebugToolbarExtension
 import json
 from sqlalchemy import func
-from model import User, Goal, Trail, Hike, connect_to_db, db
+from model import User, Goal, Trail, Hike, HikeResult, connect_to_db, db
 from datetime import date
 import jinja2
 import re
@@ -251,21 +251,22 @@ def modify_existing_goal():
     pass
 #  add similar route for submitting changes
 
+
 @app.route("/add_goal", methods=["GET"])
 def show_goal_form():
     """Render a form to make a new goal"""
     return render_template("new_goal.html")
+
 
 @app.route("/add_goal", methods=["POST"])
 def add_new_goal():
     """Verify and add goal to the database for a user"""
     pass
 
+
 @app.route("/about")
 def show_about_page():
     return render_template("about.html")
-
-
 
 
 if __name__ == "__main__":

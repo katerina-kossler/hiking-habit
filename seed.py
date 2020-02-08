@@ -1,6 +1,6 @@
 import json
 from sqlalchemy import func
-from model import User, Goal, Trail, Hike, connect_to_db, db
+from model import User, Goal, Trail, Hike, HikeResult, connect_to_db, db
 from server import app
 from datetime import datetime
 import re
@@ -92,16 +92,18 @@ def load_trails_and_status():
 
 
 def load_hikes():
-    """Load a fake set of hike from a hikes.csv"""
+    """Load a fake set of hikes and results from a hikes.csv"""
 
     Hike.query.delete()
+    HikeResult.query.delete()
+    hike_id = 0
     for row in open("seed_data/hikes.csv"):
+        hike_id += 1
         row = row.rstrip()
         items = re.split(r',',row)
         user_id = items[0]
         trail_id = items[1]
-        status = items[2]
-        details = items[3]
+        assessment = items[3]
         hiked_on = items[4]
         ascent_rating = items[5]
         distance_rating = items[6]
@@ -110,20 +112,26 @@ def load_hikes():
         canceled_by_user = items[9]
         if canceled_by_user == 'true':
             canceled_by_user = True
+            is_complete = False
         else:
             canceled_by_user = False
+            is_complete = True
         hike = Hike(user_id=user_id,
                     trail_id=trail_id,
-                    status=status,
-                    details=details,
-                    hiked_on=hiked_on,
-                    ascent_rating=ascent_rating,
-                    distance_rating=distance_rating,
-                    challenge_rating=challenge_rating,
-                    hike_time=hike_time,
+                    is_complete=is_complete,
                     canceled_by_user=canceled_by_user)
+        result = HikeResult(hike_id=hike_id,
+                            assessment=assessment,
+                            distance_in_miles=0,
+                            hiked_on=hiked_on,
+                            ascent_rating=ascent_rating,
+                            distance_rating=distance_rating,
+                            challenge_rating=challenge_rating,
+                            hike_time=hike_time,
+                            canceled_by_user=canceled_by_user)
 
         db.session.add(hike)
+        db.session.add(result)
     db.session.commit()
 
 if __name__ == "__main__":

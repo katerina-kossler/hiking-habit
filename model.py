@@ -129,12 +129,6 @@ class Trail(db.Model):
                     location={self.location}
                     status={self.trail_status}>"""    
 
-class Rating(enum.Enum):
-    VERY_EASY = 1
-    EASY = 2
-    AVERAGE = 3
-    DIFFICULT = 4
-    VERY_DIFFICULT = 5
 
 class Hike(db.Model):
     """An instance of a hike; a hike can have one user & one trail"""
@@ -150,10 +144,48 @@ class Hike(db.Model):
     trail_id = db.Column(db.BigInteger(), 
                          db.ForeignKey(Trail.trail_id),
                          nullable=False)
-    status = db.Column(db.Enum(Progress),
-                       nullable=False)
-    details = db.Column(db.String(1024),
-                        nullable=True)
+    is_complete = db.Column(db.Boolean(),
+                          nullable=False)
+    canceled_by_user = db.Column(db.Boolean(), 
+                                 nullable=False)
+
+    user = db.relationship('User ')
+    trail = db.relationship('Trail')
+    result = db.relationship('HikeResult')
+
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+        return f"""<Hike hike_id={self.hike_id}
+                    user_id={self.user_id}
+                    trail_id={self.trail_id}
+                    is_complete={self.is_complete}
+                    canceled_by_user={self.canceled_by_user}>"""
+
+  
+class Rating(enum.Enum):
+    VERY_EASY = 1
+    EASY = 2
+    AVERAGE = 3
+    DIFFICULT = 4
+    VERY_DIFFICULT = 5
+
+
+class HikeResult(db.Model):
+    """Results of a hike instance for a hike."""
+    __tablename__ = 'hike_results'
+
+    result_id = db.Column(db.BigInteger(), 
+                        autoincrement=True, 
+                        primary_key=True,
+                        nullable=False)
+    hike_id = db.Column(db.BigInteger(), 
+                        db.ForeignKey(Hike.hike_id),
+                        autoincrement=True,
+                        nullable=False)
+    assessment = db.Column(db.String(1024),
+                            nullable=True)
+    distance_in_miles = db.Column(db.Float(),
+                                  nullable=False)
     hiked_on = db.Column(db.DateTime(),
                          nullable=False)
     ascent_rating = db.Column(db.Enum(Rating),
@@ -163,20 +195,19 @@ class Hike(db.Model):
     challenge_rating = db.Column(db.Enum(Rating),
                                  nullable=False)
     hike_time = db.Column(db.Float(),
-                          nullable=True)
+                          nullable=False)
     canceled_by_user = db.Column(db.Boolean(), 
                                  nullable=False)
 
-    user = db.relationship('User ')
-    trail = db.relationship('Trail')
+    hike = db.relationship('Hike')
 
     def __repr__(self):
         """Provide helpful representation when printed."""
-        return f"""<Hike hike_id={self.hike_id}
-                    user_id={self.user_id}
-                    trail_id={self.trail_id}
-                    status={self.status}
-                    canceled_by_user={self.canceled_by_user}>"""
+        return f"""<HikeResult result_id={self.result_id}
+                    hike_id={self.hike_id}
+                    assessment={self.assessment}>
+                    canceled_by_user={self.canceled_by_user}"""
+
 
 def connect_to_db(app):
     """Connect the database using Flask"""
