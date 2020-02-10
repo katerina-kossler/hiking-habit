@@ -11,7 +11,7 @@ Click==7.0
 colorama==0.3.7
 configobj==5.0.6
 constantly==15.1.0
-cryptography==2.1.4
+cryptography>=2.3
 decorator==4.4.0
 defusedxml==0.6.0
 distro-info===0.18ubuntu0.18.04.1
@@ -74,8 +74,8 @@ python-dateutil==2.8.1
 python-debian==0.1.32
 python-twitter==3.5
 pytz==2019.3
-pyxdg==0.25
-PyYAML==3.12
+pyxdg==0.26
+pyyaml>=4.2b1
 pyzmq==18.1.0
 requests==2.22.0
 requests-oauthlib==1.2.0
@@ -91,7 +91,7 @@ terminado==0.8.2
 testpath==0.4.2
 tornado==6.0.3
 traitlets==4.3.3
-Twisted==17.9.0
+twisted==19.7.0
 ufw==0.36
 urllib3==1.25.8
 virtualenv==16.7.7
