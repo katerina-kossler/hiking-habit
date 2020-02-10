@@ -13,15 +13,15 @@ class HomePage extends React.Component {
 class LoginForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-    user: undefined,
-    password: undefined
-    }
+    this.state = { user: undefined,
+                   password: undefined}
     
     this.handleInput = this.handleInput.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-
+  
+  componentDidMount()
+  
   handleInput(event) {
     this.setState({[event.target.name]: event.target.value});
   }
@@ -36,17 +36,17 @@ class LoginForm extends React.Component {
         user: this.state.user,
         password: this.state.password
     }
-    console.log(user_data)
+    
     $.post('/login', user_data, (response) => {
       if (response === 'success') {
-        return (
-          <div>Logged In</div>
-        );
+        return (<div>Logged In</div>);
+      } else {
+        this.setState({user: undefined,
+                       password: undefined})
+        return
       }
     }
     );
-  //   jQuery to check if user in db?
-  //   check if password is correct for user?
   }
     
   render() {
@@ -146,7 +146,9 @@ class App extends React.Component {
   }
   
   render() {
-    
+  // how to continually check the page end for a session cookie to dynamically render or
+  //  do I need to just have a different component the renders when no users are logged in
+  
   // if (this.state.currentUser) {
   //   return (
   //     <div>
