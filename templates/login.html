@@ -5,14 +5,17 @@
 {% block body %}
   <h2>Login to pick up on the trails!</h2>
 
-  <form action="/login" method="POST">
-
-    Username:<input type="text" name="username">
-    Email:<input type="text" name="email"><br>
-    Password:<input type="text" name="password"><br>
-
-    <input type='submit' value='Submit'>
-
+  <form>
+    <label>
+      Username:<input type="text" name="username" onChange={this.handleInput}>
+    </label>
+    <label>
+      Email:<input type="text" name="email" onChange={this.handleInput}><br>
+    </label>
+    <label>
+      Password:<input type="text" name="password" onChange={this.handleInput}><br>
+    </label>
+    <button onClick={this.handleSubmit}> Login </button>
   </form>
 
 {% endblock %}

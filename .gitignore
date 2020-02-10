@@ -8,6 +8,8 @@ __pycache__/
 instance/
 .webassets-cache
 
+## NPM
+node_modules/
 
 ## Environments
 .env

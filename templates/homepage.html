@@ -1,37 +1,9 @@
-{% extends 'base.html' %}
-
-{% block title %} Hiking Habit {% endblock %}
-
-{% block js %}
-{% endblock %}
+{% extends 'base.html' %} 
 
 {% block body %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-<h2> Reaching goals on the trail</h2>
-  <div class='options'>
-  {% if session.get('current_user') %}
-    <a href="/goals">View Goals</a>
-    |
-    <a href="/trails">Search for Trails</a>
-    |
-    <a href="/hikes">View Hikes</a>
+    <div id="app"></div>
+{% endblock %}
 
-  {% else %}
-    <a href="/login">Log-in</a>
-    |
-    <a href="/register">Sign-up</a>
-  </div>
-
-  {% endif %}
-
-</body>
-</html>
-
-
-
+{% block js %} 
+    <script src="static/js/homepage.jsx" type="text/jsx"></script>
 {% endblock %}

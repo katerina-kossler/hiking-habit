@@ -1,44 +1,45 @@
-</!DOCTYPE html>
+<!DOCTYPE html>
 <html>
-
 <head>
-    <title>
-        Hiking Habit: {% block title %}{% endblock %}
-    </title>
+    <title>Hiking Habit </title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" 
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" 
+          crossorigin="anonymous">
+    <!-- CSS -->
+    <!-- <link href="/static/css/site.css" rel="stylesheet"> -->
+    <!-- jQquery -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" 
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" 
+            crossorigin="anonymous"></script>
+    <!-- Babel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js" crossorigin></script>
+    <!-- React -->
+    <script src="https://unpkg.com/react@16/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin></script>
+    <!-- React Router -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-router-dom/5.0.1/react-router-dom.js" crossorigin></script>
 
-    <!-- React dependencies in a script tag? -->
-
-    <!-- JS? -->
-    {% block js %}
-    {% endblock %}
-
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            Note(s):
-            <ul class=flashes>
+    <!-- <div>
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %} Note(s):
+        <ul class=flashes>
             {% for category, message in messages %}
-              <li class="{{ category }}">{{message}}</li>
+            <li class="{{ category }}">{{message}}</li>
             {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
+        </ul>
+        {% endif %} {% endwith %}
+    </div>
+     -->
 </head>
 <body>
-    <header>
-        {% if session.get('current_user') %}
-            <a href="/logout">Logout</a> | <a href="/profile">Profile</a>
-        {% endif %}
-    </header>
-    <h1>
-        <a href="/">Hiking Habit</a>
-    </h1>
+    <title>Hiking Habit</title>
 
     {% block body %}
     {% endblock %}
+    
+    {% block js %} 
+    {% endblock %}
 
-    <hr>
-    <footer>
-        <a href="/about">About</a>
-    </footer>
 </body>
 </html>

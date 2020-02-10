@@ -28,35 +28,36 @@ def show_login_form():
     """Shows the login info for taking in username and/or email and password"""
     return render_template("login.html")
 
-
+# using
 @app.route("/login", methods=["POST"])
 def authenticate_user():
     """Take in user credentials and compare to existing if available"""
-    username = request.form.get("username")
-    email = request.form.get("email")
+    user = request.form.get("user")
+
     password = request.form.get("password")
-    user_in_system = User.query.filter_by(username=username).first()
-    email_in_system = User.query.filter_by(email=email).first()
+    user_in_system = User.query.filter_by(username=user).first()
+    email_in_system = User.query.filter_by(email=user).first()
     if user_in_system:
         user_password = user_in_system.password
         if (user_password == password):
             session['current_user'] = user_in_system.user_id
             flash('Successfully Logged in')
-            return redirect('/home')
+            print(session['current_user'])
+            return 'success'
         else:
             flash('Incorrect login information; try again')
-            return redirect('/login')
+            return 'failed'
     if email_in_system:
         email_password = email_in_system.password
         if (email_password == password):
             session['current_user'] = email_in_system.user_id
             flash('Successfully Logged in')
-            return redirect('/home')
+            return 'failed'
         else:
             flash('Incorrect login information; try again')
             return redirect('/login')
     flash('Incorrect login information; try again')
-    return redirect('/login')
+    return 'failed'
 
 
 @app.route("/logout", methods=["GET"])
@@ -88,7 +89,7 @@ def intake_user_info():
     email_in_system = User.query.filter_by(email=email).first()
     if username_in_system:
         flash("That username is taken, please choose a different one.")
-        return redirect("/register") # maybe keep most of info in redirect
+        return redirect("/register")
     elif email_in_system:
         flash("That email is taken, please choose a different one")
         return redirect("/register")
