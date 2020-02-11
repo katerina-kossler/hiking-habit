@@ -21,16 +21,19 @@
     <!-- React Router -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react-router-dom/5.0.1/react-router-dom.js" crossorigin></script>
 
-    <!-- <div>
-        {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %} Note(s):
-        <ul class=flashes>
-            {% for category, message in messages %}
-            <li class="{{ category }}">{{message}}</li>
-            {% endfor %}
-        </ul>
-        {% endif %} {% endwith %}
+    <div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %} 
+            Note(s):
+            <ul class=flashes>
+                {% for category, message in messages %}
+                <li class="{{ category }}">{{message}}</li>
+                {% endfor %}
+            </ul>
+          {% endif %} 
+        {% endwith %}
     </div>
-     -->
+    
 </head>
 <body>
     <title>Hiking Habit</title>

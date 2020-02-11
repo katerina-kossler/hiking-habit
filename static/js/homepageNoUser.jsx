@@ -1,0 +1,1 @@
+// view for no active user

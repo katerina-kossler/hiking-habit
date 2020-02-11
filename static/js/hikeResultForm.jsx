@@ -1,0 +1,1 @@
+// form to add submission to a hike result - hike result occurs when a hike is marked complete

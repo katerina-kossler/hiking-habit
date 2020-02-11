@@ -1,35 +1,77 @@
-class HomePage extends React.Component {
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+  
+    this.state = { currentUser: undefined,
+                   currentPage: 0, 
+                  pages: [<RegisterForm/>,
+                           <Logout/>]
+                 }
+    this.onLoginSuccess = this.onLoginSuccess.bind(this);
+  }
+  
+  onLoginSuccess(response) {
+      if (response !== this.state.currentUser) {
+        this.setState({currentUser: response,
+                       currentPage: 2});
+        console.log(this.state.currentUser);
+      }
+  }
 
-    render() {
+  componentDidMount() {
+    $.get('/check_current_user', this.onLoginSuccess);
+  }
+  
+  render() {
+
+  if (this.state.currentUser) {
     return (
-      <div class='options'>
-        <a href="/login">Log-in</a> |
-        <a href="/register">Sign-up</a>
+      <div>
+        <div>
+          <button onClick={() => this.setState({currentPage: 2})}> Logout </button>
+        </div>
+        <div>
+          {this.state.pages[this.state.currentPage]}
+        </div>
       </div>
     );
-    }
+  }
+    
+  return (
+    <div>
+      <title>Hiking Habit</title>
+      <div>
+        <button onClick={() => this.setState({currentPage: 0})}> Login </button>
+        <button onClick={() => this.setState({currentPage: 1})}> Register </button>
+      </div>
+      <div>
+        {this.state.pages[this.state.currentPage]}
+      </div>
+    </div>
+  );
+  }
 }
 
 class LoginForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = { user: undefined,
-                   password: undefined}
+                   password: undefined};
     this.checkResult = this.checkResult.bind(this);
     this.handleInput = this.handleInput.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
   
   checkResult(response) {
-      if (response === 'success') {
-        ReactDOM.render(<App />, document.getElementById('app'));
-        console.log(response);
-      } else {
+      if (response === 'undefined') {
         this.setState({user: undefined,
                        password: undefined});
         console.log(response);
         this.forceUpdate();
-      }
+      } else {
+        this.props.onSuccess(response);
+        console.log(response);
+      }     
   }
   
   handleInput(event) {
@@ -39,15 +81,15 @@ class LoginForm extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     
-    let user = this.state.user
+    let user = this.state.user;
     let password = this.state.password;
     
     let user_data = {
         user: this.state.user,
         password: this.state.password
-    }
+    };
     
-    $.post('/login', user_data, this.checkResult);
+    $.post('/login', user_data, (response) => {this.checkResult(response)});
   }
     
   render() {
@@ -67,6 +109,7 @@ class LoginForm extends React.Component {
 }
 
 class Logout extends React.Component {
+  // current not correct!
   render() {  
     $.get('/logout', (response) => console.log(response));
     return (
@@ -83,115 +126,52 @@ class RegisterForm extends React.Component {
     }
 }
 
-class NavBar extends React.Component {
-    render() {
-    return (
-        <div> One day soon I will be a nav bar that only logged-in users can see (or will show limited info to not logged in users</div>
-    )
-    }
-}
+// class NavBar extends React.Component {
+//     render() {
+//     return (
+//         <div> One day soon I will be a nav bar that only logged-in users can see (or will show limited info to not logged in users</div>
+//     )
+//     }
+// }
 
-class TrailsSearch extends React.Component {
-    render() {
-    return(
-        <div>Trails Search always displays; when searched also show results</div>
-    );
-    }
-}
+// class TrailsSearch extends React.Component {
+//     render() {
+//     return(
+//         <div>Trails Search always displays; when searched also show results</div>
+//     );
+//     }
+// }
 
-class TrailsResults extends React.Component {
-  render() {
-  return(
-      <div>Trails Search always displays; when searched also show results</div>
-  );
-  }
-}
+// class TrailsResults extends React.Component {
+//   render() {
+//   return(
+//       <div>Trails Search always displays; when searched also show results</div>
+//   );
+//   }
+// }
 
-class HikesPage extends React.Component {
-    render() {
-    return (
-        <div>I will show all the current user hikes organized into is_complete is true and false with buttons to make true or to view results for completed hikes</div>
-    );
-    }
-}
+// class HikesPage extends React.Component {
+//     render() {
+//     return (
+//         <div>I will show all the current user hikes organized into is_complete is true and false with buttons to make true or to view results for completed hikes</div>
+//     );
+//     }
+// }
 
-class HikeResultsPage extends React.Component {
-  render() {
-  return (
-    <div>Here users will render me when they complete a hike or when they want to review a hike / adjust the results</div>
-  );
-  }
-}
+// class HikeResultsPage extends React.Component {
+//   render() {
+//   return (
+//     <div>Here users will render me when they complete a hike or when they want to review a hike / adjust the results</div>
+//   );
+//   }
+// }
 
-class GoalsPage extends React.Component {
-  render() {
-  return (
-      <div></div>
-  );
-  }
-}
-
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    
-    this.state = { currentUser: undefined,
-                   currentPage: 0, 
-                   pages: [<HomePage/>, //re-factoring login control?
-                           <LoginForm/>,
-                           <RegisterForm/>,
-                           <Logout/>]
-                 }
-    this.checkUserLoggedIn = this.checkUserLoggedIn(this);
-                 
-  }
-  
-  checkUserLoggedIn(response) {
-      if (response !== 'undefined') {
-        this.setState({currentUser: response});
-        console.log(this.state.currentUser);
-      } else {
-        console.log(response);
-      }
-  }
-  
-  componentDidMount() {
-    $.get('/check_logged_in', this.checkUserLoggedIn);
-  }
-  
-  render() {
-  // how to continually check the page end for a session cookie to dynamically render or
-  //  do I need to just have a different component the renders when no users are logged in
-  
-  if (this.state.currentUser) {
-    return (
-      <div>
-        <div>
-          <p>other pages</p>
-          <button onClick={() => this.setState({currentPage: 0})}> Homepage </button>
-          <button onClick={() => this.setState({currentPage: 3})}> Logout </button>
-        </div>
-        <div>
-          {this.state.pages[this.state.currentPage]}
-        </div>
-      </div>
-    );
-  }
-    
-  return (
-    <div>
-      <title>Hiking Habit</title>
-      <div>
-        <button onClick={() => this.setState({currentPage: 0})}> Homepage </button>
-        <button onClick={() => this.setState({currentPage: 1})}> Login </button>
-        <button onClick={() => this.setState({currentPage: 2})}> Register </button>
-      </div>
-      <div>
-        {this.state.pages[this.state.currentPage]}
-      </div>
-    </div>
-  );
-  }
-}
+// class GoalsPage extends React.Component {
+//   render() {
+//   return (
+//       <div></div>
+//   );
+//   }
+// }
 
 ReactDOM.render(<App />, document.getElementById('app'));

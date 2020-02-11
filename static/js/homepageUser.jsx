@@ -1,0 +1,1 @@
+// view for all main app functionality

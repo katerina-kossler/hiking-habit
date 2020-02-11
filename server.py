@@ -22,18 +22,14 @@ def show_homepage():
     """Show the application's homepage with links to other routes."""
     return render_template("homepage.html")
 
-@app.route('/check_logged_in')
+# using
+@app.route('/check_current_user')
 def check_session_for_user():
     """Route for react to see if user is logged in"""
     
     user = session.get('current_user', 'undefined')
     str_user = str(user)
     return str_user
-
-@app.route("/login", methods=["GET"])
-def show_login_form():
-    """Shows the login info for taking in username and/or email and password"""
-    return render_template("login.html")
 
 # using
 @app.route("/login", methods=["POST"])
@@ -48,21 +44,21 @@ def authenticate_user():
         if (user_password == password):
             session['current_user'] = user_in_system.user_id
             flash('Successfully Logged in')
-            return 'success'
+            return session['current_user']
         else:
             flash('Incorrect login information; try again')
-            return 'failed'
+            return 'undefined'
     if email_in_system:
         email_password = email_in_system.password
         if (email_password == password):
             session['current_user'] = email_in_system.user_id
             flash('Successfully Logged in')
-            return 'failed'
+            return session['current_user']
         else:
             flash('Incorrect login information; try again')
-            return redirect('/login')
+            return 'undefined'
     flash('Incorrect login information; try again')
-    return 'failed'
+    return 'undefined'
 
 
 @app.route("/logout", methods=["GET"])
