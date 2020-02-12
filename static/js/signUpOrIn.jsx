@@ -12,6 +12,19 @@ class signUpOrIn extends React.Component {
   // get responses and deal with appropriately
   // 
   
+    // onLoginSuccess(response) {
+  //     if (response !== this.state.currentUser) {
+  //       this.setState({currentUser: response,
+  //                      currentPage: 2});
+  //       console.log(this.state.currentUser);
+  //     }
+  // }
+
+  
+  componentDidMount() {
+  // $.get('/check_current_user', this.onLoginSuccess);
+  }
+  
   render() {
     return(
       <div>

@@ -1,2 +1,23 @@
-// logic for trail search and results (with ability to have a new search)
-// includes logic to make a hike with a trail is selected
+class Trails extends React.Component {
+  constructor() {
+    super();
+    
+    this.state={ view:undefined }
+  }
+  
+  render() {
+  
+    return(
+      <div>
+        <h3> Trail Search:</h3>
+        <div>
+          <TrailsForm/>
+        </div>
+        <hr/>
+        <div>
+          {this.state.view}
+        </div>
+      </div>
+    );
+  }
+}

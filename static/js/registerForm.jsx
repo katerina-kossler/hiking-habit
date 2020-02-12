@@ -52,6 +52,7 @@ class RegisterForm extends React.Component {
           <label>
             Last Name:<input type="text" name="last" onChange={this.handleInput}/>
           </label>
+          <br/>
           <button onClick={this.handleSubmit}> Register </button>
         </form>
       </div>

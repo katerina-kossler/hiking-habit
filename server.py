@@ -17,19 +17,19 @@ app.secret_key = 'this-should-be-something-unguessable'
 app.jinja_env.undefined = jinja2.StrictUndefined
 
 
-@app.route("/")
-def show_homepage():
-    """Show the application's homepage with links to other routes."""
-    return render_template("homepage.html")
+# @app.route("/")
+# def show_homepage():
+#     """Show the application's homepage with links to other routes."""
+#     return render_template("homepage.html")
 
-# using
-@app.route('/check_current_user')
-def check_session_for_user():
-    """Route for react to see if user is logged in"""
+
+# @app.route('/check_current_user')
+# def check_session_for_user():
+#     """Route for react to see if user is logged in"""
     
-    user = session.get('current_user', 'undefined')
-    str_user = str(user)
-    return str_user
+#     user = session.get('current_user', 'undefined')
+#     str_user = str(user)
+#     return str_user
 
 # using
 @app.route("/login", methods=["POST"])
@@ -45,6 +45,7 @@ def authenticate_user():
             session['current_user'] = user_in_system.user_id
             flash('Successfully Logged in')
             return session['current_user']
+            
         else:
             flash('Incorrect login information; try again')
             return 'undefined'
@@ -66,13 +67,7 @@ def logout():
     """Logs the user out and returns to homepage"""
     session.pop('current_user', None)
     session.modified = True
-    return redirect('/')
-
-
-@app.route("/register", methods=["GET"])
-def show_user_form():
-    """Displays the form to register a new user"""
-    return render_template("sign-up.html")
+    return 'undefined'
 
 
 @app.route("/register", methods=["POST"])
@@ -80,20 +75,26 @@ def intake_user_info():
     """Add new user information to the users DB """
     username = request.form.get("username")
     email = request.form.get("email")
+    
     username_in_system = User.query.filter_by(username=username).first()
     email_in_system = User.query.filter_by(email=email).first()
+    
     password = request.form.get("password") # hash with salt
     created_on = date.today()
     first_name = request.form.get("first")
     last_name = request.form.get("last")
+    
     username_in_system = User.query.filter_by(username=username).first()
     email_in_system = User.query.filter_by(email=email).first()
+    
     if username_in_system:
         flash("That username is taken, please choose a different one.")
-        return redirect("/register")
+        return undefined
+        
     elif email_in_system:
         flash("That email is taken, please choose a different one")
-        return redirect("/register")
+        return undefined
+        
     user = User(username=username,
                 email=email,
                 password=password,
@@ -105,46 +106,21 @@ def intake_user_info():
     db.session.commit()
     user = User.query.filter_by(username=username).first()
     session["current_user"] = user.user_id
-    return redirect("/profile")
+    return session
 
 
 @app.route("/profile", methods=["GET"])
 def show_profile():
-    """Loads a user's profile from initial intake info"""
-    if not 'current_user' in session:
-        return redirect('/')
-    return render_template("profile.html")
-
-
-@app.route("/edit-profile", methods=["GET"])
-def show_profile_form():
-    """Puts some of the user information into a form to change the info"""
-    if not 'current_user' in session:
-        return redirect('/')
-    return render_template("edit-profile.html")
-
-
-@app.route("/edit-profile", methods=["POST"])
-def edit_user_profile():
-    """Submit changes to the user profile"""
-    if not 'current_user' in session:
-        return redirect('/')
-    return redirect("/profile")
-
-
-@app.route("/trails", methods=["GET"])
-def show_search_form():
-    """Shows user a search form for a trail"""
-    if not 'current_user' in session:
-        return redirect('/')
-    return render_template("trails.html", trails=None)
+    """Returns the current user's profile from initial intake info"""
+    user = User.query.filter_by(user_id=user_id).first()
+    print(user)
+    
+    return user
 
 
 @app.route("/trails", methods=["POST"])
 def load_search_results():
-    """shows results from API for trails available given specifications"""
-    if not 'current_user' in session:
-        return redirect('/')
+    """Returns results from API for trails available given specifications"""
     zipcode = request.form.get("zipcode")
     details = coordinates.query_postal_code(zipcode)
     latitude = details["latitude"]
@@ -163,38 +139,47 @@ def load_search_results():
     r_trails = requests.get("https://www.hikingproject.com/data/get-trails", 
                             params=payload)
     trails = r_trails.json()['trails']
-    return render_template("trails.html", trails=trails)
+    print(trails)
+    
+    return trails
 
 
 @app.route("/hikes", methods=["GET"])
 def show_current_hikes():
-    """Show a list of all hikes assocatied with the user:
+    """Returns a list of all hikes assocatied with the user:
         - status of each hike
         - links to edit status
         - link to add/ modify results if complete"""
-    if not 'current_user' in session:
-        return redirect('/')
+        
     hikes = Hike.query.filter_by(user_id=session["current_user"]).all()
-    return render_template("hikes.html", hikes=hikes)
+    print(hikes)
+    
+    return hikes
 
 
 @app.route("/hikes/<api_trail_id>", methods=["GET"])
 def add_hike(api_trail_id):
-    if not 'current_user' in session:
-        return redirect('/')
+    """Checks if the trail
+        - is in the db (if not, adds)
+        - has most recent conditions (if not, updates)
+        Creates a new hike on the trail with is complete as false
+        """
     user = User.query.filter_by(user_id=session["current_user"]).first()
     payload = {"key":key,
                "ids":api_trail_id}
     r_trail = requests.get("https://www.hikingproject.com/data/get-trails-by-id", 
                             params=payload)
+                            
     trail_obj = r_trail.json()['trails'][0]
     trail_in_db = Trail.query.filter_by(api_trail_id=api_trail_id).first()
+    
     if trail_in_db:
         current_status_at = trail_in_db.status_at
         if not current_status_at == trail_obj["conditionDate"]:
             trail_in_db.status=trail_obj['conditionStatus']
             trail_in_db.status_details=trail_obj['conditionDetails']
             trail_in_db.status_at=trail_obj['conditionDate']
+            
             db.session.commit()
     else:
         trail = Trail(api_trail_id = trail_obj['id'],
@@ -211,6 +196,7 @@ def add_hike(api_trail_id):
                       status=trail_obj['conditionStatus'],
                       status_details=trail_obj['conditionDetails'],
                       status_at=trail_obj['conditionDate'])
+                      
         db.session.add(trail)
         db.session.commit()
         trail_in_db = Trail.query.filter_by(api_trail_id=api_trail_id).first()
@@ -219,50 +205,36 @@ def add_hike(api_trail_id):
                 trail_id=trail_in_db.trail_id,
                 is_complete=False,
                 canceled_by_user=False)
+                
     db.session.add(hike)
     db.session.commit()
+    
     flash('Hike Added!')
-    return redirect("/hikes")
+    
+    return 'success'
 
 
 @app.route("/goals", methods=["GET"])
 def show_current_goals_and_progress():
-    """View active goals and see graphs for current progress towards the goal"""
-    if not 'current_user' in session:
-        return redirect('/')
+    """View active goals"""
+
     goals = Goal.query.filter_by(user_id=session["current_user"]).all()
-    return render_template("goals.html", goals=goals)
-
-
-@app.route("/edit_goal/{goal_id}", methods=["POST"])
-def show_existing_goal():
-    """Modify or cancel a selected goal """
-    pass
-#  add similar route for submitting changes
-
-
-@app.route("/edit_goal/{goal_id}", methods=["POST"])
-def modify_existing_goal():
-    """Modify or cancel a selected goal """
-    pass
-#  add similar route for submitting changes
-
-
-@app.route("/add_goal", methods=["GET"])
-def show_goal_form():
-    """Render a form to make a new goal"""
-    return render_template("new_goal.html")
+    return goals
 
 
 @app.route("/add_goal", methods=["POST"])
 def add_new_goal():
-    """Verify and add goal to the database for a user"""
-    pass
+    """Render a form to make a new goal"""
+    return 
 
 
-@app.route("/about")
-def show_about_page():
-    return render_template("about.html")
+@app.route("/check_goal", methods=["GET"])
+def return_goal_progress():
+    """Aggregates all hike results """
+    return
+    
+@app.route("/hike_results", methods=["GET"])
+def 
 
 
 if __name__ == "__main__":
