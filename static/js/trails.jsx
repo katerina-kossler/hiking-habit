@@ -9,7 +9,7 @@ class Trails extends React.Component {
   
     return(
       <div>
-        <h3> Trail Search:</h3>
+        <h3> Trail Search: </h3>
         <div>
           <TrailsForm/>
         </div>

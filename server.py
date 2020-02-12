@@ -1,7 +1,7 @@
 from flask import Flask, render_template, redirect, flash, session, request
 from flask_debugtoolbar import DebugToolbarExtension
 import json
-from sqlalchemy import func
+from sqlalchemy import func, and_
 from model import User, Goal, Trail, Hike, HikeResult, connect_to_db, db
 from datetime import date
 import jinja2
@@ -17,24 +17,15 @@ app.secret_key = 'this-should-be-something-unguessable'
 app.jinja_env.undefined = jinja2.StrictUndefined
 
 
-# @app.route("/")
-# def show_homepage():
-#     """Show the application's homepage with links to other routes."""
-#     return render_template("homepage.html")
+@app.route("/")
+def show_homepage():
+    """Show the application's homepage with links to other routes."""
+    return render_template("homepage.html")
 
-
-# @app.route('/check_current_user')
-# def check_session_for_user():
-#     """Route for react to see if user is logged in"""
-    
-#     user = session.get('current_user', 'undefined')
-#     str_user = str(user)
-#     return str_user
-
-# using
 @app.route("/login", methods=["POST"])
 def authenticate_user():
     """Take in user credentials and compare to existing if available"""
+    
     user = request.form.get("user")
     password = request.form.get("password")
     user_in_system = User.query.filter_by(username=user).first()
@@ -48,7 +39,7 @@ def authenticate_user():
             
         else:
             flash('Incorrect login information; try again')
-            return 'undefined'
+            return 'rejected'
     if email_in_system:
         email_password = email_in_system.password
         if (email_password == password):
@@ -57,22 +48,25 @@ def authenticate_user():
             return session['current_user']
         else:
             flash('Incorrect login information; try again')
-            return 'undefined'
+            return 'rejected'
     flash('Incorrect login information; try again')
-    return 'undefined'
+    return 'rejected'
 
 
 @app.route("/logout", methods=["GET"])
 def logout():
-    """Logs the user out and returns to homepage"""
+    """Logs the user out"""
+    
     session.pop('current_user', None)
     session.modified = True
-    return 'undefined'
+    flash("Logged Out")
+    return 'logged out'
 
 
 @app.route("/register", methods=["POST"])
 def intake_user_info():
     """Add new user information to the users DB """
+    
     username = request.form.get("username")
     email = request.form.get("email")
     
@@ -89,11 +83,11 @@ def intake_user_info():
     
     if username_in_system:
         flash("That username is taken, please choose a different one.")
-        return undefined
-        
+        return 'rejected username'
+
     elif email_in_system:
         flash("That email is taken, please choose a different one")
-        return undefined
+        return 'rejected email'
         
     user = User(username=username,
                 email=email,
@@ -106,12 +100,14 @@ def intake_user_info():
     db.session.commit()
     user = User.query.filter_by(username=username).first()
     session["current_user"] = user.user_id
+    
     return session
 
 
 @app.route("/profile", methods=["GET"])
 def show_profile():
     """Returns the current user's profile from initial intake info"""
+    
     user = User.query.filter_by(user_id=user_id).first()
     print(user)
     
@@ -120,15 +116,18 @@ def show_profile():
 
 @app.route("/trails", methods=["POST"])
 def load_search_results():
-    """Returns results from API for trails available given specifications"""
+    """Returns available trails from API based on search parameters"""
+    
     zipcode = request.form.get("zipcode")
     details = coordinates.query_postal_code(zipcode)
     latitude = details["latitude"]
     longitude = details["longitude"]
+    
     search_distance = request.form.get("maxRadius")
     min_length = request.form.get("length")
     sort = request.form.get("sort")
     max_results = request.form.get("maxResults")
+    
     payload = {"key":key,
                "lon":longitude,
                "lat":latitude,
@@ -143,6 +142,11 @@ def load_search_results():
     
     return trails
 
+@app.route("/hikes", methods=["POST"])
+def complete_hike():
+    """Submits a change of a hike's is_complete to True"""
+    
+    pass
 
 @app.route("/hikes", methods=["GET"])
 def show_current_hikes():
@@ -210,31 +214,73 @@ def add_hike(api_trail_id):
     db.session.commit()
     
     flash('Hike Added!')
+    print(hike)
     
     return 'success'
 
 
 @app.route("/goals", methods=["GET"])
-def show_current_goals_and_progress():
-    """View active goals"""
+def show_current_goals():
+    """Returns active goals"""
 
-    goals = Goal.query.filter_by(user_id=session["current_user"]).all()
+    goals = Goal.query.filter(and_(user_id=session["current_user"],canceled_by_user=False)).all()
     return goals
 
 
-@app.route("/add_goal", methods=["POST"])
+@app.route("/goals", methods=["POST"])
 def add_new_goal():
-    """Render a form to make a new goal"""
+    """Adds a new goal to the database"""
     return 
 
 
-@app.route("/check_goal", methods=["GET"])
-def return_goal_progress():
-    """Aggregates all hike results """
+@app.route("/goal/<goal_id>", methods=["GET"])
+def return_goal_progress(goal_id):
+    """Aggregates all hike results to show current progress towards a goal"""
+    
+    selected_goal = Goal.query.filter_by(goal_id=goal_id).first()
+    hike_results = HikeResult.query.filter_by(user_id=user_id).all()
+    
+    goal_type = selected_goal.goal
+    if goal_type == "NUMBER_HIKES":
+        progress = {}
+        for result in hike_results:
+            print(result)
+            # add keys and values for specific values (pie graph?)
+    elif goal_type == "MILES_HIKED":
+        print(results)
+        # store hike id, milage, and dates (all in result)
+    elif goal_type == "FEET_ASCENDED":
+        print(results)
+        # store hike id, ascent and dates (all in result)
+    elif goal_type == "HIKEABLE_MILES":
+        print(results)
+        # store hike id, milage, and dates (all in result)
+    elif goal_type == "HIKE_DIFFICULTY":
+        print(results)
+        # store hike id, difficulty (from the trail), and dates
+    else:
+        return 'invalid goal type'
+
+    
     return
     
+    
+@app.route("/hike_results", methods=["POST"])
+def add_hike_results():
+    """Adds hike results on hike completion"""
+    # process form information add to database if data can be added and return result
+    pass 
+    
+    
 @app.route("/hike_results", methods=["GET"])
-def 
+def show_hike_results():
+    """Returns Hike results for a given completed hike"""
+    
+    # get results from a form? 
+    hike_id = 5
+    result = hike_results.query.filter_by(hike_id=hike_id).first()
+
+    return result
 
 
 if __name__ == "__main__":
