@@ -27,7 +27,7 @@ class GoalForm extends React.Component {
   {% endif %}
 
   <a href="/new_goal">Add a Goal</a> */}
-      
+    Form
     </div>
   }
 }

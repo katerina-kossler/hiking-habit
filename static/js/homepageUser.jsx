@@ -1,10 +1,15 @@
-// view for all main app functionality
+"use strict";
 
 class HomepageUser extends React.Component {
   constructor(props) {
     super(props);
     this.state = {view:<Trails/>}
   }
+  
+  onLogOut = () => {
+    this.setState({})
+  }
+    
   
   render() {
     return(

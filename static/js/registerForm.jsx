@@ -1,3 +1,5 @@
+"use strict";
+
 class RegisterForm extends React.Component {
   constructor(props) {
     super(props);
@@ -29,7 +31,8 @@ class RegisterForm extends React.Component {
         password: password,
         firstName: firstName,
         lastName: lastName
-    };
+        };
+    this.props.tryRegistration(user_data);
   }
   
   render() {

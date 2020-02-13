@@ -1,3 +1,5 @@
+"use strict";
+
 class LoginForm extends React.Component {
   constructor(props) {
     super(props);
@@ -13,18 +15,15 @@ class LoginForm extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    
     let user = this.state.user;
     let password = this.state.password;
-    
     let user_data = {
         user: user,
         password: password
     };
-    
-  // send data up to signUpOrIn.jsx - or define these in parent
+    this.props.submitLogIn(user_data);
   }
-    
+  
   render() {
   return (
     <div>

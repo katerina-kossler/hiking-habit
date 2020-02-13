@@ -1,3 +1,5 @@
+"use strict";
+
 class TrailsForm extends React.Component {
   constructor() {
     super();

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, flash, session, request
+from flask import Flask, render_template, redirect, flash, session, request, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 import json
 from sqlalchemy import func, and_
@@ -20,14 +20,15 @@ app.jinja_env.undefined = jinja2.StrictUndefined
 @app.route("/")
 def show_homepage():
     """Show the application's homepage with links to other routes."""
+    
     return render_template("homepage.html")
 
-@app.route("/login", methods=["POST"])
+@app.route("/api/login", methods=["POST"])
 def authenticate_user():
     """Take in user credentials and compare to existing if available"""
     
-    user = request.form.get("user")
-    password = request.form.get("password")
+    user = request.args.get("user")
+    password = request.args.get("password")
     user_in_system = User.query.filter_by(username=user).first()
     email_in_system = User.query.filter_by(email=user).first()
     if user_in_system:
@@ -53,30 +54,20 @@ def authenticate_user():
     return 'rejected'
 
 
-@app.route("/logout", methods=["GET"])
-def logout():
-    """Logs the user out"""
-    
-    session.pop('current_user', None)
-    session.modified = True
-    flash("Logged Out")
-    return 'logged out'
-
-
-@app.route("/register", methods=["POST"])
+@app.route("/api/register", methods=["POST"])
 def intake_user_info():
     """Add new user information to the users DB """
     
-    username = request.form.get("username")
-    email = request.form.get("email")
+    username = request.args.get("username")
+    email = request.args.get("email")
     
     username_in_system = User.query.filter_by(username=username).first()
     email_in_system = User.query.filter_by(email=email).first()
     
-    password = request.form.get("password") # hash with salt
+    password = request.args.get("password") # hash with salt
     created_on = date.today()
-    first_name = request.form.get("first")
-    last_name = request.form.get("last")
+    first_name = request.args.get("first")
+    last_name = request.args.get("last")
     
     username_in_system = User.query.filter_by(username=username).first()
     email_in_system = User.query.filter_by(email=email).first()
@@ -101,7 +92,17 @@ def intake_user_info():
     user = User.query.filter_by(username=username).first()
     session["current_user"] = user.user_id
     
-    return session
+    return session['current_user']
+
+
+@app.route("/api/logout", methods=["GET"])
+def logout():
+    """Logs the user out"""
+    
+    session.pop('current_user', None)
+    session.modified = True
+    flash("Logged Out")
+    return 'logged out'
 
 
 @app.route("/profile", methods=["GET"])
