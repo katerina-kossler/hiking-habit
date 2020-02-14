@@ -29,8 +29,8 @@ class RegisterForm extends React.Component {
         username: username,
         email: email,
         password: password,
-        firstName: firstName,
-        lastName: lastName
+        first: firstName,
+        last: lastName
         };
     this.props.tryRegistration(user_data);
   }

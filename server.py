@@ -26,59 +26,53 @@ def show_homepage():
 @app.route("/api/login", methods=["POST"])
 def authenticate_user():
     """Take in user credentials and compare to existing if available"""
-    
-    user = request.args.get("user")
-    password = request.args.get("password")
+
+    user = request.form.get("user")
+    password = request.form.get("password")
     user_in_system = User.query.filter_by(username=user).first()
     email_in_system = User.query.filter_by(email=user).first()
+    
     if user_in_system:
         user_password = user_in_system.password
         if (user_password == password):
             session['current_user'] = user_in_system.user_id
-            flash('Successfully Logged in')
-            return session['current_user']
-            
+            return {'userId': session['current_user']}
         else:
-            flash('Incorrect login information; try again')
-            return 'rejected'
+            return 'Incorrect password; try again'
     if email_in_system:
         email_password = email_in_system.password
         if (email_password == password):
             session['current_user'] = email_in_system.user_id
             flash('Successfully Logged in')
-            return session['current_user']
+            return {'userId': session['current_user']}
         else:
-            flash('Incorrect login information; try again')
-            return 'rejected'
-    flash('Incorrect login information; try again')
-    return 'rejected'
+            return 'Incorrect password; try again'
+    return 'Incorrect login information; try again'
 
 
 @app.route("/api/register", methods=["POST"])
 def intake_user_info():
     """Add new user information to the users DB """
     
-    username = request.args.get("username")
-    email = request.args.get("email")
+    username = request.form.get("username")
+    email = request.form.get("email")
     
     username_in_system = User.query.filter_by(username=username).first()
     email_in_system = User.query.filter_by(email=email).first()
     
-    password = request.args.get("password") # hash with salt
+    password = request.form.get("password") # hash with salt
     created_on = date.today()
-    first_name = request.args.get("first")
-    last_name = request.args.get("last")
+    first_name = request.form.get("first")
+    last_name = request.form.get("last")
     
     username_in_system = User.query.filter_by(username=username).first()
     email_in_system = User.query.filter_by(email=email).first()
     
     if username_in_system:
-        flash("That username is taken, please choose a different one.")
-        return 'rejected username'
+        return 'That username is taken, please choose a different one.'
 
     elif email_in_system:
-        flash("That email is taken, please choose a different one")
-        return 'rejected email'
+        return 'That email is taken, please choose a different one'
         
     user = User(username=username,
                 email=email,
@@ -89,10 +83,11 @@ def intake_user_info():
                 canceled_by_user=False)
     db.session.add(user)
     db.session.commit()
+    
     user = User.query.filter_by(username=username).first()
     session["current_user"] = user.user_id
     
-    return session['current_user']
+    return {'userId': session['current_user']}
 
 
 @app.route("/api/logout", methods=["GET"])
@@ -101,7 +96,6 @@ def logout():
     
     session.pop('current_user', None)
     session.modified = True
-    flash("Logged Out")
     return 'logged out'
 
 

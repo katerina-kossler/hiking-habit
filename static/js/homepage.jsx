@@ -3,14 +3,13 @@
 class App extends React.Component {
   constructor(props) {
     super(props);
-  
     this.state = {view: <HomepageNoUser logUserIn={this.onLogIn}/>,
                   user: undefined};
   }
   
-  onLogIn = (userInfo) => {
+  onLogIn = (userId) => {
     this.setState({view: <HomepageUser logUserOut={this.onLogOut}/>,
-                    user: userInfo});
+                   user: userId});
   };
   
   onLogOut = () => {
@@ -21,11 +20,6 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <div>
-          <h2 onClick={() => this.setState({view:<About/>})}>
-            Hiking Habit
-          </h2>
-        </div>
         <div >
           {this.state.view}
         </div>

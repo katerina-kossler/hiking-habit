@@ -6,11 +6,6 @@ class HomepageUser extends React.Component {
     this.state = {view:<Trails/>}
   }
   
-  onLogOut = () => {
-    this.setState({})
-  }
-    
-  
   render() {
     return(
       <div>
@@ -18,7 +13,7 @@ class HomepageUser extends React.Component {
           <h2 onClick={() => this.setState({view:<Trails/>})}>Hiking Habit</h2>
         </div>
         <div>
-          <button onClick={() => this.setState({view:<LogOut/>})}> Logout </button>
+          <button onClick={() => this.props.onLogOut()}> Logout </button>
           <button onClick={() => this.setState({view:<Profile/>})}> View Profile </button>
         </div>
         <div>

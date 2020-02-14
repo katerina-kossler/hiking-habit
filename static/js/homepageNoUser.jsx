@@ -3,7 +3,7 @@
 class HomepageNoUser extends React.Component {
   constructor() {
     super();
-    this.state = {view:<LoginForm/>};
+    this.state = {view: <LoginForm submitLogIn={this.tryLogIn}/>};
     this.tryLogIn=this.tryLogIn.bind(this);
     this.tryRegistration=this.tryRegistration.bind(this);
     
@@ -11,21 +11,27 @@ class HomepageNoUser extends React.Component {
   
   tryRegistration = (data) => {
     console.log(data);
-    $.post('/api/register', (response) => {
-      console.log(response);
+    $.post('/api/register', data, (response) => {
+      let type = typeof(response);
+      if (type == 'string') {
+        this.setState({view:<RegisterForm submitLogIn={this.tryLogIn}/>})
+        alert(response);
+      } else {
+        let user = response.userId;
+        this.props.logUserIn(user);
+      }
     });
   };
   
   tryLogIn = (data) => {
-    console.log(data);
-    $.post('/api/login', (response) => {
-      console.log(response);
+    $.post('/api/login', data, (response) => {
       let type = typeof(response);
-      if (type == 'number') {
-        this.props.logUserIn(response);
-      } else if (type == 'string') {
+      if (type == 'string') {
         this.setState({view:<LoginForm submitLogIn={this.tryLogIn}/>})
         alert(response);
+      } else {
+        let user = response.userId;
+        this.props.logUserIn(user);
       }
     });
   };
@@ -33,6 +39,9 @@ class HomepageNoUser extends React.Component {
   render() {
   return (
     <div>
+      <div>
+        <h2 onClick={() => this.setState({view:<About/>})}>Hiking Habit</h2>
+      </div>
       <hr/>
       <div>
         <button onClick={() => this.setState({view:<LoginForm submitLogIn={this.tryLogIn}/>})}>
