@@ -3,8 +3,16 @@
 class HomepageUser extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {view:<Trails/>}
+    this.state = {view:<Trails/>};
+    this.tryLogOut = this.tryLogOut.bind(this);
   }
+  // has a this.props.userId
+  
+  tryLogOut = () => {
+    $.get('/api/logout', (response) => {
+      this.props.logUserOut();
+    });
+  };
   
   render() {
     return(
@@ -13,8 +21,12 @@ class HomepageUser extends React.Component {
           <h2 onClick={() => this.setState({view:<Trails/>})}>Hiking Habit</h2>
         </div>
         <div>
-          <button onClick={() => this.props.onLogOut()}> Logout </button>
+          <button onClick={() => this.tryLogOut()}> Logout </button>
           <button onClick={() => this.setState({view:<Profile/>})}> View Profile </button>
+        </div>
+        <hr/>
+        <div>
+          {this.props.userId}
         </div>
         <div>
           <button onClick={() => this.setState({view:<Trails/>})}> Trail Search </button>

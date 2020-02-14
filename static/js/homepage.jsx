@@ -8,7 +8,7 @@ class App extends React.Component {
   }
   
   onLogIn = (userId) => {
-    this.setState({view: <HomepageUser logUserOut={this.onLogOut}/>,
+    this.setState({view: <HomepageUser logUserOut={this.onLogOut} userId={userId}/>,
                    user: userId});
   };
   

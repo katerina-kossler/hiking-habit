@@ -7,6 +7,7 @@ class Profile extends React.Component {
     return(
       <div>
         Info from user profile
+        
       </div>
     )
   }

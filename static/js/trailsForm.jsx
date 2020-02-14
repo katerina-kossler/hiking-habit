@@ -11,12 +11,14 @@ class TrailsForm extends React.Component {
                 maxResults: undefined};
     this.handleInput = this.handleInput.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  
   }
   
   handleInput(event) {
     this.setState({[event.target.name]: event.target.value});
   }
 
+  
   handleSubmit(event) {
     event.preventDefault();
     
@@ -25,16 +27,14 @@ class TrailsForm extends React.Component {
     let length = this.state.length;
     let sort = this.state.sort;
     let maxResults = this.state.maxResults;
-    let trail_search_data = {
+    let trailSearchData = {
         zipcode: zipcode,
         maxRadius: maxRadius,
         length: length,
         sort: sort,
         maxResults: maxResults
     };
-    
-    // actually post to data and send up to trails.jsx the form results
-    console.log(trail_search_data)
+    this.props.searchTrails(trailSearchData);
   }
   
   render() {

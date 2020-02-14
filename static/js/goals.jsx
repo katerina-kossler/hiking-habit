@@ -1,3 +1,5 @@
+"use strict";
+
 class Goals extends React.Component {
   constructor() {
     super();
