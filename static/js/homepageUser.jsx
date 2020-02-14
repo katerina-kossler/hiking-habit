@@ -8,7 +8,7 @@ class HomepageUser extends React.Component {
   }
   // has a this.props.userId
   
-  tryLogOut = () => {
+  tryLogOut() {
     $.get('/api/logout', (response) => {
       this.props.logUserOut();
     });
