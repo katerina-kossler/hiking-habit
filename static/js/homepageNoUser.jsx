@@ -3,7 +3,6 @@
 class HomepageNoUser extends React.Component {
   constructor() {
     super();
-    this.state = {view: <LoginForm submitLogIn={this.tryLogIn}/>};
     this.tryLogIn=this.tryLogIn.bind(this);
     this.tryRegistration=this.tryRegistration.bind(this);
     
@@ -14,7 +13,6 @@ class HomepageNoUser extends React.Component {
     $.post('/api/register', data, (response) => {
       let type = typeof(response);
       if (type == 'string') {
-        this.setState({view:<RegisterForm submitLogIn={this.tryLogIn}/>})
         alert(response);
       } else {
         let user = response.userId;
@@ -27,9 +25,9 @@ class HomepageNoUser extends React.Component {
     $.post('/api/login', data, (response) => {
       let type = typeof(response);
       if (type == 'string') {
-        this.setState({view:<LoginForm submitLogIn={this.tryLogIn}/>})
         alert(response);
       } else {
+        
         let user = response.userId;
         this.props.logUserIn(user);
       }
@@ -40,21 +38,35 @@ class HomepageNoUser extends React.Component {
   return (
     <div>
       <div>
-        <h2 onClick={() => this.setState({view:<About/>})}>Hiking Habit</h2>
+        <h2>Hiking Habit</h2>
       </div>
       <hr/>
-      <div>
-        <button onClick={() => this.setState({view:<LoginForm submitLogIn={this.tryLogIn}/>})}>
-          Login
-        </button>
-        <button onClick={() => this.setState({view:<RegisterForm 
-                                                    tryRegistration={this.tryRegistration}/>})}>
-          Register
-        </button>
-      </div>
-      <div>
-        {this.state.view}
-      </div>
+      <ul>
+        <li>
+          <Link to='/login'>Login</Link>
+        </li>
+        <li>
+          <Link to='/register'>Register</Link>
+        </li>
+      </ul>
+      <Switch>
+        <Route exact path='/'>
+          <LoginForm submitLogIn={this.tryLogIn}/>
+        </Route>
+        <Route path='/login'>
+          <LoginForm submitLogIn={this.tryLogIn}/>
+        </Route>
+        <Route path='/register'>
+          <RegisterForm tryRegistration={this.tryRegistration}/>
+        </Route>
+        <Route path='/about'>
+          <About/>
+        </Route>
+      </Switch>
+      <hr/>
+        <footer>
+          <Link to='/about'>About</Link>
+        </footer>
     </div>
   );
   }

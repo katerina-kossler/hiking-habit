@@ -1,4 +1,10 @@
 "use strict";
+const Router = ReactRouterDOM.BrowserRouter;
+const Route = ReactRouterDOM.Route;
+const Switch = ReactRouterDOM.Switch;
+const Link = ReactRouterDOM.Link;
+const Redirect = ReactRouterDOM.Redirect;
+
 
 class App extends React.Component {
   constructor(props) {
@@ -19,11 +25,9 @@ class App extends React.Component {
   
   render() {
     return (
-      <div>
-        <div >
-          {this.state.view}
-        </div>
-      </div>
+    <Router>
+      {this.state.view}
+    </Router>
     );
   }
 }

@@ -19,21 +19,8 @@
     <script src="https://unpkg.com/react@16/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin></script>
     <!-- React Router -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-router-dom/5.0.1/react-router-dom.js" crossorigin></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-router-dom/5.1.2/react-router-dom.min.js" crossorigin></script>
 
-    <div>
-        {% with messages = get_flashed_messages(with_categories=true) %}
-          {% if messages %} 
-            Note(s):
-            <ul class=flashes>
-                {% for category, message in messages %}
-                <li class="{{ category }}">{{message}}</li>
-                {% endfor %}
-            </ul>
-          {% endif %} 
-        {% endwith %}
-    </div>
-    
 </head>
 <body>
     {% block body %}
