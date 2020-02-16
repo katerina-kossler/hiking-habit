@@ -93,7 +93,7 @@ def show_profile():
     return user
 
 
-@app.route("/trails", methods=["POST"])
+@app.route("/api/trails", methods=["POST"])
 def load_search_results():
     """Returns available trails from API based on search parameters"""
     zipcode = request.form.get("zipcode")
@@ -117,7 +117,7 @@ def load_search_results():
     return jsonify(trails)
     
 
-@app.route("/hikes", methods=["GET"])
+@app.route("/api/hikes", methods=["GET"])
 def show_current_hikes():
     """Returns a list of all hikes assocatied with the user:
         - status of each hike
@@ -125,23 +125,34 @@ def show_current_hikes():
         - link to add/ modify results if complete"""
         
     hikes = Hike.query.filter_by(user_id=session["current_user"]).all()
-    print(hikes)
+    hikes_info = []
+    for hike in hikes:
+        hike_info = {'hikeId':hike.hike_id,
+                     'trailId':hike.trail_id,
+                     'trailName':hike.trail.trail_name,
+                     'trailDescription':hike.trail.description,
+                     'isComplete':hike.is_complete
+                     }
+        hikes_info.append(hike_info)
     
-    return hikes
+    return jsonify(hikes_info)
 
 
-@app.route("api/hikes/", methods=["POST"])
-def add_hike(api_trail_id):
+@app.route("/api/hikes", methods=["POST"])
+def add_hike():
     """Checks if the trail
         - is in the db (if not, adds)
         - has most recent conditions (if not, updates)
         Creates a new hike on the trail with is complete as false
         """
+    api_trail_id = request.form.get("apiId")
     user = User.query.filter_by(user_id=session["current_user"]).first()
     payload = {"key":key,
                "ids":api_trail_id}
     r_trail = requests.get("https://www.hikingproject.com/data/get-trails-by-id", 
-                            params=payload)                    
+                            params=payload)
+    if r_trail.json()['success'] == 0:
+        return 'Failed to add hike, try another trail or try again later.'                 
     trail_obj = r_trail.json()['trails'][0]
     trail_in_db = Trail.query.filter_by(api_trail_id=api_trail_id).first()
     if trail_in_db:
@@ -168,17 +179,19 @@ def add_hike(api_trail_id):
                       status_at=trail_obj['conditionDate'])
         db.session.add(trail)
         db.session.commit()
-        print('added trail')
         trail_in_db = Trail.query.filter_by(api_trail_id=api_trail_id).first()
+    hike_to_do = Hike.query.filter((Hike.user_id == session["current_user"]) &
+                                   (Hike.trail_id == trail_in_db.trail_id ) &
+                                   (Hike.is_complete == False)).all()
+    if hike_to_do:
+        return 'This trail is already in your hikes to complete'
     hike = Hike(user_id=user.user_id,
                 trail_id=trail_in_db.trail_id,
                 is_complete=False,
                 canceled_by_user=False)               
     db.session.add(hike)
     db.session.commit()
-    print(hike)
-    return 'success'
-
+    return 'Added hike on this trail!'
 
 
 @app.route("/api/complete_hike", methods=["POST"])

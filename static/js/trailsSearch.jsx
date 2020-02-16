@@ -3,20 +3,16 @@
 class TrailsSearch extends React.Component {
   constructor(props) {
     super(props);
-    this.state={ view:<TrailsResults trails={undefined}/>};
     this.onTrailSearch = this.onTrailSearch.bind(this);
   }
   
-  
   onTrailSearch(searchParams) {
-    $.post('/trails', searchParams, (response) => {
+    $.post('/api/trails', searchParams, (response) => {
       this.setState({view: <TrailsResults trails={response}/>})
     });
   }
   
-  
   render() {
-  
     return(
       <div>
         <h3> Trail Search: </h3>

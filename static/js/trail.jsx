@@ -13,10 +13,11 @@ class Trail extends React.Component {
     return dateObj.toLocaleDateString(undefined, options)
   }
   
-  onAddHike(apiId) {
-    console.log(apiId);
-    // will post to add a new hike to the db
-    // by the route it can also add a trail to the db
+  onAddHike() {
+    let data = {apiId: this.props.apiId};
+    $.post('/api/hikes', data, (response) => {
+      alert(response);
+    });
   }
   
   render() {
@@ -33,7 +34,7 @@ class Trail extends React.Component {
           <li><b>Descent (ft): </b>{this.props.dsc}</li>
           <li><b>Status: </b> {this.props.stat}</li>
         </ul>
-        <button onClick={() => {this.props.onButtonClick(this.props.apiId)}}><b>Hike it!</b></button>
+        <button onClick={this.onAddHike}><b>Hike it!</b></button>
       </div>
       );
     } else {
@@ -51,7 +52,7 @@ class Trail extends React.Component {
               <li><b>Descent (ft): </b>{this.props.dsc}</li>
               <li><b>Status: </b>{this.props.stat} on {formattedDate}</li>
             </ul>
-            <button onClick={() => {this.props.onAddHike(this.props.apiId)}}><b>Hike it!</b></button>
+            <button onClick={this.onAddHike}><b>Hike it!</b></button>
           </div>
           );
       } else {
@@ -68,7 +69,7 @@ class Trail extends React.Component {
               <li><b>Status: </b>{this.props.stat} on {formattedDate}</li>
               <li><b>Details: </b> {this.props.det} </li>
             </ul>
-            <button onClick={() => {this.props.onButtonClick(this.props.apiId)}}><b>Hike it!</b></button>
+            <button onClick={this.onAddHike}><b>Hike it!</b></button>
           </div>
         );
       }

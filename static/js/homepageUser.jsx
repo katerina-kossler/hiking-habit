@@ -3,12 +3,11 @@
 class HomepageUser extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {userId: this.props.userId};
-    this.tryLogOut = this.tryLogOut.bind(this);
+    this.onLogOut = this.onLogOut.bind(this);
   }
   // has a this.props.userId
   
-  tryLogOut() {
+  onLogOut() {
     $.get('/api/logout', (response) => {
       this.props.logUserOut();
     });
@@ -21,7 +20,7 @@ class HomepageUser extends React.Component {
           <h2>Hiking Habit</h2>
         </div>
         <div>
-          <button onClick={() => this.tryLogOut()}> Logout </button>
+          <button onClick={() => this.onLogOut()}> Logout </button>
         </div>
         <hr/>
         <ul>
@@ -47,7 +46,7 @@ class HomepageUser extends React.Component {
             <TrailsSearch/>
           </Route>
           <Route path='/hikes'>
-            <Hikes/>
+            <HikesView/>
           </Route>
           <Route path='/goals'>
             <Goals/>
@@ -56,7 +55,7 @@ class HomepageUser extends React.Component {
             <About/>
           </Route>
           <Route path='/results'>
-            <TrailResults/>
+            <TrailsResults/>
           </Route>
         </Switch>
         <hr/>
@@ -64,8 +63,6 @@ class HomepageUser extends React.Component {
           <Link to='/about'>About</Link>
         </footer>
       </div>
-    )
-    
-    
+    );
   }
 }

@@ -3,8 +3,8 @@
 class LoginForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { user: undefined,
-                   password: undefined};
+    this.state = { user: 'katerina-kossler',
+                   password: 'f4wfg4UJEf39'};
     this.handleInput = this.handleInput.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -15,7 +15,7 @@ class LoginForm extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
- 
+    
     let user = this.state.user;
     let password = this.state.password;
     let user_data = {
@@ -28,7 +28,7 @@ class LoginForm extends React.Component {
   render() {
   return (
     <div>
-      <h2>Login:</h2>
+      <h2>Login:(currently with self as default)</h2>
       <form>
       <label>
           Username or email:
