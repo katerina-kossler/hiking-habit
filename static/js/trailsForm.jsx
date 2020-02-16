@@ -5,10 +5,10 @@ class TrailsForm extends React.Component {
     super();
     
     this.state={zipcode: undefined,
-                maxRadius: undefined,
-                length: undefined,
+                maxRadius: 30,
+                length: 10,
                 sort: "length",
-                maxResults: undefined};
+                maxResults: 10};
     this.handleInput = this.handleInput.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   
@@ -21,20 +21,23 @@ class TrailsForm extends React.Component {
   
   handleSubmit(event) {
     event.preventDefault();
-    
     let zipcode = this.state.zipcode;
-    let maxRadius = this.state.maxRadius;
-    let length = this.state.length;
-    let sort = this.state.sort;
-    let maxResults = this.state.maxResults;
-    let trailSearchData = {
-        zipcode: zipcode,
-        maxRadius: maxRadius,
-        length: length,
-        sort: sort,
-        maxResults: maxResults
-    };
-    this.props.searchTrails(trailSearchData);
+    if (zipcode === undefined) {
+      alert('Please Enter a zipcode.')
+    } else {
+      let maxRadius = this.state.maxRadius;
+      let length = this.state.length;
+      let sort = this.state.sort;
+      let maxResults = this.state.maxResults;
+      let trailSearchData = {
+          zipcode: zipcode,
+          maxRadius: maxRadius,
+          length: length,
+          sort: sort,
+          maxResults: maxResults
+      };
+      this.props.searchTrails(trailSearchData); 
+    }
   }
   
   render() {

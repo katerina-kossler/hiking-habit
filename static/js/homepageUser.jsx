@@ -24,10 +24,6 @@ class HomepageUser extends React.Component {
           <button onClick={() => this.tryLogOut()}> Logout </button>
         </div>
         <hr/>
-        <div>
-          {this.props.userId}
-        </div>
-        <hr/>
         <ul>
           <li>
             <Link to='/trails'>Search for Trails</Link>
@@ -42,6 +38,7 @@ class HomepageUser extends React.Component {
             <Link to='/results'>View &amp; Edit Results </Link>
           </li>
         </ul>
+        <hr/>
         <Switch>
           <Route exact path='/'>
             <Trails/>

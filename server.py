@@ -135,7 +135,7 @@ def load_search_results():
     trails = r_trails.json()['trails']
     print(trails)
     
-    return trails
+    return jsonify(trails)
 
 @app.route("/hikes", methods=["POST"])
 def complete_hike():

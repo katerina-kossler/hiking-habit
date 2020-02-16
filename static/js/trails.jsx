@@ -4,7 +4,7 @@ class Trails extends React.Component {
   constructor(props) {
     super(props);
     
-    this.state={ view:<TrailResults />};
+    this.state={ view:<TrailResults trails={undefined}/>};
     this.onTrailSearch = this.onTrailSearch.bind(this);
   }
   
