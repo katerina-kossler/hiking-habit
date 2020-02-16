@@ -5,9 +5,9 @@ class TrailResults extends React.Component {
     super(props);
   }
   
+  
   render() {
     const trails = this.props.trails;
-    console.log(trails);
     if (trails) {
       if (trails.length == 0) {
         return (

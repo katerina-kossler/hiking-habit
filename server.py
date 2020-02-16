@@ -1,5 +1,4 @@
 from flask import Flask, render_template, redirect, flash, session, request, jsonify
-from flask_debugtoolbar import DebugToolbarExtension
 import json
 from sqlalchemy import func, and_
 from model import User, Goal, Trail, Hike, HikeResult, connect_to_db, db
@@ -284,7 +283,6 @@ if __name__ == "__main__":
     app.jinja_env.auto_reload = app.debug
 
     connect_to_db(app)
-    DebugToolbarExtension(app)
     # run locally
     app.run(port=5000, host='0.0.0.0')
 

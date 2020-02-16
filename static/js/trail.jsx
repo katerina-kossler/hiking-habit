@@ -3,12 +3,7 @@
 class Trail extends React.Component {
   constructor(props) {
     super(props);
-    this.makeHike = this.makeHike.bind(this);
     this.formatDate = this.formatDate.bind(this);
-  }
-  
-  makeHike(apiId) {
-    console.log(apiId)
   }
   
   formatDate(dateString) {
@@ -31,7 +26,7 @@ class Trail extends React.Component {
           <li><b>Descent (ft): </b>{this.props.dsc}</li>
           <li><b>Status: </b> {this.props.stat}</li>
         </ul>
-        <button onClick={() => {this.makeHike(this.props.apiId)}}><b>Hike it!</b></button>
+        <button onClick={() => {this.props.onButtonClick(this.props.apiId)}}><b>Hike it!</b></button>
       </div>
       );
     } else {
@@ -49,7 +44,7 @@ class Trail extends React.Component {
               <li><b>Descent (ft): </b>{this.props.dsc}</li>
               <li><b>Status: </b>{this.props.stat} on {formattedDate}</li>
             </ul>
-            <button onClick={() => {this.makeHike(this.props.apiId)}}><b>Hike it!</b></button>
+            <button onClick={() => {this.props.onButtonClick(this.props.apiId)}}><b>Hike it!</b></button>
           </div>
           );
       } else {
@@ -66,7 +61,7 @@ class Trail extends React.Component {
               <li><b>Status: </b>{this.props.stat} on {formattedDate}</li>
               <li><b>Details: </b> {this.props.det} </li>
             </ul>
-            <button onClick={() => {this.makeHike(this.props.apiId)}}><b>Hike it!</b></button>
+            <button onClick={() => {this.props.onButtonClick(this.props.apiId)}}><b>Hike it!</b></button>
           </div>
         );
       }

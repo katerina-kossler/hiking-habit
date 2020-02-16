@@ -41,10 +41,10 @@ class HomepageUser extends React.Component {
         <hr/>
         <Switch>
           <Route exact path='/'>
-            <Trails/>
+            <TrailsSearch/>
           </Route>
           <Route path='/trails'>
-            <Trails/>
+            <TrailsSearch/>
           </Route>
           <Route path='/hikes'>
             <Hikes/>
