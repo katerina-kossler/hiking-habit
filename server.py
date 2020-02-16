@@ -19,18 +19,15 @@ app.jinja_env.undefined = jinja2.StrictUndefined
 @app.route("/")
 def show_homepage():
     """Show the application's homepage with links to other routes."""
-    
     return render_template("homepage.html")
 
 @app.route("/api/login", methods=["POST"])
 def authenticate_user():
     """Take in user credentials and compare to existing if available"""
-
     user = request.form.get("user")
     password = request.form.get("password")
     user_in_system = User.query.filter_by(username=user).first()
     email_in_system = User.query.filter_by(email=user).first()
-    
     if user_in_system:
         user_password = user_in_system.password
         if (user_password == password):
@@ -52,27 +49,20 @@ def authenticate_user():
 @app.route("/api/register", methods=["POST"])
 def intake_user_info():
     """Add new user information to the users DB """
-    
     username = request.form.get("username")
     email = request.form.get("email")
-    
     username_in_system = User.query.filter_by(username=username).first()
     email_in_system = User.query.filter_by(email=email).first()
-    
     password = request.form.get("password") # hash with salt
     created_on = date.today()
     first_name = request.form.get("first")
     last_name = request.form.get("last")
-    
     username_in_system = User.query.filter_by(username=username).first()
     email_in_system = User.query.filter_by(email=email).first()
-    
     if username_in_system:
         return 'That username is taken, please choose a different one.'
-
     elif email_in_system:
         return 'That email is taken, please choose a different one'
-        
     user = User(username=username,
                 email=email,
                 password=password,
@@ -82,46 +72,38 @@ def intake_user_info():
                 canceled_by_user=False)
     db.session.add(user)
     db.session.commit()
-    
     user = User.query.filter_by(username=username).first()
     session["current_user"] = user.user_id
-    
     return {'userId': session['current_user']}
 
 
 @app.route("/api/logout", methods=["GET"])
 def logout():
     """Logs the user out"""
-    
     session.pop('current_user', None)
     session.modified = True
     return 'logged out'
 
 
-@app.route("/profile", methods=["GET"])
+@app.route("/api/profile", methods=["GET"])
 def show_profile():
     """Returns the current user's profile from initial intake info"""
-    
     user = User.query.filter_by(user_id=user_id).first()
     print(user)
-    
     return user
 
 
 @app.route("/trails", methods=["POST"])
 def load_search_results():
     """Returns available trails from API based on search parameters"""
-    
     zipcode = request.form.get("zipcode")
     details = coordinates.query_postal_code(zipcode)
     latitude = details["latitude"]
     longitude = details["longitude"]
-    
     search_distance = request.form.get("maxRadius")
     min_length = request.form.get("length")
     sort = request.form.get("sort")
     max_results = request.form.get("maxResults")
-    
     payload = {"key":key,
                "lon":longitude,
                "lat":latitude,
@@ -132,15 +114,8 @@ def load_search_results():
     r_trails = requests.get("https://www.hikingproject.com/data/get-trails", 
                             params=payload)
     trails = r_trails.json()['trails']
-    print(trails)
-    
     return jsonify(trails)
-
-@app.route("/hikes", methods=["POST"])
-def complete_hike():
-    """Submits a change of a hike's is_complete to True"""
     
-    pass
 
 @app.route("/hikes", methods=["GET"])
 def show_current_hikes():
@@ -155,7 +130,7 @@ def show_current_hikes():
     return hikes
 
 
-@app.route("/hikes/<api_trail_id>", methods=["GET"])
+@app.route("api/hikes/", methods=["POST"])
 def add_hike(api_trail_id):
     """Checks if the trail
         - is in the db (if not, adds)
@@ -166,18 +141,15 @@ def add_hike(api_trail_id):
     payload = {"key":key,
                "ids":api_trail_id}
     r_trail = requests.get("https://www.hikingproject.com/data/get-trails-by-id", 
-                            params=payload)
-                            
+                            params=payload)                    
     trail_obj = r_trail.json()['trails'][0]
     trail_in_db = Trail.query.filter_by(api_trail_id=api_trail_id).first()
-    
     if trail_in_db:
         current_status_at = trail_in_db.status_at
         if not current_status_at == trail_obj["conditionDate"]:
             trail_in_db.status=trail_obj['conditionStatus']
             trail_in_db.status_details=trail_obj['conditionDetails']
             trail_in_db.status_at=trail_obj['conditionDate']
-            
             db.session.commit()
     else:
         trail = Trail(api_trail_id = trail_obj['id'],
@@ -194,23 +166,26 @@ def add_hike(api_trail_id):
                       status=trail_obj['conditionStatus'],
                       status_details=trail_obj['conditionDetails'],
                       status_at=trail_obj['conditionDate'])
-                      
         db.session.add(trail)
         db.session.commit()
+        print('added trail')
         trail_in_db = Trail.query.filter_by(api_trail_id=api_trail_id).first()
-    
     hike = Hike(user_id=user.user_id,
                 trail_id=trail_in_db.trail_id,
                 is_complete=False,
-                canceled_by_user=False)
-                
+                canceled_by_user=False)               
     db.session.add(hike)
     db.session.commit()
-    
-    flash('Hike Added!')
     print(hike)
-    
     return 'success'
+
+
+
+@app.route("/api/complete_hike", methods=["POST"])
+def complete_hike():
+    """Submits a change of a hike's is_complete to True"""
+    
+    pass
 
 
 @app.route("/goals", methods=["GET"])
@@ -224,7 +199,8 @@ def show_current_goals():
 @app.route("/goals", methods=["POST"])
 def add_new_goal():
     """Adds a new goal to the database"""
-    return 
+    
+    pass
 
 
 @app.route("/goal/<goal_id>", methods=["GET"])
@@ -263,6 +239,7 @@ def return_goal_progress(goal_id):
 def add_hike_results():
     """Adds hike results on hike completion"""
     # process form information add to database if data can be added and return result
+
     pass 
     
     

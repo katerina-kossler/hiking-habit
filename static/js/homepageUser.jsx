@@ -3,7 +3,7 @@
 class HomepageUser extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {view:<Trails/>};
+    this.state = {userId: this.props.userId};
     this.tryLogOut = this.tryLogOut.bind(this);
   }
   // has a this.props.userId

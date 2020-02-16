@@ -1,6 +1,6 @@
 "use strict";
 
-class TrailResults extends React.Component {
+class TrailsResults extends React.Component {
   constructor(props) {
     super(props);
   }

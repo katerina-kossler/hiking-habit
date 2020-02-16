@@ -3,7 +3,6 @@
 class TrailsForm extends React.Component {
   constructor() {
     super();
-    
     this.state={zipcode: undefined,
                 maxRadius: 30,
                 length: 10,
