@@ -1,1 +1,16 @@
-// form to add submission to a hike result - hike result occurs when a hike is marked complete
+'use strict';
+
+class HikeResultForm extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  
+  render() {
+    return (
+      <div>
+        renders form that renders when a hike a marked as complete
+        or when edit a result is selected
+      </div>
+    )
+  }
+}

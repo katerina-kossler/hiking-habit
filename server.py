@@ -88,9 +88,18 @@ def logout():
 @app.route("/api/profile", methods=["GET"])
 def show_profile():
     """Returns the current user's profile from initial intake info"""
-    user = User.query.filter_by(user_id=user_id).first()
-    print(user)
-    return user
+    user_id = session.get('current_user',None)
+    if user_id:
+        user = User.query.filter_by(user_id=user_id).first()
+        user_info = {'loggedIn': 'true',
+                    'userId': user_id,
+                    'first':user.first_name,
+                    'last':user.last_name,
+                    'createdOn':user.created_on
+                    }
+    else:
+        user_info = {'loggedIn': 'false'}
+    return jsonify(user_info)
 
 
 @app.route("/api/trails", methods=["POST"])
@@ -119,12 +128,13 @@ def load_search_results():
 
 @app.route("/api/hikes", methods=["GET"])
 def show_current_hikes():
-    """Returns a list of all hikes assocatied with the user:
+    """Returns a list of all (non-canceled) hikes assocatied with the user:
         - status of each hike
         - links to edit status
-        - link to add/ modify results if complete"""
+        - link to add / modify results if complete"""
         
-    hikes = Hike.query.filter_by(user_id=session["current_user"]).all()
+    hikes = Hike.query.filter((Hike.user_id == session["current_user"]) &
+                              (Hike.canceled_by_user == False)).all()
     hikes_info = []
     for hike in hikes:
         hike_info = {'hikeId':hike.hike_id,
@@ -134,7 +144,8 @@ def show_current_hikes():
                      'isComplete':hike.is_complete
                      }
         hikes_info.append(hike_info)
-    
+    print(hikes_info)
+    print(jsonify(hikes_info))
     return jsonify(hikes_info)
 
 
@@ -182,9 +193,10 @@ def add_hike():
         trail_in_db = Trail.query.filter_by(api_trail_id=api_trail_id).first()
     hike_to_do = Hike.query.filter((Hike.user_id == session["current_user"]) &
                                    (Hike.trail_id == trail_in_db.trail_id ) &
-                                   (Hike.is_complete == False)).all()
+                                   (Hike.is_complete == False) &
+                                   (Hike.canceled_by_user == False)).all()
     if hike_to_do:
-        return 'This trail is already in your hikes to complete'
+        return 'This trail is already in your hikes to complete.'
     hike = Hike(user_id=user.user_id,
                 trail_id=trail_in_db.trail_id,
                 is_complete=False,

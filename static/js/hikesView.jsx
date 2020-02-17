@@ -3,30 +3,42 @@
 class HikesView extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {hikes:undefined};
-    this.checkHikes=this.checkHikes.bind(this);
+    this.state={results:undefined};
+    this.onCheckHikes=this.onCheckHikes.bind(this);
   }
   
-  checkHikes() {
+  onCheckHikes(filter) {
+    console.log(filter)
     $.get('/api/hikes', (response) => {
-      console.log(response);
-      
+      const relevantHikes = [];
+      if (filter === 'incomplete') {
+        for (const hike of response) {
+          if (hike.isComplete == false) {
+            relevantHikes.push(hike);
+          };
+        }
+        this.setState({results: relevantHikes});
+      } else if (filter === 'complete') {
+        for (const hike of response) {
+          if (hike.isComplete == true) {
+            relevantHikes.push(hike);
+          };
+        }
+        this.setState({results: relevantHikes});
+      } else if (filter == 'all') {
+        this.setState({results:response});
+      }
     });
-  }
+  };
   
   render() {
-      return(
-        <div>
-          <button onClick={this.checkHikes}>Get Hikes</button>
-        </div>
-        // <Switch>
-        //   <Route exact path='/hikes/to-do'>
-        //     <HikesView complete='False'/>
-        //   </Route>
-        //   <Route path='/hikes/complete'>
-        //     <HikesView complete='True'/>
-        //   </Route>
-        // </Switch>
-      )
-  }
+    return(
+      <div>
+        <h3>Current Hikes</h3>
+        <HikeForm checkHikes={this.onCheckHikes}/>
+        <hr/>
+        <CurrentHikes hikes={this.state.results}/>
+      </div>
+    );
+  };
 }

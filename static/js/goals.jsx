@@ -1,16 +1,35 @@
 "use strict";
 
 class Goals extends React.Component {
-  constructor() {
-    super();
-    this.state = {view:<allCurrentGoals />}
+  constructor(props) {
+    super(props);
+    this.addGoal = this.addGoal.bind(this);
+    this.viewGoals = this.viewGoals.bind(this);
+  }
+  
+  addGoal() {
+    
+  }
+  
+  viewGoals() {
+    
   }
   
   render() {
     return(
       <div>
-        <button onClick={() => this.setState({view:<goalForm/>})}>Add a goal</button>
-        <button onClick={() => this.setState({view:<allCurrentGoals/>})}>View Goals</button>
+        <div>
+          <button onClick={() => <Redirect to='/goals/add'/>}>Add a goal</button>
+          <button onClick={() => <Redirect to='/goals/all'/>}>View Goals</button>
+        </div>
+      <Switch>
+        <Route path='/goals/add'>
+          <goalForm/>
+        </Route>
+        <Route path='goals/all'>
+          <CurrentGoals/>
+        </Route>
+      </Switch>
       </div>
     );
   }

@@ -3,8 +3,8 @@
 class LoginForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { user: 'katerina-kossler',
-                   password: 'f4wfg4UJEf39'};
+    this.state = { user: undefined,
+                   password: undefined};
     this.handleInput = this.handleInput.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }

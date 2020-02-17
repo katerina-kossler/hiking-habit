@@ -1,11 +1,25 @@
+'use strict';
+
 class HikeResults extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    this.addGoal = this.addGoal.bind(this);
+    this.viewGoals = this.viewGoals.bind(this);
   }
   
+  addGoal() {
+    
+  }
+  
+  viewGoals() {
+    
+  }
+
   render() {
     return(
-      <div>Results</div>
-    )
-  }
+      <div>
+        list of result instances
+      </div>
+    );
+    }
 }

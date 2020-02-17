@@ -1,16 +1,15 @@
 'use strict';
 
-class CurrentGoals extends React.Component {
+class Goal extends React.Component {
   constructor(props) {
     super(props);
   }
   
   render() {
-    return(
+    return (
       <div>
-        display each goal
+        each instance of a goal
       </div>
     );
   }
 }
-

@@ -5,31 +5,158 @@ const Switch = ReactRouterDOM.Switch;
 const Link = ReactRouterDOM.Link;
 const Redirect = ReactRouterDOM.Redirect;
 
-
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {view: <HomepageNoUser logUserIn={this.onLogIn}/>,
-                  user: undefined};
-  }
-  
-  onLogIn = (userId) => {
-    this.setState({view: <HomepageUser logUserOut={this.onLogOut} userId={userId}/>,
-                   user: userId});
+    this.state = {userId: undefined};
+    this.tryLogIn=this.tryLogIn.bind(this);
+    this.tryRegistration=this.tryRegistration.bind(this);
+    this.onLogOut=this.onLogOut.bind(this);
+    this.checkIfLoggedIn=this.checkIfLoggedIn.bind(this);
   };
   
-  onLogOut = () => {
-    this.setState({view: <HomepageNoUser logUserIn={this.onLogIn}/>,
-                   user: undefined});
-  };  
+  tryRegistration = (data) => {
+    $.post('/api/register', data, (response) => {
+      let type = typeof(response);
+      if (type == 'string') {
+        alert(response);
+      } else {
+        this.setState({userId: response.userId});
+      }
+    });
+  };
   
-  render() {
-    return (
-    <Router>
-      {this.state.view}
-    </Router>
-    );
+  tryLogIn = (data) => {
+    $.post('/api/login', data, (response) => {
+      let type = typeof(response);
+      if (type == 'string') {
+        alert(response);
+      } else {
+        let user = response.userId;
+        this.setState({userId: response.userId});
+      }
+    });
+  };
+
+  onLogOut() {
+    $.get('/api/logout', (response) => {
+      this.setState({userId: undefined});
+    });
+  };
+  
+  checkIfLoggedIn() {
+    $.get('/api/profile', (response) => {
+      console.log(response);
+      if (response.loggedIn == 'true') {
+        const id = response.userId;
+        this.setState({userId: id});
+      } else {
+        this.setState({userId: undefined});
+      }
+    });
+    
   }
+  componentDidMount() {
+    this.checkIfLoggedIn()
+    
+  }
+  render() {
+    const loggedIn = this.state.userId;
+    if (loggedIn) {
+      return(
+        <Router>
+          <div>
+            <div>
+              <h2>Hiking Habit</h2>
+            </div>
+            <div>
+              <button onClick={() => this.onLogOut()}> Logout </button>
+            </div>
+            <hr/>
+            <ul>
+              <li>
+                <Link to='/trails'>Search for Trails</Link>
+              </li>
+              <li>
+                <Link to='/hikes'>View Hikes</Link>
+              </li>
+              <li>
+                <Link to='/goals'>View &amp; Edit Goals</Link>
+              </li>
+              <li>
+                <Link to='/results'>View &amp; Edit Results </Link>
+              </li>
+            </ul>
+            <hr/>
+            <Switch>
+              <Route exact path='/'>
+                <Redirect to='/trails'/>
+              </Route>
+              <Route path='/trails'>
+                <TrailsSearch/>
+              </Route>
+              <Route path='/hikes'>
+                <HikesView/>
+              </Route>
+              <Route path='/goals'>
+                <Goals/>
+              </Route>
+              <Route path='/results'>
+                <ResultsView/>
+              </Route>
+              <Route path='/about'>
+                <About/>
+              </Route>
+              <Route render={() => <Redirect to="/" />} />
+            </Switch>
+            <hr/>
+            <footer>
+              <Link to='/about'>About</Link>
+            </footer>
+          </div>
+        </Router>
+      );
+    } else {
+      return (
+        <Router>
+          <div>
+            <div>
+              <h2>Hiking Habit</h2>
+            </div>
+            <hr/>
+            <ul>
+              <li>
+                <Link to='/'>Login</Link>
+              </li>
+              <li>
+                <Link to='/register'>Register</Link>
+              </li>
+            </ul>
+            <hr/>
+            <Switch>
+              <Route exact path='/'>
+                <LoginForm submitLogIn={this.tryLogIn}/>
+              </Route>
+              <Route path='/login'>
+                <LoginForm submitLogIn={this.tryLogIn}/>
+              </Route>
+              <Route path='/register'>
+                <RegisterForm tryRegistration={this.tryRegistration}/>
+              </Route>
+              <Route path='/about'>
+                <About/>
+              </Route>
+              <Route render={() => <Redirect to="/" />} />
+            </Switch>
+            <hr/>
+              <footer>
+                <Link to='/about'>About</Link>
+              </footer>
+          </div>
+        </Router>
+      );
+    };
+  };
 }
 
 
