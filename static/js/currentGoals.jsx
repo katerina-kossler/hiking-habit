@@ -13,4 +13,3 @@ class CurrentGoals extends React.Component {
     );
   }
 }
-

@@ -71,9 +71,10 @@ class App extends React.Component {
             </div>
             <div>
               <button onClick={() => this.onLogOut()}> Logout </button>
+              <button><Link to='/profile'>Profile</Link></button>
             </div>
             <hr/>
-            <ul>
+            <ul class='nav-bar'>
               <li>
                 <Link to='/trails'>Search for Trails</Link>
               </li>
@@ -99,10 +100,13 @@ class App extends React.Component {
                 <HikesView/>
               </Route>
               <Route path='/goals'>
-                <Goals/>
+                <GoalsView/>
               </Route>
               <Route path='/results'>
                 <ResultsView/>
+              </Route>
+              <Route path='/profile'>
+                <Profile />
               </Route>
               <Route path='/about'>
                 <About/>
@@ -123,10 +127,9 @@ class App extends React.Component {
             <div>
               <h2>Hiking Habit</h2>
             </div>
-            <hr/>
-            <ul>
+            <ul class='nav-bar'>
               <li>
-                <Link to='/'>Login</Link>
+                <Link to='/login'>Login</Link>
               </li>
               <li>
                 <Link to='/register'>Register</Link>
@@ -158,6 +161,5 @@ class App extends React.Component {
     };
   };
 }
-
 
 ReactDOM.render(<App />, document.getElementById('app'));

@@ -1,6 +1,5 @@
-"use strict";
-
-class Goals extends React.Component {
+'use strict';
+class GoalsView extends React.Component {
   constructor(props) {
     super(props);
     this.addGoal = this.addGoal.bind(this);
