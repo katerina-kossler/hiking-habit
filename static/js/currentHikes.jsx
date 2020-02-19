@@ -41,7 +41,7 @@ class CurrentHikes extends React.Component {
     } else {
       return (
         <div>
-          Choose a view.
+          Choose a (hike) view to get started!
         </div>
       )
     };

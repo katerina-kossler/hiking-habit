@@ -1,13 +1,15 @@
 class Profile extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
   }
   
   render() {
+    console.log(this.props)
     return(
       <div>
-        Info from user profile
-        
+        <h3>Welcome {this.props.first} {this.props.last}!!!!</h3>
+        <p>You've had an account since {this.props.createdOn}, wooooo!</p>
+        <p>Thanks for hiking with us!</p>
       </div>
     )
   }

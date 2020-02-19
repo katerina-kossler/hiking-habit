@@ -14,21 +14,20 @@ class LoginForm extends React.Component {
   }
 
   handleSubmit(event) {
-    event.preventDefault();
-    
+    event.preventDefault();  
     let user = this.state.user;
     let password = this.state.password;
     let user_data = {
         user: user,
         password: password
-    };
+        };
     this.props.submitLogIn(user_data);
   }
   
   render() {
   return (
     <div>
-      <h2>Login:(currently with self as default)</h2>
+      <h2>Login:</h2>
       <form>
       <label>
           Username or email:

@@ -3,7 +3,6 @@
 class RegisterForm extends React.Component {
   constructor(props) {
     super(props);
-    
     this.state = { username: undefined,
                    email: undefined,
                    password: undefined,
@@ -19,7 +18,6 @@ class RegisterForm extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    
     let username = this.state.username;
     let email = this.state.email;
     let password = this.state.password;

@@ -34,7 +34,10 @@ def authenticate_user():
         user_password = user_in_system.password
         if (user_password == password):
             session['current_user'] = user_in_system.user_id
-            return {'userId': session['current_user']}
+            return {'userId': session['current_user'],
+                    'first': user_in_system.first_name,
+                    'last': user_in_system.last_name,
+                    'createdOn': user_in_system.created_on}
         else:
             return 'Incorrect password; try again'
     if email_in_system:
@@ -42,7 +45,10 @@ def authenticate_user():
         if (email_password == password):
             session['current_user'] = email_in_system.user_id
             flash('Successfully Logged in')
-            return {'userId': session['current_user']}
+            return {'userId': session['current_user'],
+                    'first': email_in_system.first_name,
+                    'last': email_in_system.last_name,
+                    'createdOn': email_in_system.created_on}
         else:
             return 'Incorrect password; try again'
     return 'Incorrect login information; try again'
@@ -78,7 +84,10 @@ def intake_user_info():
     db.session.commit()
     user = User.query.filter_by(username=username).first()
     session["current_user"] = user.user_id
-    return {'userId': session['current_user']}
+    return {'userId': session['current_user'],
+            'first': user.first_name,
+            'last': user.last_name,
+            'createdOn': user.created_on}
 
 
 @app.route("/api/logout", methods=["GET"])
@@ -134,7 +143,7 @@ def load_search_results():
     return jsonify(trails)
     
 
-# ---------- Hike view, creation, completion, & cancelation ---------- #
+# ---------- Hike view, creation, completion, & cancelation (also result cancelation) ---------- #
 @app.route("/api/hikes", methods=["GET"])
 def show_current_hikes():
     """Returns a list of all (non-canceled) hikes assocatied with the user"""
@@ -226,6 +235,11 @@ def cancel_hike(hike_id):
     
     hike = Hike.query.filter_by(hike_id=hike_id).first()
     hike.canceled_by_user = True
+    if (hike.is_complete == True):
+        result = HikeResult.query.filter_by(hike_id=hike_id).first()
+        result.canceled_by_user = True
+        db.session.commit() 
+        return 'Hike & hike result are canceled'
     db.session.commit()
     return 'Hike is canceled'
 
@@ -266,7 +280,7 @@ def add_new_goal():
 
 # # # Currently working on # # # 
 @app.route("/api/progress/<goal_id>", methods=["GET"])
-def return_goal_progress(goal_id):
+def show_goal_progress(goal_id):
     """Aggregates all hike results to show current progress towards a goal"""
     
     selected_goal = Goal.query.filter_by(goal_id=goal_id).first()
@@ -309,7 +323,7 @@ def return_goal_progress(goal_id):
         # store hike id, ascent and dates (all in result)
     elif goal_type == "HIKEABLE_MILES":
         for result in hike_results:
-                    hike = {'hikeId': result.hike_id,
+            hike = {'hikeId': result.hike_id,
                     'feet': trail_details.total_ascent,
                     'totalFeet': feet,
                     'rating': result.distance_rating,
@@ -342,7 +356,7 @@ def cancel_goal(goal_id):
     db.session.commit()
     return 'Goal is canceled'
 
-# ---------- Hike Results view, creation, progress & cancelation ---------- #
+# ---------- Hike Results view, creation & progress ---------- #
 @app.route("/api/hike_results", methods=["GET"])
 def show_all_hike_results():
     """Returns Hike results for a user"""
@@ -356,7 +370,7 @@ def show_all_hike_results():
     
 @app.route("/api/hike_result/<hike_id>", methods=["GET"])
 def show_hike_result(hike_id):
-    """Returns the hike result for a selected completed hike""""
+    """Returns the hike result for a selected completed hike"""
     
     result = HikeResult.query.filter_by(hike_id=hike_id).first()
     print(result)
