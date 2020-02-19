@@ -15,15 +15,17 @@ app = Flask(__name__)
 app.secret_key = 'this-should-be-something-unguessable'
 app.jinja_env.undefined = jinja2.StrictUndefined
 
-
+# ---------- Initial set up and user authentication  ---------- #
 @app.route("/")
 def show_homepage():
     """Show the application's homepage with links to other routes."""
+    
     return render_template("homepage.html")
 
 @app.route("/api/login", methods=["POST"])
 def authenticate_user():
     """Take in user credentials and compare to existing if available"""
+    
     user = request.form.get("user")
     password = request.form.get("password")
     user_in_system = User.query.filter_by(username=user).first()
@@ -48,7 +50,9 @@ def authenticate_user():
 
 @app.route("/api/register", methods=["POST"])
 def intake_user_info():
-    """Add new user information to the users DB """
+    """Add new user information to the database if a new username and 
+       email are chosen"""
+    
     username = request.form.get("username")
     email = request.form.get("email")
     username_in_system = User.query.filter_by(username=username).first()
@@ -61,7 +65,7 @@ def intake_user_info():
     email_in_system = User.query.filter_by(email=email).first()
     if username_in_system:
         return 'That username is taken, please choose a different one.'
-    elif email_in_system:
+    if email_in_system:
         return 'That email is taken, please choose a different one'
     user = User(username=username,
                 email=email,
@@ -79,15 +83,18 @@ def intake_user_info():
 
 @app.route("/api/logout", methods=["GET"])
 def logout():
-    """Logs the user out"""
+    """Logs the user out (removes from current session)"""
+    
     session.pop('current_user', None)
     session.modified = True
     return 'logged out'
 
 
+# need to update or delete
 @app.route("/api/profile", methods=["GET"])
 def show_profile():
     """Returns the current user's profile from initial intake info"""
+    
     user_id = session.get('current_user',None)
     if user_id:
         user = User.query.filter_by(user_id=user_id).first()
@@ -101,10 +108,11 @@ def show_profile():
         user_info = {'loggedIn': 'false'}
     return jsonify(user_info)
 
-
+# ---------- REI Hiking Project interactions  ---------- #
 @app.route("/api/trails", methods=["POST"])
 def load_search_results():
     """Returns available trails from API based on search parameters"""
+    
     zipcode = request.form.get("zipcode")
     details = coordinates.query_postal_code(zipcode)
     latitude = details["latitude"]
@@ -126,13 +134,11 @@ def load_search_results():
     return jsonify(trails)
     
 
+# ---------- Hike view, creation, completion, & cancelation ---------- #
 @app.route("/api/hikes", methods=["GET"])
 def show_current_hikes():
-    """Returns a list of all (non-canceled) hikes assocatied with the user:
-        - status of each hike
-        - links to edit status
-        - link to add / modify results if complete"""
-        
+    """Returns a list of all (non-canceled) hikes assocatied with the user"""
+    
     hikes = Hike.query.filter((Hike.user_id == session["current_user"]) &
                               (Hike.canceled_by_user == False)).all()
     hikes_info = []
@@ -144,18 +150,16 @@ def show_current_hikes():
                      'isComplete':hike.is_complete
                      }
         hikes_info.append(hike_info)
-    print(hikes_info)
-    print(jsonify(hikes_info))
     return jsonify(hikes_info)
 
 
 @app.route("/api/hikes", methods=["POST"])
 def add_hike():
-    """Checks if the trail
+    """Checks if the selected trail to hike:
         - is in the db (if not, adds)
-        - has most recent conditions (if not, updates)
-        Creates a new hike on the trail with is complete as false
-        """
+        - has most recent conditions (if not, updates) 
+        and creates a new hike on the trail with is_complete as false"""
+    
     api_trail_id = request.form.get("apiId")
     user = User.query.filter_by(user_id=session["current_user"]).first()
     payload = {"key":key,
@@ -205,80 +209,190 @@ def add_hike():
     db.session.commit()
     return 'Added hike on this trail!'
 
-
-@app.route("/api/complete_hike", methods=["POST"])
-def complete_hike():
+# # # Currently working on # # # 
+@app.route("/api/complete_hike/<hike_id>", methods=["POST"])
+def complete_hike(hike_id):
     """Submits a change of a hike's is_complete to True"""
     
-    pass
+    hike = Hike.query.filter_by(hike_id=hike_id).first()
+    hike.is_complete = True
+    db.session.commit()
+    return 'Hike is complete, please fill out the hike result'
+    
+# # # Currently working on # # # 
+@app.route("/api/cancel_hike/<hike_id>", methods=["POST"])
+def cancel_hike(hike_id):
+    """Submits a change of a hike's canceled_by_user to True"""
+    
+    hike = Hike.query.filter_by(hike_id=hike_id).first()
+    hike.canceled_by_user = True
+    db.session.commit()
+    return 'Hike is canceled'
 
 
-@app.route("/goals", methods=["GET"])
+# ---------- Goal view, creation, progress & cancelation ---------- #
+@app.route("/api/goals", methods=["GET"])
 def show_current_goals():
     """Returns active goals"""
+    
+    user_id = session.get('current_user', None)
+    if user_id:
+        goals = Goal.query.filter(and_(user_id=user_id,
+                                       canceled_by_user=False)).all()
+        return jsonify(goals)
 
-    goals = Goal.query.filter(and_(user_id=session["current_user"],canceled_by_user=False)).all()
-    return goals
 
-
-@app.route("/goals", methods=["POST"])
+@app.route("/api/goals", methods=["POST"])
 def add_new_goal():
     """Adds a new goal to the database"""
     
+    user_id = session.get('current_user',None)
+    if user_id:
+        title = request.form.get('title')
+        goal_type = request.form.get('type')
+        numerical_value = request.form.get('value')
+        created_on = datetime.today()
+        title = request.form.get('title')
+        goal = Goal(user_id=user_id, 
+                title=title,
+                goal=goal_type, 
+                numerical_value=numerical_value, 
+                description=description,
+                created_on=created_on,
+                status=status,
+                canceled_by_user=canceled_by_user)
+        print(goal)
     pass
 
-
-@app.route("/goal/<goal_id>", methods=["GET"])
+# # # Currently working on # # # 
+@app.route("/api/progress/<goal_id>", methods=["GET"])
 def return_goal_progress(goal_id):
     """Aggregates all hike results to show current progress towards a goal"""
     
     selected_goal = Goal.query.filter_by(goal_id=goal_id).first()
-    hike_results = HikeResult.query.filter_by(user_id=user_id).all()
-    
     goal_type = selected_goal.goal
+    hike_results = HikeResult.query.filter_by(user_id=user_id).all()
+    print(hike_results)
+    hikes = []
     if goal_type == "NUMBER_HIKES":
-        progress = {}
+        num = 0
         for result in hike_results:
-            print(result)
-            # add keys and values for specific values (pie graph?)
+            num +=1
+            hike = {'hikeId': result.hike_id,
+                    'hikeNumber': num,
+                    'hikedOn': result.hiked_on}
+            hikes.append(hike)
+            
     elif goal_type == "MILES_HIKED":
-        print(results)
+        miles = 0
+        for result in hike_results:
+            miles += result.distance_in_miles
+            hike = {'hikeId': result.hike_id,
+                    'miles': result.distance_in_miles,
+                    'totalMiles': miles,
+                    'rating': distance_rating,
+                    'hikedOn': result.hiked_on}
+        hikes.append(hike)
         # store hike id, milage, and dates (all in result)
     elif goal_type == "FEET_ASCENDED":
-        print(results)
+        feet = 0
+        for result in hike_results:
+            trail = Hike.query.filter_by(hike_id=result.hike_id).first()
+            trail_details=Trail.query.filter_by(trail_id=trail.trail_id).first()
+            feet += trail_details.total_ascent
+            hike = {'hikeId': result.hike_id,
+                    'feet': trail_details.total_ascent,
+                    'totalFeet': feet,
+                    'rating': result.ascent_rating,
+                    'hikedOn': result.hiked_on}
+            hikes.append(hike)
         # store hike id, ascent and dates (all in result)
     elif goal_type == "HIKEABLE_MILES":
-        print(results)
+        for result in hike_results:
+                    hike = {'hikeId': result.hike_id,
+                    'feet': trail_details.total_ascent,
+                    'totalFeet': feet,
+                    'rating': result.distance_rating,
+                    'hikedOn': result.hiked_on}
+            hikes.append(hike)
         # store hike id, milage, and dates (all in result)
     elif goal_type == "HIKE_DIFFICULTY":
         print(results)
+        for result in hike_results:
+            trail = Hike.query.filter_by(hike_id=result.hike_id).first()
+            trail_details=Trail.query.filter_by(trail_id=trail.trail_id).first()
+            hike = {'hikeId': result.hike_id,
+                    'difficulty': trail_details.difficulty,
+                    'rating': result.challenge_rating,
+                    'hikedOn': result.hiked_on}
+            hikes.append(hike)
         # store hike id, difficulty (from the trail), and dates
     else:
         return 'invalid goal type'
+    print(hikes)
+    return jsonify(hikes)
+    
+    
+@app.route("/api/cancel_goal/<goal_id>", methods=["POST"])
+def cancel_goal(goal_id):
+    """Submits a change of a goal's canceled_by_user to True"""
+    
+    goal = Goal.query.filter_by(goal_id=goal_id).first()
+    goal.canceled_by_user = True 
+    db.session.commit()
+    return 'Goal is canceled'
 
+# ---------- Hike Results view, creation, progress & cancelation ---------- #
+@app.route("/api/hike_results", methods=["GET"])
+def show_all_hike_results():
+    """Returns Hike results for a user"""
     
-    return
+    user_id = session.get("current_user", None)
+    if user_id:
+        results = HikeResult.query.filter_by(user_id=user_id).all()
+    print(results)
+    return jsonify(results)
     
     
-@app.route("/hike_results", methods=["POST"])
+@app.route("/api/hike_result/<hike_id>", methods=["GET"])
+def show_hike_result(hike_id):
+    """Returns the hike result for a selected completed hike""""
+    
+    result = HikeResult.query.filter_by(hike_id=hike_id).first()
+    print(result)
+    return jsonify(result)
+    
+# # # Currently working on # # # 
+@app.route("/api/hike_results", methods=["POST"])
 def add_hike_results():
     """Adds hike results on hike completion"""
     # process form information add to database if data can be added and return result
 
-    pass 
+    hike_id = request.form.get('hikeId')
+    assessment = request.form.get('assessment')
+    distance_in_miles = request.form.get('Distance')
+    hiked_on = request.form.get('hikedOn')
+    ascent_rating = request.form.get('ascentRating')
+    distance_rating = request.form.get('distanceRating')
+    challenge_rating = request.form.get('challengeRating')
+    hike_time = request.form.get('hikeTime')
+    canceled_by_user = False
+    result = HikeResult(hike_id=hike_id,
+                        assessment=assessment,
+                        distance_in_miles=distance_in_miles,
+                        hiked_on=hiked_on,
+                        ascent_rating=ascent_rating,
+                        distance_rating=distance_rating,
+                        challenge_rating=challenge_rating,
+                        hike_time=hike_time,
+                        canceled_by_user=canceled_by_user)
+    print(result)
+    session.add(result)
+    session.commit()
+    return 'Result Added!'
     
-    
-@app.route("/hike_results", methods=["GET"])
-def show_hike_results():
-    """Returns Hike results for a given completed hike"""
-    
-    # get results from a form? 
-    hike_id = 5
-    result = hike_results.query.filter_by(hike_id=hike_id).first()
 
-    return result
-
-
+# ---------- Flask App Bits ---------- #
 if __name__ == "__main__":
     app.debug = True
     # prevent template cacheing
