@@ -50,7 +50,6 @@ class App extends React.Component {
   
   checkIfLoggedIn() {
     $.get('/api/profile', (response) => {
-      console.log(response);
       if (response.loggedIn == 'true') {
         const id = response.userId;
         const first = response.first;
@@ -60,13 +59,13 @@ class App extends React.Component {
                       first: first,
                       last: last,
                       createdOn: createdOn
-                      });
+                    });
       } else {
         this.setState({userId: undefined,
                        first: undefined,
                        last: undefined,
                        createdOn: undefined
-                       });
+                    });
       }
     });
   }
@@ -86,7 +85,6 @@ class App extends React.Component {
   render() {
     const loggedIn = this.state.userId;
     if (loggedIn) {
-      console.log(this.state)
       return(
         <Router>
           <div>

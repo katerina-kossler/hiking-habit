@@ -229,10 +229,11 @@ def complete_hike(hike_id):
     return 'Hike is complete, please fill out the hike result'
     
 # # # Currently working on # # # 
-@app.route("/api/cancel_hike/<hike_id>", methods=["POST"])
-def cancel_hike(hike_id):
+@app.route("/api/cancel_hike/", methods=["POST"])
+def cancel_hike():
     """Submits a change of a hike's canceled_by_user to True"""
     
+    hike_id = request.form.get('hikeId')
     hike = Hike.query.filter_by(hike_id=hike_id).first()
     hike.canceled_by_user = True
     if (hike.is_complete == True):
@@ -384,7 +385,7 @@ def add_hike_results():
 
     hike_id = request.form.get('hikeId')
     assessment = request.form.get('assessment')
-    distance_in_miles = request.form.get('Distance')
+    distance_in_miles = request.form.get('distance')
     hiked_on = request.form.get('hikedOn')
     ascent_rating = request.form.get('ascentRating')
     distance_rating = request.form.get('distanceRating')

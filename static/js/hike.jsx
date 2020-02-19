@@ -15,14 +15,17 @@ class Hike extends React.Component {
   onCompleteHike(hikeId) {
     console.log(hikeId);
     console.log('complete');
-    console.log('make results and redirect to results form');
+    console.log('make results and redirect to results form passing in the hikeId');
   }
   
   onCancelHike(hikeId) {
     console.log(hikeId);
-    console.log('cancel');
+    $.post('/api/cancel_hike', hikeId, (response) => {
+      alert(response);
+    });
+    return <Redirect to='/hikes/'/>
   }
-  
+  // issue where currently all of these are executing upon loading
   render() {
     const hikeId = this.props.hikeId;
     const trailName = this.props.trailName;
