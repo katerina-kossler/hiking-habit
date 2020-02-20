@@ -28,7 +28,7 @@ class ResultsView extends React.Component {
             <HikeResultForm/>
           </Route>
           <Route path='/results/edit'>
-            <Redirect to='results/add'/>
+            <Redirect to='/results/add'/>
           </Route>
           <Route path='/results/all'>
             <HikeResults/>

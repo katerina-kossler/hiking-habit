@@ -219,30 +219,37 @@ def add_hike():
     return 'Added hike on this trail!'
 
 # # # Currently working on # # # 
-@app.route("/api/complete_hike/<hike_id>", methods=["POST"])
-def complete_hike(hike_id):
+@app.route("/api/complete_hike", methods=["POST"])
+def complete_hike():
     """Submits a change of a hike's is_complete to True"""
     
+    hike_id = request.form.get('hikeId')
     hike = Hike.query.filter_by(hike_id=hike_id).first()
     hike.is_complete = True
     db.session.commit()
     return 'Hike is complete, please fill out the hike result'
     
 # # # Currently working on # # # 
-@app.route("/api/cancel_hike/", methods=["POST"])
+@app.route("/api/cancel_hike", methods=["POST"])
 def cancel_hike():
     """Submits a change of a hike's canceled_by_user to True"""
     
     hike_id = request.form.get('hikeId')
+    print(hike_id)
     hike = Hike.query.filter_by(hike_id=hike_id).first()
-    hike.canceled_by_user = True
-    if (hike.is_complete == True):
-        result = HikeResult.query.filter_by(hike_id=hike_id).first()
-        result.canceled_by_user = True
-        db.session.commit() 
-        return 'Hike & hike result are canceled'
-    db.session.commit()
-    return 'Hike is canceled'
+    print(hike)
+    if hike:
+        hike.canceled_by_user = True
+        if (hike.is_complete == True):
+            result = HikeResult.query.filter_by(hike_id=hike_id).first()
+            if result:
+                result.canceled_by_user = True
+                db.session.commit() 
+                return 'Hike & hike result are canceled'
+        db.session.commit()
+        return 'Hike is canceled'
+    else:
+        return 'Hike could not be found'
 
 
 # ---------- Goal view, creation, progress & cancelation ---------- #

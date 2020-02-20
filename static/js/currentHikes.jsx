@@ -7,8 +7,6 @@ class CurrentHikes extends React.Component {
   
   render() {
     const hikes = this.props.hikes;
-    console.log('hikes:');
-    console.log(hikes);
     if (hikes) {
       if (hikes.length == 0) {
         return (
