@@ -57,7 +57,8 @@ class TrailsForm extends React.Component {
           Search Distance (Miles):<input type="number" 
                                          name="maxRadius" 
                                          min="30" 
-                                         max="200" 
+                                         max="200"
+                                         placeholder="30" 
                                          onChange={this.handleInput}/> 
         </label>
         [30-200]
@@ -66,7 +67,8 @@ class TrailsForm extends React.Component {
           Minimum Trail Length (Miles):<input type="integer" 
                                               name="length" 
                                               min="0" 
-                                              max="200" 
+                                              max="200"
+                                              placeholder="10" 
                                               onChange={this.handleInput}/>
         </label>
         [0-200]
@@ -77,7 +79,7 @@ class TrailsForm extends React.Component {
           <input type="radio" 
                  name="sort" 
                  value="length" 
-                 onClick={this.handleInput} /> 
+                 onClick={this.handleInput} defaultChecked/> 
           &nbsp;
           Length
           &nbsp;
@@ -94,6 +96,7 @@ class TrailsForm extends React.Component {
                                         name="maxResults" 
                                         min="10"
                                         max="500"
+                                        placeholder="10"
                                         onChange={this.handleInput}/>
         </label>
         [10-500]

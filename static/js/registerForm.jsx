@@ -42,7 +42,7 @@ class RegisterForm extends React.Component {
             Username:<input type="text" name="username" onChange={this.handleInput}/>
           </label>
           <label>
-            Email:<input type="text" name="email" onChange={this.handleInput}/>
+            Email:<input type="email" name="email" onChange={this.handleInput}/>
           </label>
           <label>
             Password:<input type="password" name="password" onChange={this.handleInput}/>

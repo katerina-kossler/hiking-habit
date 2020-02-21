@@ -18,12 +18,17 @@ class GoalsView extends React.Component {
     return(
       <div>
         <div>
-          <button onClick={() => <Redirect to='/goals/add'/>}>Add a goal</button>
-          <button onClick={() => <Redirect to='/goals/all'/>}>View Goals</button>
+          <button onClick={() => {return <Redirect to='/goals/add'/>}}>Add a goal</button>
+          <button onClick={() => {return <Redirect to='/goals/all'/>}}>View Goals</button>
         </div>
       <Switch>
+        <Route exact path='/goals'>
+          <div>
+            Make a selection above.
+          </div>
+        </Route>
         <Route path='/goals/add'>
-          <goalForm/>
+          <GoalForm/>
         </Route>
         <Route path='goals/all'>
           <CurrentGoals/>

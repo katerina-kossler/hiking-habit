@@ -8,7 +8,7 @@ class TrailsSearch extends React.Component {
   }
   
   onTrailSearch(searchParams) {
-    $.post('/api/trails', searchParams, (response) => {
+    $.post('/api/trails/', searchParams, (response) => {
       this.setState({results:response});
     });
   }

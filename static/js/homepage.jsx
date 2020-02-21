@@ -20,7 +20,7 @@ class App extends React.Component {
   };
   
   tryRegistration = (data) => {
-    $.post('/api/register', data, (response) => {
+    $.post('/api/register/', data, (response) => {
       let type = typeof(response);
       if (type == 'string') {
         alert(response);
@@ -31,7 +31,7 @@ class App extends React.Component {
   }
   
   tryLogIn = (data) => {
-    $.post('/api/login', data, (response) => {
+    $.post('/api/login/', data, (response) => {
       let type = typeof(response);
       if (type == 'string') {
         alert(response);
@@ -43,13 +43,13 @@ class App extends React.Component {
   }
 
   onLogOut() {
-    $.get('/api/logout', () => {
+    $.get('/api/logout/', () => {
       this.setState({userId: undefined});
     });
   }
   
   checkIfLoggedIn() {
-    $.get('/api/profile', (response) => {
+    $.get('/api/profile/', (response) => {
       if (response.loggedIn == 'true') {
         const id = response.userId;
         const first = response.first;
@@ -92,7 +92,7 @@ class App extends React.Component {
               <h2>Hiking Habit</h2>
             </div>
             <div>
-              <button onClick={this.onLogOut}> Logout </button>
+              Welcome, {this.state.first} <button onClick={this.onLogOut}> Logout </button>
 
             </div>
             <hr/>
@@ -105,9 +105,6 @@ class App extends React.Component {
               </li>
               <li>
                 <Link to='/goals/'>View &amp; Edit Goals</Link>
-              </li>
-              <li>
-                <Link to='/results/'>View &amp; Edit Results </Link>
               </li>
               <li>
                 <Link to='/profile/'> Profile </Link>
@@ -124,11 +121,11 @@ class App extends React.Component {
               <Route path='/hikes/'>
                 <HikesView/>
               </Route>
+              <Route path='/results/'>
+                <HikeResultsView/>
+              </Route>
               <Route path='/goals/'>
                 <GoalsView/>
-              </Route>
-              <Route path='/results/'>
-                <ResultsView/>
               </Route>
               <Route path='/profile/'>
                 <Profile first={this.state.first}

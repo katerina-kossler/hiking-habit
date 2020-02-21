@@ -3,25 +3,27 @@
 class HikeResultForm extends React.Component {
   constructor(props) {
     super(props);
-      this.state = {hikeId: this.props.hikeId,
-                    assessment: undefined,
+      this.state = {assessment: undefined,
                     distance: undefined,
                     hikedOn: undefined,
-                    ascentRating: undefined,
-                    distanceRating: undefined,
-                    challengeRating: undefined,
+                    ascentRating: "VERY_EASY",
+                    distanceRating: "VERY_EASY",
+                    challengeRating: "VERY_EASY",
                     hikeTime: undefined};
       this.handleInput = this.handleInput.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
+      // this.props.onUpdate
     }
     
     handleInput(event) {
       this.setState({[event.target.name]: event.target.value});
+      console.log(event.target.name) 
+      console.log(event.target.value)
     }
   
     handleSubmit(event) {
       event.preventDefault();
-      const hikeId = this.state.hikeId;
+      const hikeId = this.props.hikeId;
       const assessment = this.state.assessment;
       const distance = this.state.distance;
       const hikedOn = this.state.hikedOn;
@@ -37,31 +39,79 @@ class HikeResultForm extends React.Component {
           ascentRating: ascentRating,
           distanceRating: distanceRating,
           challengeRating: challengeRating,
-          hikeTime: hikedTime
+          hikeTime: hikeTime
           };
-      this.props.submitResult(result_data);
+      console.log(result_data);
+      // $.post('/api/hike_result', result_data, (response) => {
+      //   alert(response);
+      // });
+      // this.props.onUpdate();
     }
     
     render() {
       return(
         <div>
-          <h2>Register as a new user:</h2>
+          <h2>Trail Details: </h2>
+          <h2>Hike Results:</h2>
           <form>
             <label>
-              Username:<input type="text" name="username" onChange={this.handleInput}/>
+              Assessment:<input type="text" 
+                                name="assessment" 
+                                size='70'
+                                onChange={this.handleInput}/>
             </label>
             <label>
-              Email:<input type="text" name="email" onChange={this.handleInput}/>
+              Distance Hiked (mi):<input type="text" // change to number after prop passes 
+                                    name="distance" 
+                                    placeholder={'hi i will soon be a prop'} // working here!!! want the trail distance here
+                                    onChange={this.handleInput}/>
             </label>
             <label>
-              Password:<input type="password" name="password" onChange={this.handleInput}/>
+              Date Hiked:<input type="date" 
+                                name="hikedOn" 
+                                onChange={this.handleInput}/>
             </label>
             <label>
-              First Name:<input type="text" name="first" onChange={this.handleInput}/>
+              Time Hiked (h):<input type="number" 
+                                    minlength="1" 
+                                    name="hikedTime" 
+                                    onChange={this.handleInput}/>
+            </label>
+            <br/>
+            <label>
+              How were the following:
             </label>
             <label>
-              Last Name:<input type="text" name="last" onChange={this.handleInput}/>
+              The climb / ascent:
+              <select name="ascentRating" onChange={this.handleInput}>
+                <option value="VERY_EASY">Very Easy</option>
+                <option value="EASY">Easy</option>
+                <option value="AVERAGE">Average</option>
+                <option value="DIFFICULT">Difficult</option>
+                <option value="VERY_DIFFICULT">Very Difficult</option>
+              </select>
+            </label> 
+            <label>
+              Distance:
+              <select name="distanceRating" onChange={this.handleInput}>
+                <option value="VERY_EASY">Very Easy</option>
+                <option value="EASY">Easy</option>
+                <option value="AVERAGE">Average</option>
+                <option value="DIFFICULT">Difficult</option>
+                <option value="VERY_DIFFICULT">Very Difficult</option>
+              </select>
             </label>
+            <label>
+              The rigor / challenge of the trail:
+              <select name="challengeRating" onChange={this.handleInput}>
+                <option value="VERY_EASY">Very Easy</option>
+                <option value="EASY">Easy</option>
+                <option value="AVERAGE">Average</option>
+                <option value="DIFFICULT">Difficult</option>
+                <option value="VERY_DIFFICULT">Very Difficult</option>
+              </select>
+            </label>
+
             <br/>
             <button onClick={this.handleSubmit}> Register </button>
           </form>
