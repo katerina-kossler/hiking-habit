@@ -20,18 +20,19 @@ class App extends React.Component {
   };
   
   tryRegistration = (data) => {
-    $.post('/api/register/', data, (response) => {
+    $.post('/api/register', data, (response) => {
       let type = typeof(response);
       if (type == 'string') {
         alert(response);
       } else {
         this.setState({userId: response.userId});
+        this.checkIfLoggedIn();
       }
     });
   }
   
   tryLogIn = (data) => {
-    $.post('/api/login/', data, (response) => {
+    $.post('/api/login', data, (response) => {
       let type = typeof(response);
       if (type == 'string') {
         alert(response);
@@ -43,13 +44,13 @@ class App extends React.Component {
   }
 
   onLogOut() {
-    $.get('/api/logout/', () => {
+    $.get('/api/logout', () => {
       this.setState({userId: undefined});
     });
   }
   
   checkIfLoggedIn() {
-    $.get('/api/profile/', (response) => {
+    $.get('/api/profile', (response) => {
       if (response.loggedIn == 'true') {
         const id = response.userId;
         const first = response.first;

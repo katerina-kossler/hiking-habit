@@ -4,7 +4,7 @@ class HikesView extends React.Component {
   constructor(props) {
     super(props);
     this.state={results: undefined,
-                filter: undefined,
+                filter: 'all',
                 showForm: false,
                 newResultFrom: undefined
               };
@@ -12,11 +12,12 @@ class HikesView extends React.Component {
     this.onUpdate=this.onUpdate.bind(this);
     this.renderForm=this.renderForm.bind(this);
     this.getTrailDetails=this.getTrailDetails.bind(this);
+    this.onSubmitForm=this.onSubmitForm.bind(this);
   }
   
   onCheckHikes(filter) {
     this.state.filter = filter;
-    $.get('/api/hikes/', (response) => {
+    $.get('/api/hikes', (response) => {
       const relevantHikes = [];
       if (filter === 'incomplete') {
         for (const hike of response) {
@@ -43,21 +44,32 @@ class HikesView extends React.Component {
     this.setState({showForm:false})
   }
   
-  getTrailDetails(hike) {
-    const hikeId = hike;
-    const data = {hikeId: hikeId};
-    $.get('/api/trail_from_hike_id/', data, (response) => {
-       console.log(response); // working to process response to send into the HikeResultForm
-    });
-  }
-  
-  
   renderForm(hike) {
     const hikeId = hike;
     this.setState({newResultFrom: hikeId,
                    showForm: true}); 
   }
   
+  getTrailDetails(hike) {
+    const hikeId = hike;
+    const data = {hikeId: hikeId};
+    $.get('/api/trail_from_hike_id', data, (response) => {
+       console.log(response); // working to process response to send into the HikeResultForm
+    });
+  }
+  
+  onSubmitForm(data) {
+    console.log(data);
+    // when the hike result form is submitted want to
+    // - change showForm to false
+    // - set filter to all
+    // - check for hikes again (refresh)
+    // should result in the hike result form being hidden again
+  }
+  
+  onComponentDidMount() {
+    
+  }
 
   render() {
     let showForm = this.state.showForm;

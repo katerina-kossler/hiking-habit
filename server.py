@@ -22,7 +22,7 @@ def show_homepage():
     
     return render_template("homepage.html")
 
-@app.route("/api/login/", methods=["POST"])
+@app.route("/api/login", methods=["POST"])
 def authenticate_user():
     """Take in user credentials and compare to existing if available"""
     
@@ -54,7 +54,7 @@ def authenticate_user():
     return 'Incorrect login information; try again'
 
 
-@app.route("/api/register/", methods=["POST"])
+@app.route("/api/register", methods=["POST"])
 def intake_user_info():
     """Add new user information to the database if a new username and 
        email are chosen"""
@@ -90,7 +90,7 @@ def intake_user_info():
             'createdOn': user.created_on}
 
 
-@app.route("/api/logout/", methods=["GET"])
+@app.route("/api/logout", methods=["GET"])
 def logout():
     """Logs the user out (removes from current session)"""
     
@@ -99,7 +99,7 @@ def logout():
     return 'logged out'
 
 
-@app.route("/api/profile/", methods=["GET"])
+@app.route("/api/profile", methods=["GET"])
 def show_profile():
     """Returns the current user's profile from initial intake info"""
     
@@ -117,7 +117,7 @@ def show_profile():
 
 
 # ---------- REI Hiking Project interactions  ---------- #
-@app.route("/api/trails/", methods=["POST"])
+@app.route("/api/trails", methods=["POST"])
 def load_search_results():
     """Returns available trails from API based on search parameters"""
     
@@ -143,7 +143,7 @@ def load_search_results():
     
 
 # ---------- Hike view, creation, completion, & cancelation (also result cancelation) ---------- #
-@app.route("/api/hikes/", methods=["GET"])
+@app.route("/api/hikes", methods=["GET"])
 def show_current_hikes():
     """Returns a list of all (non-canceled) hikes assocatied with the user"""
     
@@ -161,7 +161,7 @@ def show_current_hikes():
     return jsonify(hikes_info)
 
 
-@app.route("/api/hikes/", methods=["POST"])
+@app.route("/api/hikes", methods=["POST"])
 def add_hike():
     """Checks if the selected trail to hike:
         - is in the db (if not, adds)
@@ -220,7 +220,7 @@ def add_hike():
         return 'Added hike on this trail!'
 
 
-@app.route("/api/complete_hike/", methods=["POST"])
+@app.route("/api/complete_hike", methods=["POST"])
 def complete_hike():
     """Submits a change of a hike's is_complete to True"""
     
@@ -231,7 +231,7 @@ def complete_hike():
     return 'Hike is complete, please fill out the hike result'
     
 
-@app.route("/api/cancel_hike/", methods=["POST"])
+@app.route("/api/cancel_hike", methods=["POST"])
 def cancel_hike():
     """Submits a change of a hike's canceled_by_user to True"""
     
@@ -288,7 +288,7 @@ def add_new_goal():
     pass
 
 # # # Currently working on # # # 
-@app.route("/api/progress/", methods=["GET"])
+@app.route("/api/progress", methods=["GET"])
 def show_goal_progress(goal_id):
     """Aggregates all hike results to show current progress towards a goal"""
     
@@ -349,33 +349,9 @@ def show_goal_progress(goal_id):
         return 'invalid goal type'
     print(hikes)
     return jsonify(hikes)
+
     
-@app.route("/api/trail_from_hike_id/", methods=["GET"])    
-def show_trail_details():
-    """Returns an object containing the trail details from an input hike id"""
-    
-    hike_id = request.args.get("")
-    print(hike_id)
-    trail = Hike.query.filter_by(hike_id=hike_id).first()
-    if trail:
-        trail_details=Trail.query.filter_by(trail_id=trail.trail_id).first()
-        if trail_details:
-            trail_object={'name': trail_details.name,
-                        'summary': trail_details.summary,
-                        'difficulty': trail_details.difficulty,
-                        'loc': trail_details.location,
-                        'lat': trail_details.latitude,
-                        'lng': trail_details.longitude,
-                        'len': trail_details.length,
-                        'asc': trail_details.ascent,
-                        'dsc': trail_details.descent,
-                        'date': trail_details.conditionDate,
-                        'status': trail_details.conditionStatus,
-                        'details': trail.conditionDetails}
-            return jsonify(trail_object)
-        
-    
-@app.route("/api/cancel_goal/", methods=["POST"])
+@app.route("/api/cancel_goal", methods=["POST"])
 def cancel_goal():
     """Submits a change of a goal's canceled_by_user to True"""
     
@@ -386,7 +362,7 @@ def cancel_goal():
     return 'Goal is canceled'
 
 # ---------- Hike Results view, creation & progress ---------- #
-@app.route("/api/hike_results/", methods=["GET"])
+@app.route("/api/hike_results", methods=["GET"])
 def show_all_hike_results():
     """Returns Hike results for a user"""
     
@@ -399,7 +375,7 @@ def show_all_hike_results():
     return jsonify(results)
     
     
-@app.route("/api/hike_result_by_id/", methods=["GET"])
+@app.route("/api/hike_result_by_id", methods=["GET"])
 def show_hike_result(hike_id):
     """Returns the hike result for a selected completed hike"""
     
@@ -409,7 +385,7 @@ def show_hike_result(hike_id):
     return jsonify(result)
     
 # # # Currently working on # # # 
-@app.route("/api/hike_result/", methods=["POST"])
+@app.route("/api/hike_result", methods=["POST"])
 def add_hike_results():
     """Adds hike results on hike completion"""
     # process form information add to database if data can be added and return result
@@ -437,6 +413,32 @@ def add_hike_results():
     db.session.commit()
     return 'Result Added!'
     
+    
+    
+@app.route("/api/trail_from_hike_id", methods=["GET"])    
+def show_trail_details():
+    """Returns an object containing the trail details from an input hike id"""
+    
+    hike_id = request.args.get("")
+    print(hike_id)
+    trail = Hike.query.filter_by(hike_id=hike_id).first()
+    if trail:
+        trail_details=Trail.query.filter_by(trail_id=trail.trail_id).first()
+        if trail_details:
+            trail_object={'name': trail_details.name,
+                        'summary': trail_details.summary,
+                        'difficulty': trail_details.difficulty,
+                        'loc': trail_details.location,
+                        'lat': trail_details.latitude,
+                        'lng': trail_details.longitude,
+                        'len': trail_details.length,
+                        'asc': trail_details.ascent,
+                        'dsc': trail_details.descent,
+                        'date': trail_details.conditionDate,
+                        'status': trail_details.conditionStatus,
+                        'details': trail.conditionDetails}
+            return jsonify(trail_object)
+        
 
 # ---------- Flask App Bits ---------- #
 if __name__ == "__main__":

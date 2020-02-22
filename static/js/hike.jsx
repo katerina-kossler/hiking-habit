@@ -18,7 +18,7 @@ class Hike extends React.Component {
     const hikeId = this.props.hikeId;
     const data = {hikeId: hikeId};
     console.log('complete');
-    $.post('/api/complete_hike/', data, (response) => {
+    $.post('/api/complete_hike', data, (response) => {
       alert(response);
       this.props.renderForm(hikeId);
     });
@@ -28,7 +28,7 @@ class Hike extends React.Component {
     const hikeId = this.props.hikeId;
     const data = {hikeId: hikeId};
     console.log('cancel');
-    $.post('/api/cancel_hike/', data, (response) => {
+    $.post('/api/cancel_hike', data, (response) => {
       alert(response);
       this.props.onUpdate();
       });
