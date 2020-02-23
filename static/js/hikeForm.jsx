@@ -11,13 +11,12 @@ class HikeForm extends React.Component {
   handleChange(event) {
     this.setState({type: event.target.value});
   }
-
+ 
   handleSubmit(event) {
     event.preventDefault();
-    let criteria = this.state.type;
-    this.props.checkHikes(criteria);
+    this.props.onCheckHikes(this.state.type);
   }
- 
+  
   render() {
     return(
       <form>
@@ -27,9 +26,7 @@ class HikeForm extends React.Component {
             <option value='incomplete'>Incomplete</option>
             <option value='all'>All</option>
           </select>
-          <button onClick={this.handleSubmit}> 
-            Search
-          </button>
+          <button onClick={this.handleSubmit}>Search</button>
         </label>
       </form>
     );

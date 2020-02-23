@@ -24,7 +24,7 @@ class Hike extends React.Component {
     });
   }
   
-  onCancelHike(event) {
+  onCancelHike() {
     const hikeId = this.props.hikeId;
     const data = {hikeId: hikeId};
     console.log('cancel');
@@ -51,7 +51,7 @@ class Hike extends React.Component {
     } else if (isComplete === true) {
       return (
         <div>
-          <h4>{trailName}</h4> ({trailDescription})
+          <h4>{trailName}</h4> {trailDescription}
           <p>
             <button onClick={this.onViewResults}><b>View / Edit Results</b></button>
             <button onClick={this.onCancelHike}><b>Cancel</b></button>

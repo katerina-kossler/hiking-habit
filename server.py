@@ -110,7 +110,7 @@ def show_profile():
                     'userId': user_id,
                     'first':user.first_name,
                     'last':user.last_name,
-                    'createdOn':user.created_on}
+                    'createdOn':user.created_on.strftime("%A %B %d, %Y")}
     else:
         user_info = {'loggedIn': 'false'}
     return jsonify(user_info)
@@ -439,6 +439,14 @@ def show_trail_details():
                         'details': trail.conditionDetails}
             return jsonify(trail_object)
         
+
+# ---------- Error Handling for 404 Errors ---------- #
+@app.errorhandler(404)
+def redirect_to_root(e):
+    """When the user refreshes or goes to a route not mananaged by React Router
+       on the client-side, takes the user back to root"""
+    return redirect('/')
+
 
 # ---------- Flask App Bits ---------- #
 if __name__ == "__main__":

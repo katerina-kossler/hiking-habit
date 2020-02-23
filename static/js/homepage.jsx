@@ -99,48 +99,47 @@ class App extends React.Component {
             <hr/>
             <ul class='nav-bar'>
               <li>
-                <Link to='/trails/'>Search for Trails</Link>
+                <Link to='/trails'>Search for Trails</Link>
               </li>
               <li>
-                <Link to='/hikes/'>View Hikes</Link>
+                <Link to='/hikes'>View Hikes</Link>
               </li>
               <li>
-                <Link to='/goals/'>View &amp; Edit Goals</Link>
+                <Link to='/goals'>View &amp; Edit Goals</Link>
               </li>
               <li>
-                <Link to='/profile/'> Profile </Link>
+                <Link to='/profile'> Profile </Link>
               </li>
             </ul>
             <hr/>
             <Switch>
               <Route exact path='/'>
-                <Redirect to='/trails/'/>
+                <Redirect to='/trails'/>
               </Route>
-              <Route path='/trails/'>
+              <Route path='/trails'>
                 <TrailsSearch/>
               </Route>
-              <Route path='/hikes/'>
+              <Route path='/hikes'>
                 <HikesView/>
               </Route>
-              <Route path='/results/'>
-                <HikeResultsView/>
-              </Route>
-              <Route path='/goals/'>
+              <Route path='/goals'>
                 <GoalsView/>
               </Route>
-              <Route path='/profile/'>
+              <Route path='/profile'>
                 <Profile first={this.state.first}
                          last={this.state.last}
                          createdOn={this.state.createdOn}/>
               </Route>
-              <Route path='/about/'>
+              <Route path='/about'>
                 <About/>
               </Route>
-              <Route render={() => <Redirect to="/"/>}/>
+              <Route> 
+                <Redirect to='/'/>
+              </Route>
             </Switch>
             <hr/>
             <footer>
-              <Link to='/about/'>About</Link>
+              <Link to='/about'>About</Link>
             </footer>
           </div>
         </Router>
@@ -154,10 +153,10 @@ class App extends React.Component {
             </div>
             <ul class='nav-bar'>
               <li>
-                <Link to='/login/'>Login</Link>
+                <Link to='/login'>Login</Link>
               </li>
               <li>
-                <Link to='/register/'>Register</Link>
+                <Link to='/register'>Register</Link>
               </li>
             </ul>
             <hr/>
@@ -165,20 +164,22 @@ class App extends React.Component {
               <Route exact path='/'>
                 <LoginForm submitLogIn={this.tryLogIn}/>
               </Route>
-              <Route path='/login/'>
+              <Route path='/login'>
                 <LoginForm submitLogIn={this.tryLogIn}/>
               </Route>
-              <Route path='/register/'>
+              <Route path='/register'>
                 <RegisterForm tryRegistration={this.tryRegistration}/>
               </Route>
-              <Route path='/about/'>
+              <Route path='/about'>
                 <About/>
               </Route>
-              <Route render={() => <Redirect to="/"/>}/>
+              <Route> 
+                <Redirect to='/'/>
+              </Route>
             </Switch>
             <hr/>
               <footer>
-                <Link to='/about/'>About</Link>
+                <Link to='/about'>About</Link>
               </footer>
           </div>
         </Router>

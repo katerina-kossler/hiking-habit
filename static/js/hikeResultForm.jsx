@@ -13,12 +13,11 @@ class HikeResultForm extends React.Component {
       this.handleInput = this.handleInput.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
       // this.props.onUpdate
+      // this.props.onSubmitResultsForm
     }
     
     handleInput(event) {
       this.setState({[event.target.name]: event.target.value});
-      console.log(event.target.name) 
-      console.log(event.target.value)
     }
   
     handleSubmit(event) {
@@ -41,11 +40,7 @@ class HikeResultForm extends React.Component {
           challengeRating: challengeRating,
           hikeTime: hikeTime
           };
-      console.log(result_data);
-      // $.post('/api/hike_result', result_data, (response) => {
-      //   alert(response);
-      // });
-      // this.props.onUpdate();
+      this.props.onSubmitResultsForm(result_data);
     }
     
     render() {
@@ -60,6 +55,7 @@ class HikeResultForm extends React.Component {
                                 size='70'
                                 onChange={this.handleInput}/>
             </label>
+            <br/>
             <label>
               Distance Hiked (mi):<input type="text" // change to number after prop passes 
                                     name="distance" 
@@ -81,6 +77,7 @@ class HikeResultForm extends React.Component {
             <label>
               How were the following:
             </label>
+            <br/>
             <label>
               The climb / ascent:
               <select name="ascentRating" onChange={this.handleInput}>
@@ -90,7 +87,8 @@ class HikeResultForm extends React.Component {
                 <option value="DIFFICULT">Difficult</option>
                 <option value="VERY_DIFFICULT">Very Difficult</option>
               </select>
-            </label> 
+            </label>
+            <br/>
             <label>
               Distance:
               <select name="distanceRating" onChange={this.handleInput}>
@@ -101,6 +99,7 @@ class HikeResultForm extends React.Component {
                 <option value="VERY_DIFFICULT">Very Difficult</option>
               </select>
             </label>
+            <br/>
             <label>
               The rigor / challenge of the trail:
               <select name="challengeRating" onChange={this.handleInput}>
@@ -111,7 +110,6 @@ class HikeResultForm extends React.Component {
                 <option value="VERY_DIFFICULT">Very Difficult</option>
               </select>
             </label>
-
             <br/>
             <button onClick={this.handleSubmit}> Register </button>
           </form>

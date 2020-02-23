@@ -4,11 +4,10 @@ class Profile extends React.Component {
   }
   
   render() {
-    console.log(this.props)
     return(
       <div>
         <h3>Welcome {this.props.first} {this.props.last}!!!!</h3>
-        <p>You've had an account since {this.props.createdOn}, wooooo!</p>
+        <p>You've had an account since {this.props.createdOn} wooooo!</p>
         <p>Thanks for hiking with us!</p>
       </div>
     )

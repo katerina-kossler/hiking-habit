@@ -7,7 +7,6 @@ class CurrentHikes extends React.Component {
  // this.props.renderForm
   }
 
-  
   render() {
     const hikes = this.props.hikes;
     if (hikes) {
