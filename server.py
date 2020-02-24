@@ -2,7 +2,7 @@ from flask import Flask, render_template, redirect, flash, session, request, jso
 import json
 from sqlalchemy import func, and_
 from model import User, Goal, Trail, Hike, HikeResult, connect_to_db, db
-from datetime import date
+from datetime import date, datetime
 import jinja2
 import re
 import os
@@ -384,16 +384,18 @@ def show_hike_result(hike_id):
     print(result)
     return jsonify(result)
     
-# # # Currently working on # # # 
+    
 @app.route("/api/hike_result", methods=["POST"])
 def add_hike_results():
     """Adds hike results on hike completion"""
-    # process form information add to database if data can be added and return result
 
     hike_id = request.form.get('hikeId')
     assessment = request.form.get('assessment')
     distance_in_miles = request.form.get('distance')
-    hiked_on = request.form.get('hikedOn')
+    str_hiked_on = request.form.get('hikedOn')
+    #knowing date object in html form comes in format YYYY-MM-DD
+    format_hiked_on = "%Y-%m-%d"
+    hiked_on = datetime.strptime(str_hiked_on, format_hiked_on)
     ascent_rating = request.form.get('ascentRating')
     distance_rating = request.form.get('distanceRating')
     challenge_rating = request.form.get('challengeRating')
@@ -408,7 +410,6 @@ def add_hike_results():
                         challenge_rating=challenge_rating,
                         hike_time=hike_time,
                         canceled_by_user=canceled_by_user)
-    print(result)
     db.session.add(result)
     db.session.commit()
     return 'Result Added!'
@@ -419,25 +420,27 @@ def add_hike_results():
 def show_trail_details():
     """Returns an object containing the trail details from an input hike id"""
     
-    hike_id = request.args.get("")
-    print(hike_id)
+    hike_id = request.args.get("hikeId")
     trail = Hike.query.filter_by(hike_id=hike_id).first()
     if trail:
-        trail_details=Trail.query.filter_by(trail_id=trail.trail_id).first()
+        trail_id = trail.trail_id
+        trail_details=Trail.query.filter_by(trail_id=trail_id).first()
         if trail_details:
-            trail_object={'name': trail_details.name,
-                        'summary': trail_details.summary,
-                        'difficulty': trail_details.difficulty,
-                        'loc': trail_details.location,
-                        'lat': trail_details.latitude,
-                        'lng': trail_details.longitude,
-                        'len': trail_details.length,
-                        'asc': trail_details.ascent,
-                        'dsc': trail_details.descent,
-                        'date': trail_details.conditionDate,
-                        'status': trail_details.conditionStatus,
-                        'details': trail.conditionDetails}
+            trail_object={'name': trail_details.trail_name,
+                          'summary': trail_details.description,
+                          'difficulty': trail_details.difficulty,
+                          'loc': trail_details.location,
+                          'lat': trail_details.latitude,
+                          'lng': trail_details.longitude,
+                          'len': trail_details.distance_in_miles,
+                          'asc': trail_details.total_ascent,
+                          'dsc': trail_details.total_descent,
+                          'date': trail_details.status_at,
+                          'status': trail_details.status,
+                          'details': trail_details.status_details}
+            print(trail_object)
             return jsonify(trail_object)
+    return 'Trail is not in system, please cancel hike and try again.'
         
 
 # ---------- Error Handling for 404 Errors ---------- #

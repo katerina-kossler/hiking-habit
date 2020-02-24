@@ -127,7 +127,7 @@ class Trail(db.Model):
                     trail_name={self.trail_name}
                     distance_in_miles={self.distance_in_miles}
                     location={self.location}
-                    status={self.trail_status}>"""    
+                    status={self.status}>"""    
 
 
 class Hike(db.Model):
@@ -161,14 +161,12 @@ class Hike(db.Model):
                     is_complete={self.is_complete}
                     canceled_by_user={self.canceled_by_user}>"""
 
-  
 class Rating(enum.Enum):
     VERY_EASY = 1
     EASY = 2
     AVERAGE = 3
     DIFFICULT = 4
     VERY_DIFFICULT = 5
-
 
 class HikeResult(db.Model):
     """Results of a hike instance for a hike."""
@@ -221,4 +219,3 @@ if __name__ == "__main__":
     from server import app
     connect_to_db(app)
     print("Connected to DB.")
-
