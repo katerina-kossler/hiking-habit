@@ -3,6 +3,8 @@
 class CurrentGoals extends React.Component {
   constructor(props) {
     super(props);
+    // this.props.viewGoals
+    // this.props.goals
   }
   // queries for current goals and passes through to display
   render() {
@@ -11,7 +13,9 @@ class CurrentGoals extends React.Component {
       if (goals.length == 0) {
         return (
           <div>
-            You have no active goals yet, please add one.
+            <h4>
+              You have no active goals yet. Click the button below to get started!
+            </h4>
           </div>
         );
       } else {
@@ -26,16 +30,22 @@ class CurrentGoals extends React.Component {
             description= {goal.description}
             createdOn= {goal.created_on}
             status= {goal.status}
+            viewGoals={this.props.viewGoals}
           />
           );
         }
         return (
           <div>
-            hi
             <ul>{goalList}</ul>
           </div>
         );
       };
-    };
+    } else {
+      return( 
+        <div>
+          Error - please refresh!
+        </div>
+      )
+    }
   }
 }

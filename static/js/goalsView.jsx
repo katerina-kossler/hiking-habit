@@ -4,17 +4,17 @@ class GoalsView extends React.Component {
     super(props);
     this.state = {view:undefined,
                   goals:undefined};
-    this.addGoal = this.addGoal.bind(this);
     this.viewGoals = this.viewGoals.bind(this);
-  }
-  
-  addGoal() {
-    this.setState({view:undefined});
   }
   
   viewGoals() {
     $.get('/api/goals', (response) => {
-      console.log(response);
+      if (typeof response == "string") {
+        alert(response);
+      } else {
+        this.setState({goals:response,
+                      view: undefined});
+      };
     });
   }
   
@@ -27,13 +27,14 @@ class GoalsView extends React.Component {
     if (view == 'add') {
       return (
         <div>
-          <GoalForm addGoal={this.addGoal}/>
+          <GoalForm viewGoals={this.viewGoals} />
         </div>
       )
     } else {
       return (  
         <div>
-          <CurrentGoals goals={this.state.goals}/>
+          <CurrentGoals goals={this.state.goals} viewGoals={this.viewGoals}/>
+          <br/>
           <button onClick={()=>{this.setState({view: 'add'})}}>Add a Goal</button>  
         </div>
       )

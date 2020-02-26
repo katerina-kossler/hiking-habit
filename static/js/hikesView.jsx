@@ -83,7 +83,6 @@ class HikesView extends React.Component {
         };
       }); 
     } else {
-      
       $.get('/api/hike_result_and_trail_by_id', hikeData, (response) => {
         if (typeof(response) === 'string') {
           alert(response);
@@ -121,13 +120,10 @@ class HikesView extends React.Component {
                                        distanceRating: distanceRating,
                                        challengeRating: challengeRating,
                                        hikeTime: hikeTime};
-          console.log(trailDetailsObject)
-          console.log(resultDetailsObject)
-          console.log(hikeId)
           this.setState({trailDetails: trailDetailsObject,
-                       resultDetails: resultDetailsObject,
-                       resultFrom: hikeId,
-                       showForm: 'existing'});
+                          resultDetails: resultDetailsObject,
+                          resultFrom: hikeId,
+                          showForm: 'existing'});
         }
       });
     };
@@ -161,7 +157,6 @@ class HikesView extends React.Component {
         </div>
       );
     } else if (showForm === 'existing') {
-      console.log(trailDetails)
       return(
         <div>
           <Result hikeId={hikeId}
