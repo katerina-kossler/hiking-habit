@@ -7,27 +7,33 @@ class Hike extends React.Component {
     this.onCompleteHike = this.onCompleteHike.bind(this);
     this.onCancelHike = this.onCancelHike.bind(this);
   // this.props.onUpdate;
-  // this.props.renderForm(hikeId);
+  // this.props.renderForm(data);
   }
   
   onViewResults(event) {
-    console.log('view results')
+    const hikeId = this.props.hikeId;
+    const type = 'existing';
+    const data = {hikeId: hikeId,
+                  type: type};
+    this.props.renderForm(data);
   }
+  
   
   onCompleteHike(event) {
     const hikeId = this.props.hikeId;
-    const data = {hikeId: hikeId};
-    console.log('complete');
+    const type = 'new';
+    const data = {hikeId: hikeId,
+                  type: type};
     $.post('/api/complete_hike', data, (response) => {
       alert(response);
-      this.props.renderForm(hikeId);
+      this.props.renderForm(data);
     });
   }
+  
   
   onCancelHike() {
     const hikeId = this.props.hikeId;
     const data = {hikeId: hikeId};
-    console.log('cancel');
     $.post('/api/cancel_hike', data, (response) => {
       alert(response);
       this.props.onUpdate();

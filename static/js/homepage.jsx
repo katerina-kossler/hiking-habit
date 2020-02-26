@@ -12,11 +12,10 @@ class App extends React.Component {
                   first: undefined,
                   last: undefined,
                   createdOn: undefined};
-    this.tryLogIn=this.tryLogIn.bind(this);
     this.tryRegistration=this.tryRegistration.bind(this);
+    this.tryLogIn=this.tryLogIn.bind(this);
     this.onLogOut=this.onLogOut.bind(this);
     this.checkIfLoggedIn=this.checkIfLoggedIn.bind(this);
-    this.onHomepageClick = this.onHomepageClick.bind(this);
   };
   
   tryRegistration = (data) => {
@@ -70,15 +69,7 @@ class App extends React.Component {
       }
     });
   }
-  
-  onHomepageClick() {
-    return <Redirect to='/'/>
-  }
-  
-  onProfileClick() {
-    return <Redirect to='/profile'/>
-  }
-  
+
   componentDidMount() {
     this.checkIfLoggedIn()  
   }
@@ -90,7 +81,7 @@ class App extends React.Component {
         <Router>
           <div>
             <div>
-              <h2>Hiking Habit</h2>
+              <h2><Link to='/'>Hiking Habit</Link></h2>
             </div>
             <div>
               Welcome, {this.state.first} <button onClick={this.onLogOut}> Logout </button>

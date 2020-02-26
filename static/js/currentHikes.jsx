@@ -3,6 +3,7 @@
 class CurrentHikes extends React.Component {
   constructor(props) {
     super(props);
+ // this.props.hikes
  // this.props.onUpdate
  // this.props.renderForm
   }
@@ -19,6 +20,7 @@ class CurrentHikes extends React.Component {
       } else {
         const hikeList = [];
         for (const hike of hikes) {
+          console.log(hike.hikeId)
           hikeList.push(
             <Hike 
               hikeId={hike.hikeId}

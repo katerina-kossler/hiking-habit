@@ -21,7 +21,7 @@ class HikeForm extends React.Component {
     return(
       <form>
         <label> Hike Type:
-          <select value={this.state.type} name="type" onChange={this.handleChange}>
+          <select name="type" onChange={this.handleChange}>
             <option value='complete'>Complete</option>
             <option value='incomplete'>Incomplete</option>
             <option value='all'>All</option>

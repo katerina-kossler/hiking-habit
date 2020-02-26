@@ -2,6 +2,7 @@
 class GoalsView extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {view:'all'};
     this.addGoal = this.addGoal.bind(this);
     this.viewGoals = this.viewGoals.bind(this);
   }
@@ -11,30 +12,34 @@ class GoalsView extends React.Component {
   }
   
   viewGoals() {
-    
+    console.log('view goals')
+    $.get('api/goals', (response) => {
+      console.log(response);
+    });
+  }
+  
+  onComponentDidMount() {
+    this.viewGoals();
   }
   
   render() {
-    return(
-      <div>
+    let view = this.state.view;
+    if (view == 'all') {
+      return (  
         <div>
-          <button onClick={() => {return <Redirect to='/goals/add/'/>}}>Add a goal</button>
-          <button onClick={() => {return <Redirect to='/goals/all/'/>}}>View Goals</button>
-        </div>
-      <Switch>
-        <Route exact path='/goals/'>
-          <div>
-            Make a selection above.
-          </div>
-        </Route>
-        <Route path='/goals/add/'>
-          <GoalForm/>
-        </Route>
-        <Route path='goals/all/'>
+          <button onClick={()=>{this.setState({view: 'all'})}}>View Goals</button>  
+          <button onClick={()=>{this.setState({view: 'add'})}}>Add Goal</button>  
           <CurrentGoals/>
-        </Route>
-      </Switch>
-      </div>
-    );
-  }
+        </div>
+      )
+    } else if (view == 'add') {
+      return (
+        <div>
+          <button onClick={()=>{this.setState({view: 'all'})}}>View Goals</button>  
+          <button onClick={()=>{this.setState({view: 'add'})}}>Add Goal</button>  
+          <GoalForm addGoal={this.addGoal}/>
+        </div>
+      )
+    };
+  } 
 }

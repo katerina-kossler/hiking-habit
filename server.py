@@ -15,6 +15,11 @@ app = Flask(__name__)
 app.secret_key = 'this-should-be-something-unguessable'
 app.jinja_env.undefined = jinja2.StrictUndefined
 
+
+def convert_rating_to_str(rating):
+    """Converts Enum of type Rating to a string"""
+    pass
+
 # ---------- Initial set up and user authentication  ---------- #
 @app.route("/")
 def show_homepage():
@@ -138,9 +143,10 @@ def load_search_results():
                "maxResults":max_results}
     r_trails = requests.get("https://www.hikingproject.com/data/get-trails", 
                             params=payload)
+
     trails = r_trails.json()['trails']
     return jsonify(trails)
-    
+
 
 # ---------- Hike view, creation, completion, & cancelation (also result cancelation) ---------- #
 @app.route("/api/hikes", methods=["GET"])
@@ -206,9 +212,9 @@ def add_hike():
     user_id = session.get("current_user", None)
     if user_id:
         hike_to_do = Hike.query.filter((Hike.user_id == user_id) &
-                                    (Hike.trail_id == trail_in_db.trail_id ) &
-                                    (Hike.is_complete == False) &
-                                    (Hike.canceled_by_user == False)).all()
+                                        (Hike.trail_id == trail_in_db.trail_id ) &
+                                        (Hike.is_complete == False) &
+                                        (Hike.canceled_by_user == False)).all()
         if hike_to_do:
             return 'This trail is already in your hikes to complete.'
         hike = Hike(user_id=user.user_id,
@@ -254,15 +260,28 @@ def cancel_hike():
 
 
 # ---------- Goal view, creation, progress & cancelation ---------- #
+# not fully developed section
 @app.route("/api/goals", methods=["GET"])
 def show_current_goals():
     """Returns active goals"""
     
     user_id = session.get('current_user', None)
     if user_id:
-        goals = Goal.query.filter(and_(user_id=user_id,
-                                       canceled_by_user=False)).all()
+        goal_objects = Goal.query.filter((Goal.user_id == user_id) &
+                                         (Goal.canceled_by_user == False)).all()
+        goals = []
+        for goal_object in goal_objects:
+            goal = {'goalId': goal_object.goal_id,
+                    'title': goal_object.title,
+                    'goal': str(goal_object.goal),
+                    'numericalValue': goal_object.numerical_value,
+                    'description': goal_object.description,
+                    'createdOn': goal_object.created_on,
+                    'status': str(goal_object.status)
+                    }
+            goals.append(goal)   
         return jsonify(goals)
+    return 'Failed, please login and try again'
 
 
 @app.route("/api/goals", methods=["POST"])
@@ -277,17 +296,20 @@ def add_new_goal():
         created_on = datetime.today()
         title = request.form.get('title')
         goal = Goal(user_id=user_id, 
-                title=title,
-                goal=goal_type, 
-                numerical_value=numerical_value, 
-                description=description,
-                created_on=created_on,
-                status=status,
-                canceled_by_user=canceled_by_user)
+                    title=title,
+                    goal=goal_type, 
+                    numerical_value=numerical_value, 
+                    description=description,
+                    created_on=created_on,
+                    status=status,
+                    canceled_by_user=canceled_by_user)
         print(goal)
-    pass
+        db.session.add(goal)
+        db.session.commit()
+        return 'Success'
+    return 'Failed; Please login and try again'
 
-# # # Currently working on # # # 
+
 @app.route("/api/progress", methods=["GET"])
 def show_goal_progress(goal_id):
     """Aggregates all hike results to show current progress towards a goal"""
@@ -362,27 +384,51 @@ def cancel_goal():
     return 'Goal is canceled'
 
 # ---------- Hike Results view, creation & progress ---------- #
-@app.route("/api/hike_results", methods=["GET"])
+@app.route("/api/hike_results", methods=["GET"]) #might delete this
 def show_all_hike_results():
     """Returns Hike results for a user"""
     
     user_id = session.get("current_user", None)
     if user_id:
-        results = HikeResult.query.filter_by((HikeResult.user_id == user_id) &
-                                             (HikeResult.canceled_by_user == False)).all()
+        results = HikeResult.query.filter((HikeResult.user_id == user_id) &
+                                          (HikeResult.canceled_by_user == False)).all()
+        return jsonify(results)
+    return 'No active results found'
     
-    print(results)
-    return jsonify(results)
-    
-    
-@app.route("/api/hike_result_by_id", methods=["GET"])
-def show_hike_result(hike_id):
-    """Returns the hike result for a selected completed hike"""
+# working on this route    
+@app.route("/api/hike_result_and_trail_by_id", methods=["GET"])
+def show_hike_result():
+    """Returns the hike result and trail information for a selected completed hike"""
     
     hike_id = request.args.get("hikeId")
-    result = HikeResult.query.filter_by(hike_id=hike_id).first()
-    print(result)
-    return jsonify(result)
+    result = HikeResult.query.filter((HikeResult.hike_id == hike_id) &
+                                     (HikeResult.canceled_by_user == False)).first()
+    if result:
+        trail = Hike.query.filter_by(hike_id=hike_id).first()
+        trail_id = trail.trail_id
+        trail_details=Trail.query.filter_by(trail_id=trail_id).first()
+        result_details = {'name': trail_details.trail_name,
+                          'summary': trail_details.description,
+                          'difficulty': trail_details.difficulty,
+                          'loc': trail_details.location,
+                          'lat': trail_details.latitude,
+                          'lng': trail_details.longitude,
+                          'len': trail_details.distance_in_miles,
+                          'asc': trail_details.total_ascent,
+                          'dsc': trail_details.total_descent,
+                          'date': trail_details.status_at,
+                          'status': trail_details.status,
+                          'details': trail_details.status_details,
+                          'assessment': result.assessment,
+                          'distance': result.distance_in_miles,
+                          'hikedOn': result.hiked_on,
+                          'ascentRating': str(result.ascent_rating),
+                          'distanceRating': str(result.distance_rating),
+                          'challengeRating': str(result.challenge_rating),
+                          'hikeTime': result.hike_time}
+        print(result_details)
+        return jsonify(result_details)
+    return 'Hike result is not in system, please cancel hike and try again'
     
     
 @app.route("/api/hike_result", methods=["POST"])
@@ -394,7 +440,7 @@ def add_hike_results():
     distance_in_miles = request.form.get('distance')
     str_hiked_on = request.form.get('hikedOn')
     #knowing date object in html form comes in format YYYY-MM-DD
-    format_hiked_on = "%Y-%m-%d"
+    format_hiked_on = '%Y-%m-%d'
     hiked_on = datetime.strptime(str_hiked_on, format_hiked_on)
     ascent_rating = request.form.get('ascentRating')
     distance_rating = request.form.get('distanceRating')
@@ -413,7 +459,6 @@ def add_hike_results():
     db.session.add(result)
     db.session.commit()
     return 'Result Added!'
-    
     
     
 @app.route("/api/trail_from_hike_id", methods=["GET"])    

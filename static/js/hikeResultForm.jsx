@@ -37,17 +37,20 @@ class HikeResultForm extends React.Component {
       alert('Please enter the distance you hiked.')
     } else if (hikedOn === undefined) {
       alert('Please enter the day you hiked.')
+    } else if (distance < 0) {
+      alert('Please provide a positive length you hiked.')
+    } else if (hikeTime < 0) {
+      alert('Please provide a positive amount of time.')
     } else {
-      let result_data = {
-        hikeId: hikeId,
-        assessment: assessment,
-        distance: distance,
-        hikedOn: hikedOn,
-        ascentRating: ascentRating,
-        distanceRating: distanceRating,
-        challengeRating: challengeRating,
-        hikeTime: hikeTime
-        };
+      let result_data = {hikeId: hikeId,
+                        assessment: assessment,
+                        distance: distance,
+                        hikedOn: hikedOn,
+                        ascentRating: ascentRating,
+                        distanceRating: distanceRating,
+                        challengeRating: challengeRating,
+                        hikeTime: hikeTime
+                        };
       this.props.onSubmitResultsForm(result_data); 
     };
   }
@@ -62,7 +65,14 @@ class HikeResultForm extends React.Component {
             <li><b>Summary: </b>{this.props.trailDetails.summary}</li>
             <li><b>Difficulty: </b>{this.props.trailDetails.difficulty}</li>
             <li><b>Length (mi): </b>{this.props.trailDetails.len}</li>
+            <li><b>Ascent (ft): </b> {this.props.trailDetails.ascent}</li>
             <li><b>Status: </b> {this.props.trailDetails.condStatus}</li>
+            <li>
+              <ul>
+                <li>
+                </li>
+              </ul>
+            </li>
           </ul>
         </div>
         <h2>Hike Results:</h2>
