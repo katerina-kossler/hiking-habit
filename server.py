@@ -161,8 +161,7 @@ def show_current_hikes():
                      'trailId':hike.trail_id,
                      'trailName':hike.trail.trail_name,
                      'trailDescription':hike.trail.description,
-                     'isComplete':hike.is_complete
-                     }
+                     'isComplete':hike.is_complete}
         hikes_info.append(hike_info)
     return jsonify(hikes_info)
 
@@ -242,9 +241,7 @@ def cancel_hike():
     """Submits a change of a hike's canceled_by_user to True"""
     
     hike_id = request.form.get('hikeId')
-    print(hike_id)
     hike = Hike.query.filter_by(hike_id=hike_id).first()
-    print(hike)
     if hike:
         hike.canceled_by_user = True
         if (hike.is_complete == True):
@@ -271,15 +268,17 @@ def show_current_goals():
                                          (Goal.canceled_by_user == False)).all()
         goals = []
         for goal_object in goal_objects:
+            goal_from_enum = str(goal_object.goal).split('.')[1].lower()
+            status_from_enum = str(goal_object.status).split('.')[1].lower()
             goal = {'goalId': goal_object.goal_id,
                     'title': goal_object.title,
-                    'goal': str(goal_object.goal),
+                    'type': goal_from_enum,
                     'numericalValue': goal_object.numerical_value,
                     'description': goal_object.description,
                     'createdOn': goal_object.created_on,
-                    'status': str(goal_object.status)
-                    }
+                    'status': status_from_enum}
             goals.append(goal)   
+        print(goals) 
         return jsonify(goals)
     return 'Failed, please login and try again'
 
@@ -306,7 +305,7 @@ def add_new_goal():
         print(goal)
         db.session.add(goal)
         db.session.commit()
-        return 'Success'
+        return 'Success; goal added!'
     return 'Failed; Please login and try again'
 
 
@@ -407,6 +406,12 @@ def show_hike_result():
         trail = Hike.query.filter_by(hike_id=hike_id).first()
         trail_id = trail.trail_id
         trail_details=Trail.query.filter_by(trail_id=trail_id).first()
+        ascent_from_enum = str(result.ascent_rating).split('.')[1]
+        ascent_from_enum = ascent_from_enum.replace("_", " ")
+        distance_from_enum = str(result.distance_rating).split('.')[1]
+        distance_from_enum = distance_from_enum.replace("_", " ")
+        challenge_from_enum = str(result.challenge_rating).split('.')[1]
+        challenge_from_enum = challenge_from_enum.replace("_", " ")
         result_details = {'name': trail_details.trail_name,
                           'summary': trail_details.description,
                           'difficulty': trail_details.difficulty,
@@ -422,9 +427,9 @@ def show_hike_result():
                           'assessment': result.assessment,
                           'distance': result.distance_in_miles,
                           'hikedOn': result.hiked_on,
-                          'ascentRating': str(result.ascent_rating),
-                          'distanceRating': str(result.distance_rating),
-                          'challengeRating': str(result.challenge_rating),
+                          'ascentRating': ascent_from_enum.lower(),
+                          'distanceRating': distance_from_enum.lower(),
+                          'challengeRating': challenge_from_enum.lower(),
                           'hikeTime': result.hike_time}
         print(result_details)
         return jsonify(result_details)

@@ -39,13 +39,11 @@ class TrailsForm extends React.Component {
       alert('Maximum minimum trail length is 200 miles, please reduce.')
     } else {
       let sort = this.state.sort;
-      let trailSearchData = {
-          zipcode: zipcode,
-          maxRadius: maxRadius,
-          length: length,
-          sort: sort,
-          maxResults: maxResults
-      };
+      let trailSearchData = {zipcode: zipcode,
+                              maxRadius: maxRadius,
+                              length: length,
+                              sort: sort,
+                              maxResults: maxResults};
       this.props.searchTrails(trailSearchData); 
     }
   }

@@ -49,8 +49,7 @@ class HikeResultForm extends React.Component {
                         ascentRating: ascentRating,
                         distanceRating: distanceRating,
                         challengeRating: challengeRating,
-                        hikeTime: hikeTime
-                        };
+                        hikeTime: hikeTime};
       this.props.onSubmitResultsForm(result_data); 
     };
   }

@@ -3,7 +3,7 @@
 class RegisterForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { username: undefined,
+    this.state = {username: undefined,
                    email: undefined,
                    password: undefined,
                    first: undefined,
@@ -23,13 +23,11 @@ class RegisterForm extends React.Component {
     let password = this.state.password;
     let firstName = this.state.first;
     let lastName = this.state.last;
-    let user_data = {
-        username: username,
-        email: email,
-        password: password,
-        first: firstName,
-        last: lastName
-        };
+    let user_data = {username: username,
+                      email: email,
+                      password: password,
+                      first: firstName,
+                      last: lastName};
     this.props.tryRegistration(user_data);
   }
   

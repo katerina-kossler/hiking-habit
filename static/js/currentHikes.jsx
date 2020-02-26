@@ -20,7 +20,6 @@ class CurrentHikes extends React.Component {
       } else {
         const hikeList = [];
         for (const hike of hikes) {
-          console.log(hike.hikeId)
           hikeList.push(
             <Hike 
               hikeId={hike.hikeId}

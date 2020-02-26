@@ -58,8 +58,7 @@ class App extends React.Component {
         this.setState({userId: id,
                       first: first,
                       last: last,
-                      createdOn: createdOn
-                    });
+                      createdOn: createdOn});
       } else {
         this.setState({userId: undefined,
                        first: undefined,

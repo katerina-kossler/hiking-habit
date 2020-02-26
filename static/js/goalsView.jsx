@@ -2,42 +2,39 @@
 class GoalsView extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {view:'all'};
+    this.state = {view:undefined,
+                  goals:undefined};
     this.addGoal = this.addGoal.bind(this);
     this.viewGoals = this.viewGoals.bind(this);
   }
   
   addGoal() {
-    
+    this.setState({view:undefined});
   }
   
   viewGoals() {
-    console.log('view goals')
-    $.get('api/goals', (response) => {
+    $.get('/api/goals', (response) => {
       console.log(response);
     });
   }
   
-  onComponentDidMount() {
+  componentDidMount() {
     this.viewGoals();
   }
   
   render() {
     let view = this.state.view;
-    if (view == 'all') {
-      return (  
-        <div>
-          <button onClick={()=>{this.setState({view: 'all'})}}>View Goals</button>  
-          <button onClick={()=>{this.setState({view: 'add'})}}>Add Goal</button>  
-          <CurrentGoals/>
-        </div>
-      )
-    } else if (view == 'add') {
+    if (view == 'add') {
       return (
         <div>
-          <button onClick={()=>{this.setState({view: 'all'})}}>View Goals</button>  
-          <button onClick={()=>{this.setState({view: 'add'})}}>Add Goal</button>  
           <GoalForm addGoal={this.addGoal}/>
+        </div>
+      )
+    } else {
+      return (  
+        <div>
+          <CurrentGoals goals={this.state.goals}/>
+          <button onClick={()=>{this.setState({view: 'add'})}}>Add a Goal</button>  
         </div>
       )
     };

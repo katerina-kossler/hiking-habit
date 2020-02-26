@@ -76,8 +76,7 @@ class HikesView extends React.Component {
                                       condOn: condOn,
                                       ascent: ascent,
                                       condStatus: condStatus,
-                                      condDetails: condDetails
-                                    };
+                                      condDetails: condDetails};
           this.setState({trailDetails: trailDetailsObject,
                          resultFrom: hikeId,
                          showForm: showForm});

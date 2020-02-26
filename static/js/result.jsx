@@ -6,6 +6,8 @@ class Result extends React.Component {
     // this.props.trailDetails
     // this.props.resultDetails
     // this.onUpdate
+    
+    // later want to give option to edit
   }
   
   render() {
@@ -38,10 +40,10 @@ class Result extends React.Component {
               Ascent: {this.props.resultDetails.ascentRating}
             </li>
             <li>
-              Distance:{this.props.resultDetails.distanceRating}
+              Distance: {this.props.resultDetails.distanceRating}
             </li>
             <li>
-              Challenge:{this.props.resultDetails.challengeRating}
+              Challenge: {this.props.resultDetails.challengeRating}
             </li>
           </ul>
         </div>

@@ -8,6 +8,7 @@ class GoalForm extends React.Component {
                   }
     this.handleInput = this.handleInput.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    //this.props.addGoal
     }
 
   handleInput(event) {
@@ -20,22 +21,24 @@ class GoalForm extends React.Component {
     const goalType = this.state.goalType;
     const numericalValue = this.state.numericalValue;
     const description = this.state.description;
-    let result_data = {title: title,
-                       goalType: goalType,
-                       numericalValue: numericalValue,
-                       description: description
-                      };
-    console.log(result_data);
-    // pass up to some function likely in goals view to change what is seen   
-  }
-  
-  handleChange(event) {
-    this.setState({[event.target.name]: event.target.value});
-  }
- 
-  handleSubmit(event) {
-    event.preventDefault();
-    this.props.onCheckHikes(this.state.type);
+    if (title == undefined) {
+      alert("Please enter a title")
+    } else if (numericalValue == undefined) {
+      alert("Please enter a goal value")
+    } else if (typeof numericalValue != 'number') {
+      alert("Please enter goal in numbers")
+    } else if (description == undefined) {
+      alert("Please enter a goal description")
+    } else {
+      let result_data = {title: title,
+                        type: goalType,
+                        numericalValue: numericalValue,
+                        description: description};
+      $.post("/api/goals", result_data, (response) => {
+        alert(response);
+        this.props.addGoal();
+      });
+    }
   }
   
   render() {
