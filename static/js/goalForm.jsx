@@ -21,7 +21,6 @@ class GoalForm extends React.Component {
     const goalType = this.state.goalType;
     const numericalValue = this.state.numericalValue;
     const description = this.state.description;
-    console.log(numericalValue);
     if (title == undefined) {
       alert("Please enter a title")
     } else if (numericalValue == undefined) {

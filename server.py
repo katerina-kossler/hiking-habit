@@ -68,7 +68,7 @@ def intake_user_info():
     email = request.form.get("email")
     username_in_system = User.query.filter_by(username=username).first()
     email_in_system = User.query.filter_by(email=email).first()
-    password = request.form.get("password") # hash with salt
+    password = request.form.get("password") # hash with salt later
     created_on = date.today()
     first_name = request.form.get("first")
     last_name = request.form.get("last")
@@ -143,7 +143,6 @@ def load_search_results():
                "maxResults":max_results}
     r_trails = requests.get("https://www.hikingproject.com/data/get-trails", 
                             params=payload)
-
     trails = r_trails.json()['trails']
     return jsonify(trails)
 
@@ -319,12 +318,17 @@ def show_goal_progress():
     if user_id:
         goal_id = request.args.get("goalId")
         selected_goal = Goal.query.filter_by(goal_id=goal_id).first()
-        goal_type = selected_goal.goal
-        # need to get active, completed hikes for a user to connect to hike_results
-        hike_results = HikeResult.query.filter_by(user_id=user_id).all()
-        print(hike_results)
+        goal_type = str(selected_goal.goal)
+        print(goal_type)
+        completed_hikes = Hike.query.filter((Hike.user_id == user_id) & 
+                                  (Hike.canceled_by_user == False) &
+                                  (Hike.is_complete == True)).all()
+        hike_results = []
+        for hike in completed_hikes:
+            result = HikeResult.query.filter_by(hike_id = hike.hike_id).first()
+            hike_results.append(result)
         hikes = []
-        if goal_type == "NUMBER_HIKES":
+        if goal_type == "GoalType.NUMBER_HIKES":
             num = 0
             for result in hike_results:
                 num +=1
@@ -332,47 +336,51 @@ def show_goal_progress():
                         'hikeNumber': num,
                         'hikedOn': result.hiked_on}
                 hikes.append(hike)
-        elif goal_type == "MILES_HIKED":
+        elif goal_type == "GoalType.MILES_HIKED":
             miles = 0
             for result in hike_results:
                 miles += result.distance_in_miles
+                rating_from_enum = str(result.distance_rating).split('.')[1].lower()
                 hike = {'hikeId': result.hike_id,
                         'miles': result.distance_in_miles,
                         'totalMiles': miles,
-                        'rating': distance_rating,
+                        'rating': rating_from_enum,
                         'hikedOn': result.hiked_on}
-            hikes.append(hike)
-        elif goal_type == "FEET_ASCENDED":
+                hikes.append(hike)
+        elif goal_type == "GoalType.FEET_ASCENDED":
             feet = 0
             for result in hike_results:
                 trail = Hike.query.filter_by(hike_id=result.hike_id).first()
                 trail_details=Trail.query.filter_by(trail_id=trail.trail_id).first()
                 feet += trail_details.total_ascent
+                rating_from_enum = str(result.ascent_rating).split('.')[1].lower()
                 hike = {'hikeId': result.hike_id,
                         'feet': trail_details.total_ascent,
                         'totalFeet': feet,
-                        'rating': result.ascent_rating,
+                        'rating': rating_from_enum,
                         'hikedOn': result.hiked_on}
                 hikes.append(hike)
-        elif goal_type == "HIKEABLE_MILES":
+        elif goal_type == "GoalType.HIKEABLE_MILES":
             for result in hike_results:
+                rating_from_enum = str(result.distance_rating).split('.')[1].lower()
                 hike = {'hikeId': result.hike_id,
                         'feet': trail_details.total_ascent,
                         'totalFeet': feet,
-                        'rating': result.distance_rating,
+                        'rating': rating_from_enum,
                         'hikedOn': result.hiked_on}
                 hikes.append(hike)
-        elif goal_type == "HIKE_DIFFICULTY":
+        elif goal_type == "GoalType.HIKE_DIFFICULTY":
             for result in hike_results:
                 trail = Hike.query.filter_by(hike_id=result.hike_id).first()
                 trail_details=Trail.query.filter_by(trail_id=trail.trail_id).first()
+                rating_from_enum = str(result.challenge_rating).split('.')[1].lower()
                 hike = {'hikeId': result.hike_id,
                         'difficulty': trail_details.difficulty,
-                        'rating': result.challenge_rating,
+                        'rating': rating_from_enum,
                         'hikedOn': result.hiked_on}
                 hikes.append(hike)
         else:
-            return 'Invalid goal type'
+            return 'Invalid goal type.'
         print(hikes)
         return jsonify(hikes)
     return 'Please login and try again.'
@@ -386,10 +394,10 @@ def cancel_goal():
     goal = Goal.query.filter_by(goal_id=goal_id).first()
     goal.canceled_by_user = True 
     db.session.commit()
-    return 'Goal is canceled'
+    return 'Goal is canceled.'
 
 # ---------- Hike Results view, creation & progress ---------- #
-@app.route("/api/hike_results", methods=["GET"]) #might delete this
+@app.route("/api/hike_results", methods=["GET"]) #might delete this - currently not used
 def show_all_hike_results():
     """Returns Hike results for a user"""
     
@@ -433,7 +441,7 @@ def show_hike_result():
                           'details': trail_details.status_details,
                           'assessment': result.assessment,
                           'distance': result.distance_in_miles,
-                          'hikedOn': result.hiked_on.strftime("%A %B %d, %Y"), # need to confirm that this format is correct
+                          'hikedOn': result.hiked_on.strftime("%A %B %d, %Y"),
                           'ascentRating': ascent_from_enum.lower(),
                           'distanceRating': distance_from_enum.lower(),
                           'challengeRating': challenge_from_enum.lower(),
@@ -494,7 +502,6 @@ def show_trail_details():
                           'date': trail_details.status_at.strftime("%A %B %d, %Y"), # need to confirm this format
                           'status': trail_details.status,
                           'details': trail_details.status_details}
-            print(trail_object)
             return jsonify(trail_object)
     return 'Trail is not in system, please cancel hike and try again.'
         
