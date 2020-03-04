@@ -5,7 +5,7 @@ class TrailsForm extends React.Component {
     super();
     this.state={zipcode: undefined,
                 maxRadius: 30,
-                length: 10,
+                length: 0,
                 sort: "length",
                 maxResults: 10};
     this.handleInput = this.handleInput.bind(this);
@@ -75,7 +75,7 @@ class TrailsForm extends React.Component {
                name="length" 
                min="0" 
                max="200"
-               placeholder="10" 
+               placeholder="0" 
                onChange={this.handleInput}/>
         [0-200]
         <br/>

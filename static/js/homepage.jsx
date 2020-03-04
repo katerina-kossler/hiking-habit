@@ -50,21 +50,19 @@ class App extends React.Component {
   
   checkIfLoggedIn() {
     $.get('/api/profile', (response) => {
-      if (response.loggedIn == 'true') {
+      let type = typeof(response);
+      if (type == 'string') {
+        this.setState({userId: undefined,
+          first: undefined});
+      } else {
         const id = response.userId;
         const first = response.first;
         const last = response.last;
         const createdOn = response.createdOn;
         this.setState({userId: id,
-                      first: first,
-                      last: last,
-                      createdOn: createdOn});
-      } else {
-        this.setState({userId: undefined,
-                       first: undefined,
-                       last: undefined,
-                       createdOn: undefined
-                    });
+                       first: first,
+                       last: last,
+                       createdOn: createdOn});
       }
     });
   }

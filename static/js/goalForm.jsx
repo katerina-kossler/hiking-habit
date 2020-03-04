@@ -59,7 +59,6 @@ class GoalForm extends React.Component {
               <option value="MILES_HIKED">Total Miles Hiked</option>
               <option value="FEET_ASCENDED">Feet Climbed</option>
               <option value="HIKEABLE_MILES">Miles in a Hike Completed</option>
-              <option value="HIKE_DIFFICULTY">Hike Difficulty</option>
             </select>
           </label>
           <br/>

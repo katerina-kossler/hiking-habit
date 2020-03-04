@@ -40,9 +40,7 @@ def authenticate_user():
         if (user_password == password):
             session['current_user'] = user_in_system.user_id
             return {'userId': session['current_user'],
-                    'first': user_in_system.first_name,
-                    'last': user_in_system.last_name,
-                    'createdOn': user_in_system.created_on}
+                    'first': user_in_system.first_name}
         else:
             return 'Incorrect password; try again'
     if email_in_system:
@@ -51,9 +49,7 @@ def authenticate_user():
             session['current_user'] = email_in_system.user_id
             flash('Successfully Logged in')
             return {'userId': session['current_user'],
-                    'first': email_in_system.first_name,
-                    'last': email_in_system.last_name,
-                    'createdOn': email_in_system.created_on}
+                    'first': email_in_system.first_name}
         else:
             return 'Incorrect password; try again'
     return 'Incorrect login information; try again'
@@ -90,9 +86,7 @@ def intake_user_info():
     user = User.query.filter_by(username=username).first()
     session["current_user"] = user.user_id
     return {'userId': session['current_user'],
-            'first': user.first_name,
-            'last': user.last_name,
-            'createdOn': user.created_on}
+            'first': user.first_name}
 
 
 @app.route("/api/logout", methods=["GET"])
@@ -108,17 +102,16 @@ def logout():
 def show_profile():
     """Returns the current user's profile from initial intake info"""
     
-    user_id = session.get('current_user',None)
+    user_id = session.get('current_user', None)
     if user_id:
         user = User.query.filter_by(user_id=user_id).first()
-        user_info = {'loggedIn': 'true',
-                    'userId': user_id,
+        user_info = {'userId': user_id,
                     'first':user.first_name,
                     'last':user.last_name,
-                    'createdOn':user.created_on.strftime("%A %B %d, %Y")}
+                    'createdOn':user.created_on.strftime("%A %B %d, %Y")} ## datetime object formatting
+        return jsonify(user_info)
     else:
-        user_info = {'loggedIn': 'false'}
-    return jsonify(user_info)
+        return 'Please login and try again.'
 
 
 # ---------- REI Hiking Project interactions  ---------- #
@@ -256,11 +249,10 @@ def cancel_hike():
 
 
 # ---------- Goal view, creation, progress & cancelation ---------- #
-# not fully developed section
 @app.route("/api/goals", methods=["GET"])
 def show_current_goals():
     """Returns active goals"""
-    
+    # need to fix formatting
     user_id = session.get('current_user', None)
     if user_id:
         goal_objects = Goal.query.filter((Goal.user_id == user_id) &
@@ -290,7 +282,7 @@ def add_new_goal():
     if user_id:
         title = request.form.get('title')
         goal_type = request.form.get('type')
-        numerical_value = request.form.get('numericalValue')
+        numerical_value = float(request.form.get('numericalValue'))
         created_on = datetime.today()
         description = request.form.get('description')
         status = 'NOT_STARTED'
@@ -319,7 +311,8 @@ def show_goal_progress():
         goal_id = request.args.get("goalId")
         selected_goal = Goal.query.filter_by(goal_id=goal_id).first()
         goal_type = str(selected_goal.goal)
-        print(goal_type)
+        status_from_enum = str(selected_goal.status).split('.')[1]
+        print(status_from_enum)
         completed_hikes = Hike.query.filter((Hike.user_id == user_id) & 
                                   (Hike.canceled_by_user == False) &
                                   (Hike.is_complete == True)).all()
@@ -327,6 +320,7 @@ def show_goal_progress():
         for hike in completed_hikes:
             result = HikeResult.query.filter_by(hike_id = hike.hike_id).first()
             hike_results.append(result)
+
         hikes = []
         if goal_type == "GoalType.NUMBER_HIKES":
             num = 0
@@ -334,8 +328,11 @@ def show_goal_progress():
                 num +=1
                 hike = {'hikeId': result.hike_id,
                         'hikeNumber': num,
-                        'hikedOn': result.hiked_on}
+                        'hikedOn': result.hiked_on.isoformat()}
                 hikes.append(hike)
+                if num >= selected_goal.numerical_value:
+                    selected_goal.status = 'COMPLETE'
+                    db.session.commit()
         elif goal_type == "GoalType.MILES_HIKED":
             miles = 0
             for result in hike_results:
@@ -345,8 +342,11 @@ def show_goal_progress():
                         'miles': result.distance_in_miles,
                         'totalMiles': miles,
                         'rating': rating_from_enum,
-                        'hikedOn': result.hiked_on}
+                        'hikedOn': result.hiked_on.isoformat()}
                 hikes.append(hike)
+                if miles >= selected_goal.numerical_value:
+                    selected_goal.status = 'COMPLETE'
+                    db.session.commit()
         elif goal_type == "GoalType.FEET_ASCENDED":
             feet = 0
             for result in hike_results:
@@ -358,30 +358,41 @@ def show_goal_progress():
                         'feet': trail_details.total_ascent,
                         'totalFeet': feet,
                         'rating': rating_from_enum,
-                        'hikedOn': result.hiked_on}
+                        'hikedOn': result.hiked_on.isoformat()}
                 hikes.append(hike)
+                if feet >= selected_goal.numerical_value:
+                    selected_goal.status = 'COMPLETE'
+                    db.session.commit()
         elif goal_type == "GoalType.HIKEABLE_MILES":
             for result in hike_results:
                 rating_from_enum = str(result.distance_rating).split('.')[1].lower()
                 hike = {'hikeId': result.hike_id,
-                        'feet': trail_details.total_ascent,
-                        'totalFeet': feet,
+                        'miles': result.distance_in_miles,
                         'rating': rating_from_enum,
-                        'hikedOn': result.hiked_on}
+                        'hikedOn': result.hiked_on.isoformat()}
                 hikes.append(hike)
-        elif goal_type == "GoalType.HIKE_DIFFICULTY":
-            for result in hike_results:
-                trail = Hike.query.filter_by(hike_id=result.hike_id).first()
-                trail_details=Trail.query.filter_by(trail_id=trail.trail_id).first()
-                rating_from_enum = str(result.challenge_rating).split('.')[1].lower()
-                hike = {'hikeId': result.hike_id,
-                        'difficulty': trail_details.difficulty,
-                        'rating': rating_from_enum,
-                        'hikedOn': result.hiked_on}
-                hikes.append(hike)
+                if hike['miles'] >= selected_goal.numerical_value:
+                    selected_goal.status = 'COMPLETE'
+                    db.session.commit()
+        # elif goal_type == "GoalType.HIKE_DIFFICULTY": # decomissioning this goal type
+        #     for result in hike_results:
+        #         trail = Hike.query.filter_by(hike_id=result.hike_id).first()
+        #         trail_details=Trail.query.filter_by(trail_id=trail.trail_id).first()
+        #         rating_from_enum = str(result.challenge_rating).split('.')[1].lower()
+        #         hike = {'hikeId': result.hike_id,
+        #                 'difficulty': trail_details.difficulty,
+        #                 'rating': rating_from_enum,
+        #                 'hikedOn': result.hiked_on.isoformat}
+        #         hikes.append(hike)
+        #         if hike['difficulty'] >= selected_goal.numerical_value:
+        #             selected_goal.status = 'COMPLETE'
+        #             db.session.commit()
         else:
             return 'Invalid goal type.'
         print(hikes)
+        if hikes and status_from_enum == 'NOT_STARTED':
+            selected_goal.status = 'IN_PROGRESS'
+            db.session.commit()
         return jsonify(hikes)
     return 'Please login and try again.'
 

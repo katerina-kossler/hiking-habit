@@ -40,7 +40,7 @@ class GoalType(enum.Enum):
     MILES_HIKED = 2
     FEET_ASCENDED = 3
     HIKEABLE_MILES = 4
-    HIKE_DIFFICULTY = 5
+    HIKE_DIFFICULTY = 5 #need to decomission this goal type
 
 class Progress(enum.Enum):
     NOT_STARTED = 1

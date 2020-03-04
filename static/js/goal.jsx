@@ -13,7 +13,6 @@ class Goal extends React.Component {
   onCheckGoal() {
     const goalId = this.props.goalId;
     const data = {goalId: goalId};
-    console.log("oh ya let's see that progress - working on")
     $.get("/api/progress", data, (response) => {
       console.log(response);
     });
