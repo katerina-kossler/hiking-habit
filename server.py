@@ -325,9 +325,12 @@ def show_goal_progress():
         if goal_type == "GoalType.NUMBER_HIKES":
             num = 0
             for result in hike_results:
-                num +=1
+                num += 1
+                rating_from_enum = str(result.challenge_rating).split('.')[1].lower()
                 hike = {'hikeId': result.hike_id,
-                        'hikeNumber': num,
+                        'value': num,
+                        'rating': rating_from_enum,
+                        'ratingType': 'Challenge Rating',
                         'hikedOn': result.hiked_on.isoformat()}
                 hikes.append(hike)
                 if num >= selected_goal.numerical_value:
@@ -339,9 +342,9 @@ def show_goal_progress():
                 miles += result.distance_in_miles
                 rating_from_enum = str(result.distance_rating).split('.')[1].lower()
                 hike = {'hikeId': result.hike_id,
-                        'miles': result.distance_in_miles,
-                        'totalMiles': miles,
+                        'value': miles,
                         'rating': rating_from_enum,
+                        'ratingType': 'Distance Rating',
                         'hikedOn': result.hiked_on.isoformat()}
                 hikes.append(hike)
                 if miles >= selected_goal.numerical_value:
@@ -355,9 +358,9 @@ def show_goal_progress():
                 feet += trail_details.total_ascent
                 rating_from_enum = str(result.ascent_rating).split('.')[1].lower()
                 hike = {'hikeId': result.hike_id,
-                        'feet': trail_details.total_ascent,
-                        'totalFeet': feet,
+                        'value': feet,
                         'rating': rating_from_enum,
+                        'ratingType': 'Ascent Rating',
                         'hikedOn': result.hiked_on.isoformat()}
                 hikes.append(hike)
                 if feet >= selected_goal.numerical_value:
@@ -367,8 +370,9 @@ def show_goal_progress():
             for result in hike_results:
                 rating_from_enum = str(result.distance_rating).split('.')[1].lower()
                 hike = {'hikeId': result.hike_id,
-                        'miles': result.distance_in_miles,
+                        'value': result.distance_in_miles,
                         'rating': rating_from_enum,
+                        'ratingType': 'Distance Rating',
                         'hikedOn': result.hiked_on.isoformat()}
                 hikes.append(hike)
                 if hike['miles'] >= selected_goal.numerical_value:

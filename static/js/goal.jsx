@@ -3,7 +3,8 @@
 class Goal extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {view:undefined};
+    this.state = {view:undefined,
+                  data:undefined};
     this.onCheckGoal=this.onCheckGoal.bind(this);
     this.onCancelGoal=this.onCancelGoal.bind(this);
     //this.props.goalId, title, type, numericalValue, 
@@ -15,6 +16,12 @@ class Goal extends React.Component {
     const data = {goalId: goalId};
     $.get("/api/progress", data, (response) => {
       console.log(response);
+      // const goalType = response.goal_type,
+                        // 'hikeId': result.hike_id,
+                        // 'value': result.distance_in_miles,
+                        // 'rating': rating_from_enum,
+                        // 'ratingType': 'Distance Rating'
+                        // 'hikedOn': result.hiked_on.isoformat()}
     });
   }
   
@@ -31,7 +38,7 @@ class Goal extends React.Component {
     let view = this.state.view;
     if (view) {
       return(
-        <Progress goalId={this.props.goalId}/>
+        <Progress data={this.state.data} //>
       )
     } else {
       return (
