@@ -15,13 +15,14 @@ class Goal extends React.Component {
     const goalId = this.props.goalId;
     const data = {goalId: goalId};
     $.get("/api/progress", data, (response) => {
-      console.log(response);
-      // const goalType = response.goal_type,
-                        // 'hikeId': result.hike_id,
-                        // 'value': result.distance_in_miles,
-                        // 'rating': rating_from_enum,
-                        // 'ratingType': 'Distance Rating'
-                        // 'hikedOn': result.hiked_on.isoformat()}
+      let type = typeof(response);
+      if (type == 'string') {
+        alert(response);
+      } else {
+        console.log(response);
+        this.setState({view: goalId,
+                       data: response});
+      }
     });
   }
   
@@ -38,7 +39,12 @@ class Goal extends React.Component {
     let view = this.state.view;
     if (view) {
       return(
-        <Progress data={this.state.data} //>
+        <div>
+          <h3>{this.props.title}</h3>
+          {this.props.description}
+          <Progress rawData={this.state.data}/>
+          <button onClick={() => {this.setState({view:undefined})}}><b>Hide Progress</b></button>
+        </div>
       )
     } else {
       return (

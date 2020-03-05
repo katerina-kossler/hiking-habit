@@ -269,7 +269,6 @@ def show_current_goals():
                     'createdOn': goal_object.created_on.strftime("%A %B %d, %Y"),
                     'status': status_from_enum}
             goals.append(goal)   
-        print(goals) 
         return jsonify(goals)
     return 'Failed, please login and try again'
 
@@ -295,7 +294,6 @@ def add_new_goal():
                     created_on=created_on,
                     status=status,
                     canceled_by_user=canceled_by_user)
-        print(goal)
         db.session.add(goal)
         db.session.commit()
         return 'Success; goal added!'
@@ -312,7 +310,6 @@ def show_goal_progress():
         selected_goal = Goal.query.filter_by(goal_id=goal_id).first()
         goal_type = str(selected_goal.goal)
         status_from_enum = str(selected_goal.status).split('.')[1]
-        print(status_from_enum)
         completed_hikes = Hike.query.filter((Hike.user_id == user_id) & 
                                   (Hike.canceled_by_user == False) &
                                   (Hike.is_complete == True)).all()
@@ -320,7 +317,6 @@ def show_goal_progress():
         for hike in completed_hikes:
             result = HikeResult.query.filter_by(hike_id = hike.hike_id).first()
             hike_results.append(result)
-
         hikes = []
         if goal_type == "GoalType.NUMBER_HIKES":
             num = 0
@@ -375,7 +371,7 @@ def show_goal_progress():
                         'ratingType': 'Distance Rating',
                         'hikedOn': result.hiked_on.isoformat()}
                 hikes.append(hike)
-                if hike['miles'] >= selected_goal.numerical_value:
+                if hike['value'] >= selected_goal.numerical_value:
                     selected_goal.status = 'COMPLETE'
                     db.session.commit()
         # elif goal_type == "GoalType.HIKE_DIFFICULTY": # decomissioning this goal type
@@ -435,7 +431,6 @@ def show_hike_result():
         trail = Hike.query.filter_by(hike_id=hike_id).first()
         trail_id = trail.trail_id
         trail_details=Trail.query.filter_by(trail_id=trail_id).first()
-        print(result.hiked_on)
         ascent_from_enum = str(result.ascent_rating).split('.')[1]
         ascent_from_enum = ascent_from_enum.replace("_", " ")
         distance_from_enum = str(result.distance_rating).split('.')[1]
