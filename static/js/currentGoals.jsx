@@ -22,15 +22,14 @@ class CurrentGoals extends React.Component {
         const goalList = [];
         for (const goal of goals) {
           goalList.push(
-          <Goal 
-            goalId= {goal.goalId}
-            title= {goal.title}
-            type= {goal.type}
-            numericalValue= {goal.numericalValue}
-            description= {goal.description}
-            createdOn= {goal.created_on}
-            status= {goal.status}
-            viewGoals={this.props.viewGoals}
+          <Goal goalId={goal.goalId}
+                title={goal.title}
+                type={goal.type}
+                numericalValue={goal.numericalValue}
+                description={goal.description}
+                createdOn={goal.createdOn}
+                status={goal.status}
+                viewGoals={this.props.viewGoals}
           />
           );
         }

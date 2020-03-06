@@ -18,7 +18,6 @@ class Hike extends React.Component {
     this.props.renderForm(data);
   }
   
-  
   onCompleteHike(event) {
     const hikeId = this.props.hikeId;
     const type = 'new';
@@ -29,7 +28,6 @@ class Hike extends React.Component {
       this.props.renderForm(data);
     });
   }
-  
   
   onCancelHike() {
     const hikeId = this.props.hikeId;
@@ -59,7 +57,7 @@ class Hike extends React.Component {
         <div>
           <h4>{trailName}</h4> {trailDescription}
           <p>
-            <button onClick={this.onViewResults}><b>View / Edit Results</b></button>
+            <button onClick={this.onViewResults}><b>View Results</b></button>
             <button onClick={this.onCancelHike}><b>Cancel</b></button>
           </p>
         </div>

@@ -19,7 +19,6 @@ class Goal extends React.Component {
       if (type == 'string') {
         alert(response);
       } else {
-        console.log(response);
         this.setState({view: goalId,
                        data: response});
       }
@@ -42,7 +41,16 @@ class Goal extends React.Component {
         <div>
           <h3>{this.props.title}</h3>
           {this.props.description}
-          <Progress rawData={this.state.data}/>
+          <ul>
+            <li>Type: {this.props.type}</li>
+            <li>Goal: {this.props.numericalValue}</li>
+          </ul>
+          <Progress rawData={this.state.data} 
+                    status={this.props.status}
+                    goal={this.props.numericalValue} 
+                    type={this.props.type}
+                    createdOn={this.props.createdOn}/>
+                    
           <button onClick={() => {this.setState({view:undefined})}}><b>Hide Progress</b></button>
         </div>
       )
@@ -52,7 +60,7 @@ class Goal extends React.Component {
           <h3>{this.props.title}</h3>
           {this.props.description}
           <p>
-            <button onClick={this.onCheckGoal}><b>Check Progress</b></button>
+            <button onClick={this.onCheckGoal}><b>View Details</b></button>
             <button onClick={this.onCancelGoal}><b>Cancel</b></button>
           </p>
         </div>

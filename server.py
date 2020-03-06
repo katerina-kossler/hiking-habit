@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, flash, session, request, jsonify
 import json
-from sqlalchemy import func, and_
+from sqlalchemy import func, and_, desc
 from model import User, Goal, Trail, Hike, HikeResult, connect_to_db, db
 from datetime import date, datetime
 import jinja2
@@ -252,7 +252,6 @@ def cancel_hike():
 @app.route("/api/goals", methods=["GET"])
 def show_current_goals():
     """Returns active goals"""
-    # need to fix formatting
     user_id = session.get('current_user', None)
     if user_id:
         goal_objects = Goal.query.filter((Goal.user_id == user_id) &
@@ -266,7 +265,7 @@ def show_current_goals():
                     'type': goal_from_enum,
                     'numericalValue': goal_object.numerical_value,
                     'description': goal_object.description,
-                    'createdOn': goal_object.created_on.strftime("%A %B %d, %Y"),
+                    'createdOn': goal_object.created_on.isoformat(),
                     'status': status_from_enum}
             goals.append(goal)   
         return jsonify(goals)
@@ -313,10 +312,11 @@ def show_goal_progress():
         completed_hikes = Hike.query.filter((Hike.user_id == user_id) & 
                                   (Hike.canceled_by_user == False) &
                                   (Hike.is_complete == True)).all()
-        hike_results = []
+        unsorted_results = []
         for hike in completed_hikes:
             result = HikeResult.query.filter_by(hike_id = hike.hike_id).first()
-            hike_results.append(result)
+            unsorted_results.append(result)
+        hike_results = sorted(unsorted_results, key=lambda x: x.hiked_on)
         hikes = []
         if goal_type == "GoalType.NUMBER_HIKES":
             num = 0
@@ -389,7 +389,6 @@ def show_goal_progress():
         #             db.session.commit()
         else:
             return 'Invalid goal type.'
-        print(hikes)
         if hikes and status_from_enum == 'NOT_STARTED':
             selected_goal.status = 'IN_PROGRESS'
             db.session.commit()
