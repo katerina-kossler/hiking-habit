@@ -33,30 +33,51 @@ class RegisterForm extends React.Component {
   
   render() {
     return(
-      <div>
-        <h2>Register as a new user:</h2>
+    <div class="container mx-auto">
+      <div class="row">
+        <h3>Sign up to start your hiking journey</h3>
+      </div>
+      <div class="row mw-50">
         <form>
-          <label>
-            Username:<input type="text" name="username" onChange={this.handleInput}/>
-          </label>
-          <label>
-            Email:<input type="email" name="email" onChange={this.handleInput}/>
-          </label>
-          <br/>
-          <label>
-            Password:<input type="password" name="password" onChange={this.handleInput}/>
-          </label>
-          <br/>
-          <label>
-            First Name:<input type="text" name="first" onChange={this.handleInput}/>
-          </label>
-          <label>
-            Last Name:<input type="text" name="last" onChange={this.handleInput}/>
-          </label>
-          <br/>
-          <button onClick={this.handleSubmit}> Register </button>
+          <div class="form-group">
+            <label for="registerFormUser">Username:</label>
+            <input type="text" class="form-control" 
+                  id="registerFormUser"
+                  placeholder="JohnMuir" 
+                  name="username" onChange={this.handleInput}/>
+          </div>
+          <div class="form-group">
+            <label for="registerFormEmail">Email:</label>
+            <input type="email" class="form-control" 
+                  id="registerFormEmail" 
+                  placeholder="name@example.com"
+                  name="email" onChange={this.handleInput}/>
+          </div>
+          <div class="form-group">
+            <label for="registerFormFirst">First Name:</label>
+            <input type="text" class="form-control" 
+                  id="registerFormFirst"
+                  placeholder="John" 
+                  name="first" onChange={this.handleInput}/>
+          </div>
+          <div class="form-group">
+            <label for="registerFormLast">Last Name:</label>
+            <input type="text" class="form-control" 
+                  id="registerFormLast" 
+                  placeholder="Muir"
+                  name="last" onChange={this.handleInput}/>
+          </div>
+          <div class="form-group">
+            <label for="loginFormPassword">Password:</label>
+            <input type="password" class="form-control" 
+                  id="loginFormPassword"
+                  placeholder="password"
+                  name="password" onChange={this.handleInput}/>
+          </div>
+          <button class='submit' onClick={this.handleSubmit}> Register </button>
         </form>
       </div>
+    </div>
     );
   }
 }

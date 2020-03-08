@@ -8,6 +8,7 @@ import re
 import os
 import pgeocode
 import requests
+import random
  
 key = os.environ["HIKINGPROJECT_KEY"]
 coordinates = pgeocode.Nominatim('us')
@@ -26,6 +27,26 @@ def show_homepage():
     """Show the application's homepage with links to other routes."""
     
     return render_template("homepage.html")
+    
+@app.route("/api/quote", methods=["GET"])
+def get_random_quote():
+    quotes = [
+        '''"I took a walk in the woods and came out taller than trees." - Henry David Thoreau"''',
+        '''"And into the forest I go, To lose my mind and find my soul." - Unknown''',
+        ''''In every walk with nature, one received far more than he seeks." – John Muir''',
+        '''"Of all the paths you take in life, make sure a few of them are dirt." – John Muir''',
+        '''"Because in the end, you won’t remember the time you spent working in an office or mowing the lawn. Climb that goddamn mountain." – Jack Kerouac''',
+        '''"There is no such thing as bad weather, only inappropriate clothing." – Sir Rannulph Fiennes''',
+        '''"Look deep into nature and you will understand everything better." - Albert Einstein''',
+        '''"Without new experiences, something inside of us sleeps. The sleeper must awaken." - Frank Herbert''',
+        '''"It’s not the mountain we conquer, but ourselves." - Sir Edmund Hillary''',
+        '''"There are no shortcuts to any place worth going." - Beverly Sills''',
+        '''"Wilderness is not a luxury but a necessity of the human spirit, and as vital to our lives as water and good bread." - Edward Abbey''',
+        '''"And into the forest I go, to lose my mind and find my soul." - John Muir''',
+        '''"The journey of a thousand miles begins with a single step." - Lao Tzu'''
+    ]
+    
+    return jsonify(quote=random.choice(quotes))
 
 @app.route("/api/login", methods=["POST"])
 def authenticate_user():
@@ -392,7 +413,9 @@ def show_goal_progress():
         if hikes and status_from_enum == 'NOT_STARTED':
             selected_goal.status = 'IN_PROGRESS'
             db.session.commit()
-        return jsonify(hikes)
+        return jsonify(hikeData=hikes,
+                       goalStatus=str(selected_goal.status).split('.')[1].lower()
+                       )
     return 'Please login and try again.'
 
     

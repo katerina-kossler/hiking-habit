@@ -4,7 +4,8 @@ class Goal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {view:undefined,
-                  data:undefined};
+                  data:undefined,
+                  goalStatus:undefined};
     this.onCheckGoal=this.onCheckGoal.bind(this);
     this.onCancelGoal=this.onCancelGoal.bind(this);
     //this.props.goalId, title, type, numericalValue, 
@@ -20,7 +21,8 @@ class Goal extends React.Component {
         alert(response);
       } else {
         this.setState({view: goalId,
-                       data: response});
+                       data: response.hikeData,
+                       goalStatus: response.goalStatus});
       }
     });
   }
@@ -45,13 +47,13 @@ class Goal extends React.Component {
             <li>Type: {this.props.type}</li>
             <li>Goal: {this.props.numericalValue}</li>
           </ul>
-          <Progress rawData={this.state.data} 
-                    status={this.props.status}
+          <Progress goalId={this.props.goalId}
+                    rawData={this.state.data} 
+                    status={this.state.goalStatus}
                     goal={this.props.numericalValue} 
                     type={this.props.type}
                     createdOn={this.props.createdOn}/>
-                    
-          <button onClick={() => {this.setState({view:undefined})}}><b>Hide Progress</b></button>
+          <button onClick={() => {this.setState({view:undefined})}}><b>Hide</b></button>
         </div>
       )
     } else {
@@ -60,7 +62,7 @@ class Goal extends React.Component {
           <h3>{this.props.title}</h3>
           {this.props.description}
           <p>
-            <button onClick={this.onCheckGoal}><b>View Details</b></button>
+            <button onClick={this.onCheckGoal}><b>View Progress</b></button>
             <button onClick={this.onCancelGoal}><b>Cancel</b></button>
           </p>
         </div>

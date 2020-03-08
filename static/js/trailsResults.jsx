@@ -45,7 +45,7 @@ class TrailsResults extends React.Component {
       return (
         <div>
           <p>
-            "I took a walk in the woods and came out taller than trees." - Henry David Thoreau
+            {this.props.quote}
           </p>
         </div>
       );

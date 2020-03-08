@@ -3,8 +3,10 @@
 class TrailsSearch extends React.Component {
   constructor(props) {
     super(props);
-    this.state={results:undefined}
+    this.state={results:undefined,
+                quote:undefined}
     this.onTrailSearch = this.onTrailSearch.bind(this);
+    this.getQuote = this.getQuote.bind(this);
   }
   
   onTrailSearch(searchParams) {
@@ -13,13 +15,23 @@ class TrailsSearch extends React.Component {
     });
   }
   
+  getQuote() {
+    $.get('/api/quote', (response) => {
+      this.setState({quote:response.quote})
+    })
+  }
+  
+  componentWillMount() {
+    this.getQuote()
+  }
+  
   render() {
     return(
       <div>
         <h3> Trail Search: </h3>
         <TrailsForm searchTrails={this.onTrailSearch} />
         <hr/>
-        <TrailsResults trails={this.state.results} />
+        <TrailsResults trails={this.state.results} quote={this.state.quote}/>
       </div>
     );
   }

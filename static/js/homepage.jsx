@@ -67,7 +67,7 @@ class App extends React.Component {
     });
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.checkIfLoggedIn()  
   }
   
@@ -77,29 +77,36 @@ class App extends React.Component {
       return(
         <Router>
           <div>
-            <div>
-              <h2><Link to='/'>Hiking Habit</Link></h2>
-            </div>
-            <div>
-              Welcome, {this.state.first} <button onClick={this.onLogOut}> Logout </button>
-
-            </div>
-            <hr/>
-            <ul class='nav-bar'>
-              <li>
-                <Link to='/trails'>Search for Trails</Link>
-              </li>
-              <li>
-                <Link to='/hikes'>View Hikes</Link>
-              </li>
-              <li>
-                <Link to='/goals'>View &amp; Edit Goals</Link>
-              </li>
-              <li>
-                <Link to='/profile'> Profile </Link>
-              </li>
-            </ul>
-            <hr/>
+            <nav class='navbar navbar-expand-md navbar-light bg-light'>
+              <div class='container-fluid'>     
+                <a class='navbar-brand' id='logo' href='/'>Hiking Habit</a>
+                <button class='navbar-toggler' 
+                        type='button' 
+                        data-toggle='collapse'
+                        data-target='#navbarResponsive'>
+                  <span class='navbar-toggler-icon'></span>          
+                </button>
+                <div class="collapse navbar-collapse" id='navbarResponsive'>
+                  <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                      <Link class="nav-link" to='/trails'>Search Trails</Link>
+                    </li>
+                    <li class="nav-item">
+                      <Link class="nav-link" to='/hikes'>Hikes</Link>
+                    </li>
+                    <li class="nav-item">
+                      <Link class="nav-link" to='/goals'>Goals</Link>
+                    </li>
+                    <li class="nav-item">
+                      <Link class="nav-link" to='/profile'>Profile</Link>
+                    </li>
+                    <li class="nav-item">
+                      <Link class="nav-link" to='/' onClick={this.onLogOut}>Logout</Link>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </nav>
             <Switch>
               <Route exact path='/'>
                 <Redirect to='/trails'/>
@@ -136,18 +143,23 @@ class App extends React.Component {
       return (
         <Router>
           <div>
-            <div>
-              <h2>Hiking Habit</h2>
-            </div>
-            <ul class='nav-bar'>
-              <li>
-                <Link to='/login'>Login</Link>
-              </li>
-              <li>
-                <Link to='/register'>Register</Link>
-              </li>
-            </ul>
-            <hr/>
+            <nav class='navbar navbar-expand-md navbar-light bg-light'>
+              <div class='container-fluid'>     
+                <a class='navbar-brand' id='logo' href='/'>Hiking Habit</a>
+                <button class='navbar-toggler' 
+                        type='button' 
+                        data-toggle='collapse'
+                        data-target='#navbarResponsive'>
+                  <span class='navbar-toggler-icon'></span>          
+                </button>
+                <div class="collapse navbar-collapse" id='navbarResponsive'>
+                  <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><Link class="nav-link" to='/login'>Login</Link></li>
+                    <li class="nav-item"><Link class="nav-link" to='/register'>Register</Link></li>
+                  </ul>
+                </div>
+              </div>
+            </nav>
             <Switch>
               <Route exact path='/'>
                 <LoginForm submitLogIn={this.tryLogIn}/>

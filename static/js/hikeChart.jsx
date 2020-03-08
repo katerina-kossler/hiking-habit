@@ -39,6 +39,10 @@ class HikeChart extends React.Component {
         ]
       },
       options: {
+        title: {
+          display: true,
+          text: this.props.status
+        },
         scales: {
           xAxes: [{
             type: 'time',
@@ -63,8 +67,13 @@ class HikeChart extends React.Component {
           }
         ]
         },
+        elements: {
+          line: {
+              tension: 0
+          }
+        },
         responsive: true,
-        maintainAspectRatio: false,
+        maintainAspectRatio: true,
       }
   });
   }

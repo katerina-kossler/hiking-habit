@@ -1,1 +1,85 @@
-/* CSS */
+/* CSS - later overwrites earlier */
+
+/* Media Queries */
+@media (max-width: 992px) {
+  
+}
+@media (max-width: 768px) {
+  
+}
+@media (max-width: 576px) {
+  
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 100%;
+}
+
+nav {
+  background-color: #E7E3DD;
+}
+
+h3 {
+  color: #435861;
+  font-size: 1.875em;
+}
+
+h4 {
+  font-size: 1.25em;
+}
+
+.submit {
+  background-color: #435861;
+  color: white;
+  border: none;
+  display: inline-block;
+  margin: 4px 4px;
+}
+
+.add {
+  background-color: #EAC288;
+  color: white;
+  border: none;
+  display: inline-block;
+  margin: 4px 4px;
+}
+
+#logo {
+  font-family: 'Montserrat Subrayada', sans-serif;
+  color: #4D774D;
+  font-size: 2em;
+}
+
+
+
+/* Bootstrap Padding Fix for Responsive Sites */
+[class*="col-"] {
+  padding: 1rem;
+}
+
+/* 
+Fonts:
+logo - font-family: 'Montserrat Subrayada', sans-serif;
+otherwise - font-family: 'Montserrat', sans-serif; 
+  0,500; - regular text
+  0,700; - bold headers / sub headers
+*/
+
+/*
+Extra small (xs) devices (portrait phones, less than 576px)
+No media query since this is the default in Bootstrap
+
+Small (sm) devices (landscape phones, 576px and up)
+@media (min-width: 576px) { ... }
+
+Medium (md) devices (tablets, 768px and up)
+@media (min-width: 768px) { ... }
+
+Large (lg) devices (desktops, 992px and up)
+@media (min-width: 992px) { ... }
+
+Extra (xl) large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) { ... }
+*/
+
