@@ -23,54 +23,60 @@ class Trail extends React.Component {
   render() {
     if (this.props.stat == 'Unknown') {
       return(
-      <div>
-        <h4>{this.props.name}</h4> ({this.props.loc})
-        <ul>
-          <li><b>Summary: </b>{this.props.sum}</li>
-          <li><b>Difficulty: </b>{this.props.diff}</li>
-          <li><b>Coordinates (lat, long): </b>{this.props.lat}, {this.props.lng}</li>
-          <li><b>Length (mi): </b>{this.props.len}</li>
-          <li><b>Ascent (ft): </b>{this.props.asc}</li>
-          <li><b>Descent (ft): </b>{this.props.dsc}</li>
-          <li><b>Status: </b> {this.props.stat}</li>
-        </ul>
-        <button onClick={this.onAddHike}><b>Hike it!</b></button>
+      <div class="col-sm-6">
+        <div class="card">
+          <h4 class="card-title">{this.props.name}</h4>
+          <h6 class="card-subtitle">{this.props.loc}</h6>
+          <p class="card-text">{this.props.sum}</p>
+          <ul id={this.props.apiId}>
+            <li> Difficulty: {this.props.diff}</li>
+            <li> Coords (lat, long): {this.props.lat}, {this.props.lng}</li>
+            <li>Length (mi): {this.props.len}</li>
+            <li>Ascent / Descent: {this.props.asc} ft /{this.props.dsc} ft</li>
+            <li>Status: {this.props.stat}</li>
+          </ul>
+          <button class="btn add btn-primary" onClick={this.onAddHike}>Hike it!</button>
+        </div>
       </div>
       );
     } else {
       const formattedDate = this.formatDate(this.props.date);
       if (this.props.stat == 'All Clear') {
         return(
-          <div>
-            <h4>{this.props.name}</h4> ({this.props.loc})
+        <div class="col-sm-6">
+          <div class="card">
+            <h4 class="card-title">{this.props.name}</h4>
+            <h6 class="card-subtitle">{this.props.loc}</h6>
+            <p class="card-text">{this.props.sum}</p>
             <ul id={this.props.apiId}>
-              <li><b>Summary: </b>{this.props.sum}</li>
-              <li><b>Difficulty: </b>{this.props.diff}</li>
-              <li><b>Coordinates (lat, long): </b>{this.props.lat}, {this.props.lng}</li>
-              <li><b>Length (mi): </b>{this.props.len}</li>
-              <li><b>Ascent (ft): </b>{this.props.asc}</li>
-              <li><b>Descent (ft): </b>{this.props.dsc}</li>
-              <li><b>Status: </b>{this.props.stat} on {formattedDate}</li>
+              <li> Difficulty: {this.props.diff}</li>
+              <li> Coords (lat, long): {this.props.lat}, {this.props.lng}</li>
+              <li>Length (mi): {this.props.len}</li>
+              <li>Ascent / Descent: {this.props.asc} ft /{this.props.dsc} ft</li>
+              <li>Status: {this.props.stat} on {formattedDate}</li>
             </ul>
-            <button onClick={this.onAddHike}><b>Hike it!</b></button>
+            <button class="btn add btn-primary" onClick={this.onAddHike}><b>Hike it!</b></button>
           </div>
+        </div>
           );
       } else {
         return(
-          <div>
-            <h4>{this.props.name}</h4> ({this.props.loc})
+        <div class="col-sm-6">
+          <div class="card">
+            <h4 class="card-title">{this.props.name}</h4>
+            <h6 class="card-subtitle">{this.props.loc}</h6>
+            <p class="card-text">{this.props.sum}</p>
             <ul id={this.props.apiId}>
-              <li><b>Summary: </b>{this.props.sum}</li>
-              <li><b>Difficulty: </b>{this.props.diff}</li>
-              <li><b>Coordinates (lat, long): </b>{this.props.lat}, {this.props.lng}</li>
-              <li><b>Length (mi): </b>{this.props.len}</li>
-              <li><b>Ascent (ft): </b>{this.props.asc}</li>
-              <li><b>Descent (ft): </b>{this.props.dsc}</li>
-              <li><b>Status: </b>{this.props.stat} on {formattedDate}</li>
-              <li><b>Details: </b> {this.props.det} </li>
+              <li> Difficulty: {this.props.diff}</li>
+              <li> Coords (lat, long): {this.props.lat}, {this.props.lng}</li>
+              <li>Length (mi): {this.props.len}</li>
+              <li>Ascent / Descent: {this.props.asc} ft /{this.props.dsc} ft</li>
+              <li>Status: {this.props.stat} on {formattedDate}</li>
+              <li>Details: {this.props.det} </li>
             </ul>
-            <button onClick={this.onAddHike}><b>Hike it!</b></button>
+            <button class="btn add btn-primary" onClick={this.onAddHike}><b>Hike it!</b></button>
           </div>
+        </div>
         );
       }
     }

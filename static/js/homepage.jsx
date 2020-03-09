@@ -79,7 +79,12 @@ class App extends React.Component {
           <div>
             <nav class='navbar navbar-expand-md navbar-light bg-light'>
               <div class='container-fluid'>     
-                <a class='navbar-brand' id='logo' href='/'>Hiking Habit</a>
+                <div>
+                  <a class='navbar-brand' id='logo' href='/'>
+                    Hiking Habit
+                    <img class="mtn" src="/static/img/mountain.png"/>
+                  </a>
+                </div>
                 <button class='navbar-toggler' 
                         type='button' 
                         data-toggle='collapse'
@@ -145,7 +150,7 @@ class App extends React.Component {
           <div>
             <nav class='navbar navbar-expand-md navbar-light bg-light'>
               <div class='container-fluid'>     
-                <a class='navbar-brand' id='logo' href='/'>Hiking Habit</a>
+                <a class='navbar-brand' id='logo' href='/'>Hiking Habit<img class="mtn" src="/static/img/mountain.png"/></a>
                 <button class='navbar-toggler' 
                         type='button' 
                         data-toggle='collapse'

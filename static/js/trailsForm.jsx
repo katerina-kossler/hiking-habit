@@ -50,63 +50,90 @@ class TrailsForm extends React.Component {
   
   render() {
     return (
+    <div class="container">
       <form>
-        <label for='zipcode'>Zipcode:</label>
-        <input  type="text" 
-                name="zipcode" 
-                pattern="\d*" 
-                minlength="5" 
-                maxlength="5" 
-                required 
-                onChange={this.handleInput}/>
-        [at this time U.S. postal only]
-        <br/>
-        <label for='maxRadius'>Search Distance (Miles):</label>
-        <input type="number" 
-               name="maxRadius" 
-               min="30" 
-               max="200"
-               placeholder="30" 
-               onChange={this.handleInput}/> 
-        [30-200]
-        <br/>
-        <label for='length'>Minimum Trail Length (Miles):</label>
-        <input type="number" 
-               name="length" 
-               min="0" 
-               max="200"
-               placeholder="0" 
-               onChange={this.handleInput}/>
-        [0-200]
-        <br/>
-        <label for='sort'>Sort by:&nbsp;</label>
-        <input type="radio" 
-                name="sort" 
-                value="length" 
-                onClick={this.handleInput} defaultChecked/> 
-        &nbsp;
-        Length
-        &nbsp;
-        <input type="radio" 
-                name="sort" 
-                value="quality" 
-                onClick={this.handleInput} />
-        &nbsp;
-        Quality
-        <br/>
-        <label for='maxResults'>Maximum Number Results:</label>
-        <input type="number" 
-               name="maxResults" 
-               min="10"
-               max="500"
-               placeholder="10"
-               onChange={this.handleInput}/>
-        [10-500]
-        <br/>
-        <button onClick={this.handleSubmit}> 
-          Search
-        </button>
+        <div class="form-group row">
+          <label for="trailsFormZipcode" class="col-sm-4 col-form-label">
+            Zipcode
+          </label>
+          <div class="input-group col-sm-8">
+            <input type="text" class="form-control"
+                    id="trailsFormZipcode"
+                    placeholder="Enter a U.S. postal zipcode" name="zipcode" 
+                    pattern="\d*" minlength="5" maxlength="5" 
+                    required onChange={this.handleInput}/>
+            <div class="input-group-btn btn-group">
+              <button class="btn btn-light dropdown-toggle" type="button" 
+                      data-toggle="collapse" data-target="#moreSearchCriteria" 
+                      aria-expanded="false" aria-controls="moreSearchCriteria">
+                <span class="caret"></span>
+              </button>
+              <button class="btn submit" type="button" onClick={this.handleSubmit}> 
+                <span class="glyphicon glyphicon-search"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="collapse" id="moreSearchCriteria">
+          <div class="form-group row"> 
+            <label for="trailsFormMaxRadius" class="col-sm-4 col-form-label">
+              Search Radius (Miles)
+            </label>
+            <div class="col-sm-8">
+              <input type="number" class="form-control"
+                    id="trailsFormMaxRadius"
+                    placeholder="30-200" name="maxRadius" 
+                    min="30" max="200" onChange={this.handleInput}/> 
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="trailsFormMinLength" class="col-sm-4 col-form-label">
+              Minimum Length (Miles)
+            </label>
+            <div class="col-sm-8">
+              <input type="number" class="form-control"
+                    id="trailsFormMinLength"
+                    name="length" placeholder="0-200" 
+                    min="0" max="200" onChange={this.handleInput}/>
+            </div>
+          </div>
+          <div class="form-group row">
+            <legend class="col-form-label col-sm-4 pt-0">Sort By</legend>
+            <div class="col-sm-8">
+              <div class="form-check-inline">
+                <label class="form-check-label" for="sortLength">
+                  <input type="radio" class="form-check-input"
+                        id="sortLength" 
+                        name="sort" value="length" defaultChecked/>
+                  Length
+                </label>
+              </div>
+              <div class="form-check-inline">
+                <label class="form-check-label" for="sortQuality">
+                  <input type="radio" class="form-check-input" 
+                        id="sortQuality"
+                        name="sort" value="quality"/>
+                  Quality
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="trailsFormMaxResults"class="col-sm-4">
+              Maximum Result Number
+            </label>
+            <div class="col-sm-8">
+              <input type="number" class="form-control"
+                      id="trailsformMaxResults"
+                      name="maxResults" 
+                      min="10" max="500"
+                      placeholder="10-500"
+                      onChange={this.handleInput}/>
+            </div>
+          </div>
+        </div>
       </form>
+    </div>
     );
   }
 }

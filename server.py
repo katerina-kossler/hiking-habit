@@ -16,11 +16,6 @@ app = Flask(__name__)
 app.secret_key = 'this-should-be-something-unguessable'
 app.jinja_env.undefined = jinja2.StrictUndefined
 
-
-def convert_rating_to_str(rating):
-    """Converts Enum of type Rating to a string"""
-    pass
-
 # ---------- Initial set up and user authentication  ---------- #
 @app.route("/")
 def show_homepage():
@@ -30,6 +25,8 @@ def show_homepage():
     
 @app.route("/api/quote", methods=["GET"])
 def get_random_quote():
+    """Returns a random trail from the list to display on the trail search"""
+    
     quotes = [
         '''"I took a walk in the woods and came out taller than trees." - Henry David Thoreau"''',
         '''"And into the forest I go, To lose my mind and find my soul." - Unknown''',
@@ -157,8 +154,12 @@ def load_search_results():
                "maxResults":max_results}
     r_trails = requests.get("https://www.hikingproject.com/data/get-trails", 
                             params=payload)
-    trails = r_trails.json()['trails']
-    return jsonify(trails)
+    trails = r_trails.json().get('trails', None)
+    if trails:
+        trails = r_trails.json()['trails']
+        return jsonify(trails)
+    else:
+        return "No trails found in that area, please change results and try again."
 
 
 # ---------- Hike view, creation, completion, & cancelation (also result cancelation) ---------- #

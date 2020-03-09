@@ -6,8 +6,6 @@ class Result extends React.Component {
     // this.props.trailDetails
     // this.props.resultDetails
     // this.onUpdate
-    
-    // later want to give option to edit
   }
   
   render() {

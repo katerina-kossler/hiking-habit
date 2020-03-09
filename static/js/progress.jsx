@@ -44,7 +44,6 @@ class Progress extends React.Component {
         y: rawInstance.rating
       });
     }
-    console.log(chartData)
     this.setState({loaded: true,
                    hikeData: chartData,
                    labels: chartLabels,

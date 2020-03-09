@@ -11,7 +11,12 @@ class TrailsSearch extends React.Component {
   
   onTrailSearch(searchParams) {
     $.post('/api/trails', searchParams, (response) => {
-      this.setState({results:response});
+      const type = typeof(response);
+      if (type == "string") {
+        alert(response)
+      } else {
+        this.setState({results:response});
+      }
     });
   }
   
@@ -28,10 +33,15 @@ class TrailsSearch extends React.Component {
   render() {
     return(
       <div>
-        <h3> Trail Search: </h3>
-        <TrailsForm searchTrails={this.onTrailSearch} />
+        <h3>Find your trail</h3>
+        <div class="form">
+          <TrailsForm searchTrails={this.onTrailSearch} />
+        </div>
         <hr/>
-        <TrailsResults trails={this.state.results} quote={this.state.quote}/>
+        <div class="results">
+          <TrailsResults trails={this.state.results} 
+                         quote={this.state.quote}/>
+        </div>
       </div>
     );
   }

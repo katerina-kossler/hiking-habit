@@ -47,8 +47,8 @@ class Hike extends React.Component {
         <div>
           <h4>{trailName}</h4> {trailDescription}
           <p>
-            <button onClick={this.onCompleteHike}><b>Complete</b></button>
-            <button onClick={this.onCancelHike}><b>Cancel</b></button>
+            <button class='add' onClick={this.onCompleteHike}><b>Complete</b></button>
+            <button class='submit' onClick={this.onCancelHike}><b>Cancel</b></button>
           </p>
         </div>
         );
@@ -57,8 +57,8 @@ class Hike extends React.Component {
         <div>
           <h4>{trailName}</h4> {trailDescription}
           <p>
-            <button onClick={this.onViewResults}><b>View Results</b></button>
-            <button onClick={this.onCancelHike}><b>Cancel</b></button>
+            <button class='submit' onClick={this.onViewResults}><b>View Results</b></button>
+            <button class='submit' onClick={this.onCancelHike}><b>Cancel</b></button>
           </p>
         </div>
         );

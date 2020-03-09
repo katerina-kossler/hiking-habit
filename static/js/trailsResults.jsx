@@ -36,17 +36,15 @@ class TrailsResults extends React.Component {
           );
         }
         return (
-          <div>
-            <ul>{trailList}</ul>
+          <div class="row">
+            <ul class>{trailList}</ul>
           </div>
         );
       }
     } else {
       return (
-        <div>
-          <p>
-            {this.props.quote}
-          </p>
+        <div class="spotLight">
+          {this.props.quote}
         </div>
       );
     }
