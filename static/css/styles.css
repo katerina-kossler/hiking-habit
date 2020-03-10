@@ -13,15 +13,17 @@
 form {
   width: 50%;
   min-width: 400px;
-  padding-left: 1.2em;
-  padding-right: 1.2em;
-  border: 1px solid #CCC;
+  padding: 1.2em;
+  border: 1px solid #EAC288;
   border-radius: 1em;
+  font-size: 1.5em;
+  
 }
 
 body {
   font-family: 'Montserrat', sans-serif;
   font-size: 100%;
+  justify-content: center;
 }
 
 nav {
@@ -29,7 +31,7 @@ nav {
 }
 
 h3 {
-  font-size: 1.875em;
+  font-size: 2em;
   padding: 1em;
 }
 
@@ -43,11 +45,9 @@ h4 {
 }
 
 .add {
-  background-color: #EAC288;
+  background-color:  #4D774D;
   color: white;
-  /* border: none;
-  display: inline-block;
-  margin: 4px 4px; */
+  border: none;
 }
 
 #logo {
@@ -63,12 +63,12 @@ h4 {
 
 .spotLight {
   color: #435861;
-  font-size: 2em;
+  font-size: 1.5em;
   text-align: center;
 }
 
-.card {
-  width: 40rem;
+.trail-content {
+  padding: 2em;
 }
 
 /* Bootstrap Padding Fix for Responsive Sites */

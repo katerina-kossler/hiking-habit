@@ -85,7 +85,7 @@ class HikesView extends React.Component {
     } else {
       $.get('/api/hike_result_and_trail_by_id', hikeData, (response) => {
         if (typeof(response) === 'string') {
-          alert(response);
+          this.setState({showForm: 'new'});
         } else {
           const name = response.name;
           const summary = response.summary;
@@ -169,7 +169,9 @@ class HikesView extends React.Component {
     } else {
       return(
         <div>
-          <h3>Current Hikes</h3>
+          <div class="row justify-content-center">
+            <h3>Current Hikes</h3>
+          </div>
           <HikeForm onCheckHikes={this.onCheckHikes} onUpdate={this.onUpdate}/>
           <hr/>
           <CurrentHikes hikes={results} 

@@ -66,12 +66,6 @@ class HikeResultForm extends React.Component {
             <li><b>Length (mi): </b>{this.props.trailDetails.len}</li>
             <li><b>Ascent (ft): </b> {this.props.trailDetails.ascent}</li>
             <li><b>Status: </b> {this.props.trailDetails.condStatus}</li>
-            <li>
-              <ul>
-                <li>
-                </li>
-              </ul>
-            </li>
           </ul>
         </div>
         <h2>Hike Results:</h2>
@@ -141,7 +135,7 @@ class HikeResultForm extends React.Component {
             </select>
           </label>
           <br/>
-          <button onClick={this.handleSubmit}> Register </button>
+          <button class="btn submit"onClick={this.handleSubmit}> Submit </button>
         </form>
       </div>
     );

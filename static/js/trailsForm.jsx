@@ -50,7 +50,6 @@ class TrailsForm extends React.Component {
   
   render() {
     return (
-    <div class="container">
       <form>
         <div class="form-group row">
           <label for="trailsFormZipcode" class="col-sm-4 col-form-label">
@@ -88,7 +87,7 @@ class TrailsForm extends React.Component {
           </div>
           <div class="form-group row">
             <label for="trailsFormMinLength" class="col-sm-4 col-form-label">
-              Minimum Length (Miles)
+              Min Trail Length (Miles)
             </label>
             <div class="col-sm-8">
               <input type="number" class="form-control"
@@ -120,7 +119,7 @@ class TrailsForm extends React.Component {
           </div>
           <div class="form-group row">
             <label for="trailsFormMaxResults"class="col-sm-4">
-              Maximum Result Number
+              Max Results
             </label>
             <div class="col-sm-8">
               <input type="number" class="form-control"
@@ -133,7 +132,6 @@ class TrailsForm extends React.Component {
           </div>
         </div>
       </form>
-    </div>
     );
   }
 }

@@ -337,7 +337,8 @@ def show_goal_progress():
         unsorted_results = []
         for hike in completed_hikes:
             result = HikeResult.query.filter_by(hike_id = hike.hike_id).first()
-            unsorted_results.append(result)
+            if result:
+                unsorted_results.append(result)
         hike_results = sorted(unsorted_results, key=lambda x: x.hiked_on)
         hikes = []
         if goal_type == "GoalType.NUMBER_HIKES":
@@ -480,7 +481,7 @@ def show_hike_result():
                           'challengeRating': challenge_from_enum.lower(),
                           'hikeTime': result.hike_time}
         return jsonify(result_details)
-    return 'Hike result is not in system, please cancel hike and try again'
+    return 'Add Hike Result'
     
     
 @app.route("/api/hike_result", methods=["POST"])

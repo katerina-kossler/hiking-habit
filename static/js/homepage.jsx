@@ -67,7 +67,7 @@ class App extends React.Component {
     });
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.checkIfLoggedIn()  
   }
   
@@ -112,33 +112,35 @@ class App extends React.Component {
                 </div>
               </div>
             </nav>
-            <Switch>
-              <Route exact path='/'>
-                <Redirect to='/trails'/>
-              </Route>
-              <Route path='/trails'>
-                <TrailsSearch/>
-              </Route>
-              <Route path='/hikes'>
-                <HikesView/>
-              </Route>
-              <Route path='/goals'>
-                <GoalsView/>
-              </Route>
-              <Route path='/profile'>
-                <Profile first={this.state.first}
-                         last={this.state.last}
-                         createdOn={this.state.createdOn}/>
-              </Route>
-              <Route path='/about'>
-                <About/>
-              </Route>
-              <Route> 
-                <Redirect to='/'/>
-              </Route>
-            </Switch>
-            <hr/>
-            <footer>
+              <div class="container p-5">
+              <Switch>
+                <Route exact path='/'>
+                  <Redirect to='/trails'/>
+                </Route>
+                <Route path='/trails'>
+                  <TrailsSearch/>
+                </Route>
+                <Route path='/hikes'>
+                  <HikesView/>
+                </Route>
+                <Route path='/goals'>
+                  <GoalsView/>
+                </Route>
+                <Route path='/profile'>
+                  <Profile first={this.state.first}
+                          last={this.state.last}
+                          createdOn={this.state.createdOn}/>
+                </Route>
+                <Route path='/about'>
+                  <About/>
+                </Route>
+                <Route> 
+                  <Redirect to='/'/>
+                </Route>
+              </Switch>
+            </div>
+            <footer class="page-footer text-center bg-light py-3">
+              <a href=""> 2020 Katerina Kossler</a> |
               <Link to='/about'>About</Link>
             </footer>
           </div>
@@ -165,27 +167,29 @@ class App extends React.Component {
                 </div>
               </div>
             </nav>
-            <Switch>
-              <Route exact path='/'>
-                <LoginForm submitLogIn={this.tryLogIn}/>
-              </Route>
-              <Route path='/login'>
-                <LoginForm submitLogIn={this.tryLogIn}/>
-              </Route>
-              <Route path='/register'>
-                <RegisterForm tryRegistration={this.tryRegistration}/>
-              </Route>
-              <Route path='/about'>
-                <About/>
-              </Route>
-              <Route> 
-                <Redirect to='/'/>
-              </Route>
-            </Switch>
-            <hr/>
-              <footer>
-                <Link to='/about'>About</Link>
-              </footer>
+            <div class="container p-5">
+              <Switch>
+                <Route exact path='/'>
+                  <LoginForm submitLogIn={this.tryLogIn}/>
+                </Route>
+                <Route path='/login'>
+                  <LoginForm submitLogIn={this.tryLogIn}/>
+                </Route>
+                <Route path='/register'>
+                  <RegisterForm tryRegistration={this.tryRegistration}/>
+                </Route>
+                <Route path='/about'>
+                  <About/>
+                </Route>
+                <Route> 
+                  <Redirect to='/'/>
+                </Route>
+              </Switch>
+            </div>
+            <footer class="page-footer text-center bg-light py-3">
+              <a href=""> 2020 Katerina Kossler</a> |
+              <Link to='/about'>About</Link>
+            </footer>
           </div>
         </Router>
       );
