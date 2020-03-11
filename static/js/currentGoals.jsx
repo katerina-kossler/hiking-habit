@@ -14,7 +14,7 @@ class CurrentGoals extends React.Component {
         return (
           <div>
             <h4>
-              You have no active goals yet. Click the button below to get started!
+              You have no active goals yet. Add a goal to get started!
             </h4>
           </div>
         );

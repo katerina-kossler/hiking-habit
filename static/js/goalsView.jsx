@@ -27,20 +27,33 @@ class GoalsView extends React.Component {
     if (view == 'add') {
       return (
         <div>
-          <h3 class="row justify-content-center" >Set Goals, Reach Peaks</h3> 
+          <div class="row justify-content-center align-items-center">
+            <h3 class="text-center">
+              Set Goals, Reach Peaks
+            </h3> 
+          </div>
           <hr/>
-          <GoalForm viewGoals={this.viewGoals} />
+          <div class="row justify-content-center align-items-center">
+            <GoalForm viewGoals={this.viewGoals} />
+          </div>
         </div>
       )
     } else {
       return (  
         <div>
-          <h3 class="row justify-content-center">Set Goals, Reach Peaks</h3> 
-          <div class="row justify-content-center">
+          <div class="row justify-content-center align-items-center">
+            <h3 class="text-center">
+              Set Goals, Reach Peaks
+            </h3> 
+          </div>
+          <div class="row justify-content-center align-items-center">
             <button class="btn add" onClick={()=>{this.setState({view: 'add'})}}>Add a Goal</button>  
           </div>
           <hr/>
-          <CurrentGoals goals={this.state.goals} viewGoals={this.viewGoals}/>
+          <div class="row justify-content-center align-items-center">
+            <CurrentGoals goals={this.state.goals} viewGoals={this.viewGoals}/>
+          </div>
+
         </div>
       )
     };

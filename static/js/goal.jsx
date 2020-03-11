@@ -53,7 +53,7 @@ class Goal extends React.Component {
                     goal={this.props.numericalValue} 
                     type={this.props.type}
                     createdOn={this.props.createdOn}/>
-          <button onClick={() => {this.setState({view:undefined})}}><b>Hide</b></button>
+          <button class="submit btn" onClick={() => {this.setState({view:undefined})}}><b>Hide</b></button>
         </div>
       )
     } else {
@@ -62,8 +62,8 @@ class Goal extends React.Component {
           <h3>{this.props.title}</h3>
           {this.props.description}
           <p>
-            <button onClick={this.onCheckGoal}><b>View Progress</b></button>
-            <button onClick={this.onCancelGoal}><b>Cancel</b></button>
+            <button class="add btn" onClick={this.onCheckGoal}><b>View Progress</b></button>
+            <button class="submit btn" onClick={this.onCancelGoal}><b>Cancel</b></button>
           </p>
         </div>
       ); 

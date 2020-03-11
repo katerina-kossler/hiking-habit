@@ -169,14 +169,19 @@ class HikesView extends React.Component {
     } else {
       return(
         <div>
-          <div class="row justify-content-center">
-            <h3>Current Hikes</h3>
+          <div class="row justify-content-center align-items-center">
+            <h3>Active Adventures</h3>
           </div>
-          <HikeForm onCheckHikes={this.onCheckHikes} onUpdate={this.onUpdate}/>
-          <hr/>
-          <CurrentHikes hikes={results} 
-                        onUpdate={this.onUpdate} 
-                        renderForm={this.renderForm}/>
+          <div class="row justify-content-center align-items-center">
+            <HikeForm onCheckHikes={this.onCheckHikes} onUpdate={this.onUpdate}/>
+          </div>
+          <div class="row">
+            <CurrentHikes hikes={results} 
+                          onUpdate={this.onUpdate} 
+                          renderForm={this.renderForm}/>
+          </div>
+        
+
         </div>
       );
     }

@@ -25,11 +25,11 @@ class LoginForm extends React.Component {
   render() {
   return (
     <div class="container mx-auto">
-      <div class="row">
+      <div class="row justify-content-center align-items-center">
         <h3>You're signed out</h3>
       </div>
-      <div class="row">
-        <h4>login to continue your hiking journey</h4>   
+      <div class="row justify-content-center align-items-center">
+        <h4>Log in to plan new adventures!</h4>   
       </div>
       <div class="row mw-50">
         <form>
@@ -47,7 +47,7 @@ class LoginForm extends React.Component {
                   placeholder="password"
                   name="password" onChange={this.handleInput}/>
           </div>
-          <button class='submit' onClick={this.handleSubmit}> Login </button>
+          <button class='submit btn' onClick={this.handleSubmit}> Login </button>
         </form>
       </div>
     </div>

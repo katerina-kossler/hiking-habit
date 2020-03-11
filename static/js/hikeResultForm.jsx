@@ -135,7 +135,7 @@ class HikeResultForm extends React.Component {
             </select>
           </label>
           <br/>
-          <button class="btn submit"onClick={this.handleSubmit}> Submit </button>
+          <button class="btn add" onClick={this.handleSubmit}> Submit </button>
         </form>
       </div>
     );

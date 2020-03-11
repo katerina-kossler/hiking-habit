@@ -40,7 +40,7 @@ class TrailsSearch extends React.Component {
           <TrailsForm searchTrails={this.onTrailSearch} />
         </div>
         <hr/>
-        <div class="row">
+        <div class="row justify-content-center align-items-center">
           <TrailsResults trails={this.state.results} 
                         quote={this.state.quote}/>
         </div>

@@ -13,26 +13,22 @@ class HikeForm extends React.Component {
   }
  
   handleSubmit(event) {
-    event.preventDefault();
     this.props.onCheckHikes(this.state.type);
+  }
+  
+  componentWillUpdate() {
+    this.handleSubmit();
   }
   
   render() {
     return(
-      <form class="form-group row">
-        <div class="select-group">
-          <label for="hikeFormChoice"> Hike Type:
-          </label>
-          <select name="type" class="form-control" id="hikeFormChoice" onChange={this.handleChange}>
-            <option value='complete'>Complete</option>
-            <option value='incomplete'>Incomplete</option>
-            <option value='all'>All</option>
-          </select>
-          <div class="select-group-btn btn-group">
-            <button class="submit btn" onClick={this.handleSubmit}>Search</button>
-          </div>
-        </div>
-      </form>
+      <div class="input-group col-sm-2 col-md-3">
+        <select name="type" class="form-control" id="hikeFormChoice" onChange={this.handleChange}>
+          <option value='all'>All</option>
+          <option value='complete'>Complete</option>
+          <option value='incomplete'>Incomplete</option>
+        </select>
+      </div>
     );
   };
 }

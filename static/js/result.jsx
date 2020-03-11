@@ -11,9 +11,9 @@ class Result extends React.Component {
   render() {
     return(
       <div>
-        <h2>Trail Details:</h2>
         <div>
-          <h4>{this.props.trailDetails.name}</h4> {this.props.trailDetails.loc}
+          <h3>{this.props.trailDetails.name}</h3> 
+          {this.props.trailDetails.loc}
           <ul>
             <li><b>Summary: </b>{this.props.trailDetails.summary}</li>
             <li><b>Difficulty: </b>{this.props.trailDetails.difficulty}</li>
@@ -22,13 +22,11 @@ class Result extends React.Component {
             <li><b>Status: </b> {this.props.trailDetails.condStatus}</li>
           </ul>
         </div>
-        <h2>Result Details:</h2>
+        <h4>Results from {this.props.resultDetails.hikedOn}:</h4>
         <div>
           Assessment: {this.props.resultDetails.assessment}
           <br/>
           Distance: {this.props.resultDetails.distance}
-          <br/>
-          Date Hiked: {this.props.resultDetails.hikedOn}
           <br/>
           Time Hiked (h): {this.props.resultDetails.hikeTime}
           <br/>
@@ -45,7 +43,7 @@ class Result extends React.Component {
             </li>
           </ul>
         </div>
-        <button onClick={this.props.onUpdate}>Go back to hikes</button>
+        <button class="submit btn" onClick={this.props.onUpdate}>Go back to hikes</button>
       </div>
     );
   }

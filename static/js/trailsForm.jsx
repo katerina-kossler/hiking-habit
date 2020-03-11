@@ -52,13 +52,13 @@ class TrailsForm extends React.Component {
     return (
       <form>
         <div class="form-group row">
-          <label for="trailsFormZipcode" class="col-sm-4 col-form-label">
+          <label for="trailsFormZipcode" class="col-sm-6 col-form-label text-center">
             Zipcode
           </label>
-          <div class="input-group col-sm-8">
+          <div class="input-group col-sm-6">
             <input type="text" class="form-control"
                     id="trailsFormZipcode"
-                    placeholder="Enter a U.S. postal zipcode" name="zipcode" 
+                    placeholder="U.S. postal" name="zipcode" 
                     pattern="\d*" minlength="5" maxlength="5" 
                     required onChange={this.handleInput}/>
             <div class="input-group-btn btn-group">
@@ -75,10 +75,10 @@ class TrailsForm extends React.Component {
         </div>
         <div class="collapse" id="moreSearchCriteria">
           <div class="form-group row"> 
-            <label for="trailsFormMaxRadius" class="col-sm-4 col-form-label">
+            <label for="trailsFormMaxRadius" class="col-sm-6 col-form-label text-center">
               Search Radius (Miles)
             </label>
-            <div class="col-sm-8">
+            <div class="col-sm-6">
               <input type="number" class="form-control"
                     id="trailsFormMaxRadius"
                     placeholder="30-200" name="maxRadius" 
@@ -86,10 +86,10 @@ class TrailsForm extends React.Component {
             </div>
           </div>
           <div class="form-group row">
-            <label for="trailsFormMinLength" class="col-sm-4 col-form-label">
+            <label for="trailsFormMinLength" class="col-sm-6 col-form-label text-center">
               Min Trail Length (Miles)
             </label>
-            <div class="col-sm-8">
+            <div class="col-sm-6">
               <input type="number" class="form-control"
                     id="trailsFormMinLength"
                     name="length" placeholder="0-200" 
@@ -97,8 +97,8 @@ class TrailsForm extends React.Component {
             </div>
           </div>
           <div class="form-group row">
-            <legend class="col-form-label col-sm-4 pt-0">Sort By</legend>
-            <div class="col-sm-8">
+            <legend class="col-form-label col-sm-6 pt-0 text-center">Sort By</legend>
+            <div class="col-sm-6">
               <div class="form-check-inline">
                 <label class="form-check-label" for="sortLength">
                   <input type="radio" class="form-check-input"
@@ -118,10 +118,10 @@ class TrailsForm extends React.Component {
             </div>
           </div>
           <div class="form-group row">
-            <label for="trailsFormMaxResults"class="col-sm-4">
+            <label for="trailsFormMaxResults" class="col-sm-6 col-form-label text-center">
               Max Results
             </label>
-            <div class="col-sm-8">
+            <div class="col-sm-6">
               <input type="number" class="form-control"
                       id="trailsformMaxResults"
                       name="maxResults" 

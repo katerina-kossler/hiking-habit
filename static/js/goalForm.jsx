@@ -46,31 +46,50 @@ class GoalForm extends React.Component {
   render() {
     return(
       <div>
-        <h3>Add a new goal:</h3>
+        <h4 class="text-center">Let's sketch this out</h4>
         <form>
-          <label>
-            Goal Title:<input type="text" name="title" required onChange={this.handleInput}/>
-          </label>
-          <br/>
-          <label>
-            Category:
-            <select name="goalType" onChange={this.handleInput}>
-              <option value="NUMBER_HIKES" defaultChecked>Number of Hikes Completed</option>
-              <option value="MILES_HIKED">Total Miles Hiked</option>
-              <option value="FEET_ASCENDED">Feet Climbed</option>
-              <option value="HIKEABLE_MILES">Miles in a Hike Completed</option>
-            </select>
-          </label>
-          <br/>
-          <label>
-            Amount:<input type="number" name="numericalValue" onChange={this.handleInput}/>
-          </label>
-          <br/>
-          <label>
-            Description:<input type="text" name="description" onChange={this.handleInput}/>
-          </label>
-          <br/>
-          <button onClick={this.handleSubmit}> Submit</button>
+          <div class="form-group row">
+            <label for="goalFormTitle" class="col-sm-4 col-form-label text-center">
+              Title
+            </label>
+            <div class="input-group col-sm-8">
+              <input type="text" class="form-control"
+                    id="goalFormTitle" 
+                    name="title" required onChange={this.handleInput}/>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="goalFormType" class="col-sm-4 col-form-label text-center">
+              Type
+            </label>
+            <div class="input-group col-sm-8">
+              <select name="goalType" class="form-control"
+                      id="goalFormType" onChange={this.handleInput}>
+                <option value="NUMBER_HIKES" defaultChecked>Number of Hikes Completed</option>
+                <option value="MILES_HIKED">Total Miles Hiked</option>
+                <option value="FEET_ASCENDED">Feet Climbed</option>
+                <option value="HIKEABLE_MILES">Miles in a Hike Completed</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="goalFormGoal" class="col-sm-4 col-form-label text-center">
+              Goal
+            </label>
+            <div class="input-group col-sm-8">
+              <input type="number" name="numericalValue" 
+                    id="goalFormGoal" onChange={this.handleInput}/>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="goalFormDesc" class="col-sm-4 col-form-label text-center">
+              Description
+            </label>
+            <div class="input-group col-sm-8">
+              <input type="text" name="description" onChange={this.handleInput}/>
+            </div>
+          </div>
+          <button class="add btn mx-auto" onClick={this.handleSubmit}> Submit</button>
         </form>
         </div>
     );

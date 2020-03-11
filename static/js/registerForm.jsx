@@ -34,13 +34,18 @@ class RegisterForm extends React.Component {
   render() {
     return(
     <div class="container mx-auto">
-      <div class="row">
-        <h3>Sign up to start your hiking journey</h3>
+      <div class="row justify-content-center align-items-center">
+        <h3>Welcome</h3>
       </div>
-      <div class="row mw-50">
+      <div class="row justify-content-center align-items-center">
+        <h4>Sign up to start your hiking journey!</h4>   
+      </div>
+      <div class="row  justify-content-center align-items-center mw-50">
         <form>
           <div class="form-group">
-            <label for="registerFormUser">Username:</label>
+            <label for="registerFormUser col-sm-4 col-form-label" clas>
+              Username:
+            </label>
             <input type="text" class="form-control" 
                   id="registerFormUser"
                   placeholder="JohnMuir" 
@@ -74,7 +79,7 @@ class RegisterForm extends React.Component {
                   placeholder="password"
                   name="password" onChange={this.handleInput}/>
           </div>
-          <button class='submit' onClick={this.handleSubmit}> Register </button>
+          <button class='submit btn' onClick={this.handleSubmit}> Register </button>
         </form>
       </div>
     </div>

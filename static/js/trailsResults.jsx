@@ -10,7 +10,7 @@ class TrailsResults extends React.Component {
     if (trails) {
       if (trails.length == 0) {
         return (
-          <div>
+          <div class="text-center">
             There are no trails that meet those requirements in that zipcode; Please search again.
           </div>
         );
@@ -37,7 +37,7 @@ class TrailsResults extends React.Component {
         }
         return (
           <div class="row">
-            <ul class="card-columns">{trailList}</ul>
+            <ul class="card-columns p-0">{trailList}</ul>
           </div>
         );
       }
