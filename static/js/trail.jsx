@@ -5,6 +5,7 @@ class Trail extends React.Component {
     super(props);
     this.formatDate = this.formatDate.bind(this);
     this.onAddHike = this.onAddHike.bind(this);
+    this.reformatDifficulty = this.reformatDifficulty.bind(this);
   }
   
   formatDate(dateString) {
@@ -20,22 +21,45 @@ class Trail extends React.Component {
     });
   }
   
+  reformatDifficulty() {
+    console.log(this.props.diff);
+    let strDiff = this.props.diff;
+    if (strDiff == 'green') {
+      return 'Easy'
+    } else if (strDiff == 'blue') {
+      return 'Intermediate'
+    } else if (strDiff == 'black') {
+      return 'Difficult'
+    } else {
+      return this.props.diff
+    }
+  }
+  
   render() {
+    const cardColor = "card " + this.props.diff;
+    let difficulty = this.reformatDifficulty();
     if (this.props.stat == 'Unknown') {
       return(
-        <div class="card">
+        <div className={cardColor} onClick={this.onAddHike}>
           <div class="trail-content">
             <h4 class="card-title">{this.props.name}</h4>
             <h6 class="card-subtitle">{this.props.loc}</h6>
             <p class="card-text">{this.props.sum}</p>
-            <ul id={this.props.apiId}>
-              <li> Difficulty: {this.props.diff}</li>
-              <li> Coords (lat, long): {this.props.lat}, {this.props.lng}</li>
-              <li> Length (mi): {this.props.len}</li>
-              <li> Ascent / Descent: {this.props.asc} ft /{this.props.dsc} ft</li>
+            <ul class="list-group list-group-flush" id={this.props.apiId}>
+              <li class="list-group-item">
+                Level: {difficulty}
+              </li>
+              <li class="list-group-item">
+                Location: ({this.props.lat}&deg;, {this.props.lng}&deg;)
+              </li>
+              <li class="list-group-item">
+                Length: {this.props.len}mi
+              </li>
+              <li class="list-group-item">
+                Ascent: {this.props.asc}ft / Descent: {this.props.dsc}ft 
+              </li>
             </ul>
           </div>
-          <button class="btn add btn-primary w-100" onClick={this.onAddHike}>Hike it!</button>
           <div class="card-footer justify-content-center">
               <small class="text-muted">
                 Trail Status Unknown
@@ -48,19 +72,26 @@ class Trail extends React.Component {
       const formattedDate = this.formatDate(this.props.date);
       if (this.props.stat == 'All Clear') {
         return(
-          <div class="card">
+          <div className={cardColor} onClick={this.onAddHike}>
             <div class="trail-content">
               <h4 class="card-title">{this.props.name}</h4>
               <h6 class="card-subtitle">{this.props.loc}</h6>
               <p class="card-text">{this.props.sum}</p>
-              <ul id={this.props.apiId}>
-                <li> Difficulty: {this.props.diff}</li>
-                <li> Coords (lat, long): {this.props.lat}, {this.props.lng}</li>
-                <li> Length (mi): {this.props.len}</li>
-                <li> Ascent / Descent: {this.props.asc} ft /{this.props.dsc} ft</li>
+              <ul class="list-group list-group-flush" id={this.props.apiId}>
+                <li class="list-group-item">
+                  Level: {difficulty}
+                </li>
+                <li class="list-group-item">
+                  Location: ({this.props.lat}&deg;, {this.props.lng}&deg;)
+                </li>
+                <li class="list-group-item">
+                  Length: {this.props.len}mi
+                </li>
+                <li class="list-group-item">
+                  Ascent: {this.props.asc}ft / Descent: {this.props.dsc}ft 
+                </li>
               </ul>
             </div>
-            <button class="btn add btn-primary w-100" onClick={this.onAddHike}><b>Hike it!</b></button>
             <div class="card-footer justify-content-center">
               <small class="text-muted">
                 {this.props.stat} on {formattedDate}
@@ -70,26 +101,32 @@ class Trail extends React.Component {
           );
       } else {
         return(
-          <div class="card">
+          <div className={cardColor} onClick={this.onAddHike}>
             <div class="trail-content">
               <h4 class="card-title">{this.props.name}</h4>
               <h6 class="card-subtitle">{this.props.loc}</h6>
               <p class="card-text">{this.props.sum}</p>
-              <ul id={this.props.apiId}>
-                <li> Difficulty: {this.props.diff}</li>
-                <li> Coords (lat, long): {this.props.lat}, {this.props.lng}</li>
-                <li> Length (mi): {this.props.len}</li>
-                <li> Ascent / Descent: {this.props.asc} ft /{this.props.dsc} ft</li>
+              <ul class="list-group list-group-flush" id={this.props.apiId}>
+                <li class="list-group-item">
+                  Level: {difficulty}
+                </li>
+                <li class="list-group-item">
+                  Location: ({this.props.lat}&deg;, {this.props.lng}&deg;)
+                </li>
+                <li class="list-group-item">
+                  Length: {this.props.len}mi
+                </li>
+                <li class="list-group-item">
+                  Ascent: {this.props.asc}ft / Descent: {this.props.dsc}ft 
+                </li>
               </ul>
             </div>
-            <button class="btn add btn-primary w-100" onClick={this.onAddHike}><b>Hike it!</b></button>
             <div class="card-footer justify-content-center">
               <small class="text-muted">
                 {this.props.stat} on {formattedDate}
                 <p>Details: {this.props.det}</p>
               </small>
             </div>
-            
           </div>
         );
       }

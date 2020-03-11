@@ -69,17 +69,27 @@ h4 {
   text-align: center;
 }
 
+.card:hover {
+  cursor: pointer;
+  border-width: 4px;
+  
+}
+
 .trail-content {
   padding: 2em;
 }
 
 /* colors for difficulty */
 .black {
-  
+  border-color: black;
 }
 
 .blue {
-  
+  border-color: #145DA0;
+}
+
+.green {
+  border-color: #4D774D;
 }
 
 
