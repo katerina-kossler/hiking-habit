@@ -50,7 +50,7 @@ class TrailsForm extends React.Component {
   
   render() {
     return (
-      <form>
+      <form class="whiteText">
         <div class="form-group row">
           <label for="trailsFormZipcode" class="col-sm-6 col-form-label text-center">
             Zipcode

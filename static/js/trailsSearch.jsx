@@ -33,12 +33,17 @@ class TrailsSearch extends React.Component {
   render() {
     return(
       <div>
-        <div class="row justify-content-center">
-          <h3>Find your trail</h3>
+        <div id="landing" class="headerImg">
+          <div class="landingContent">
+            <div class="row justify-content-center">
+              <h3>Find your Trail</h3>
+            </div>
+            <div class="form row justify-content-center align-items-center">
+              <TrailsForm searchTrails={this.onTrailSearch} />
+            </div>
+          </div>
         </div>
-        <div class="form row justify-content-center align-items-center">
-          <TrailsForm searchTrails={this.onTrailSearch} />
-        </div>
+
         <hr/>
         <div class="row justify-content-center align-items-center">
           <TrailsResults trails={this.state.results} 

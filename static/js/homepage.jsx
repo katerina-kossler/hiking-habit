@@ -139,7 +139,7 @@ class App extends React.Component {
                 </Route>
               </Switch>
             </div>
-            <footer class="fluis-container">
+            <footer class="fluid-container">
               <nav class="navbar fixed-bottom text-center bg-light py-3">
                 <a href="https://katerinakossler.com/">Made by Katerina Kossler</a> 
                 <Link to='/about'>About <img class="mtn" src="/static/img/mountain.png"/></Link>
