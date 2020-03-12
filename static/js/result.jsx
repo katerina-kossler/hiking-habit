@@ -3,47 +3,63 @@
 class Result extends React.Component {
   constructor(props) {
     super(props);
+    this.reformatDifficulty = this.reformatDifficulty.bind(this);
     // this.props.trailDetails
     // this.props.resultDetails
     // this.onUpdate
   }
   
+  reformatDifficulty() {
+    let strDiff = this.props.trailDetails.difficulty;
+    if (strDiff == 'green') {
+      return 'Easy'
+    } else if (strDiff == 'blue') {
+      return 'Intermediate'
+    } else if (strDiff == 'black') {
+      return 'Difficult'
+    } else {
+      return this.props.diff
+    }
+  }
+  
   render() {
+    let difficulty = this.reformatDifficulty();
+    const titleColor = 'list-group-item ' + difficulty;
     return(
       <div>
-        <div>
-          <h3>{this.props.trailDetails.name}</h3> 
-          {this.props.trailDetails.loc}
-          <ul>
-            <li><b>Summary: </b>{this.props.trailDetails.summary}</li>
-            <li><b>Difficulty: </b>{this.props.trailDetails.difficulty}</li>
-            <li><b>Length (mi): </b>{this.props.trailDetails.len}</li>
-            <li><b>Ascent (ft): </b>{this.props.trailDetails.ascent}</li>
-            <li><b>Status: </b> {this.props.trailDetails.condStatus}</li>
-          </ul>
+        <div class="row">
+          <div class="col-md-6">
+              <ul class="list-group">
+                <li class={titleColor}>{this.props.trailDetails.name}</li>
+                <li class="list-group-item">{this.props.trailDetails.loc}</li>
+                <li class="list-group-item">{this.props.trailDetails.summary}</li>
+                <li class="list-group-item">Level: {difficulty}</li>
+                <li class="list-group-item">Length: {this.props.trailDetails.len}mi</li>
+                <li class="list-group-item">Ascent: {this.props.trailDetails.ascent}ft</li>
+                <li class="list-group-item">Status: {this.props.trailDetails.condStatus}</li>
+              </ul>
+          </div>
+          <div class="col-md-6">
+            <ul class="list-group">
+              <li class="list-group-item submit">Results from {this.props.resultDetails.hikedOn}</li>
+              <li class="list-group-item">Assessment: {this.props.resultDetails.assessment}</li>
+              <li class="list-group-item">Distance: {this.props.resultDetails.distance}</li>
+              <li class="list-group-item">Distance: {this.props.resultDetails.distance}</li>
+              <li class="list-group-item">Time Hiked (h): {this.props.resultDetails.hikeTime}</li>
+              <li class="list-group-item">
+                <h5>Ratings:</h5>
+                <div class="justify-content-left align-items-center"><p>- Ascent: {this.props.resultDetails.ascentRating}</p></div>
+                <div class="justify-content-left align-items-center"><p>- Distance: {this.props.resultDetails.distanceRating}</p></div>
+                <div class="justify-content-left align-items-center"><p>- Challenge: {this.props.resultDetails.challengeRating}</p></div>
+                <div class="row justify-content-center align-items-center">
+                  <button class="submit btn" onClick={this.props.onUpdate}>
+                    Go back to hikes
+                  </button>
+                </div>
+              </li>
+            </ul> 
+          </div>
         </div>
-        <h4>Results from {this.props.resultDetails.hikedOn}:</h4>
-        <div>
-          Assessment: {this.props.resultDetails.assessment}
-          <br/>
-          Distance: {this.props.resultDetails.distance}
-          <br/>
-          Time Hiked (h): {this.props.resultDetails.hikeTime}
-          <br/>
-          Ratings: <br/>
-          <ul>
-            <li>
-              Ascent: {this.props.resultDetails.ascentRating}
-            </li>
-            <li>
-              Distance: {this.props.resultDetails.distanceRating}
-            </li>
-            <li>
-              Challenge: {this.props.resultDetails.challengeRating}
-            </li>
-          </ul>
-        </div>
-        <button class="submit btn" onClick={this.props.onUpdate}>Go back to hikes</button>
       </div>
     );
   }

@@ -40,7 +40,7 @@ class Goal extends React.Component {
     let view = this.state.view;
     if (view) {
       return(
-        <div>
+        <div class="card">
           <h3>{this.props.title}</h3>
           {this.props.description}
           <ul>
@@ -58,7 +58,7 @@ class Goal extends React.Component {
       )
     } else {
       return (
-        <div>
+        <div class="card">
           <h3>{this.props.title}</h3>
           {this.props.description}
           <p>

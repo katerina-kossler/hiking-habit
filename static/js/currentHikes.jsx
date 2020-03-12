@@ -13,8 +13,10 @@ class CurrentHikes extends React.Component {
     if (hikes) {
       if (hikes.length == 0) {
         return (
-          <div class="text-center">
-            You don't have hikes matching that filter, go to Trail Search to make a new hike!
+          <div class="row justify-content-center align-items-center text-center">
+            <h4>
+              You don't have hikes matching that filter, go to Trail Search to make a new hike!
+            </h4>
           </div>
         );
       } else {
@@ -32,7 +34,7 @@ class CurrentHikes extends React.Component {
           );
         };
         return(
-          <div>
+          <div class="row justify-content-center align-items-center">
             <ul>
               {hikeList}          
             </ul>

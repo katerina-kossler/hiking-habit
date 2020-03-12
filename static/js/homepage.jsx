@@ -139,10 +139,12 @@ class App extends React.Component {
                 </Route>
               </Switch>
             </div>
-            <footer class="page-footer text-center bg-light py-3">
-              <a href="https://katerinakossler.com/">Made by Katerina Kossler</a> 
-              &nbsp;&nbsp;|&nbsp;&nbsp;
-              <Link to='/about'>About <img class="mtn" src="/static/img/mountain.png"/></Link>
+            <footer class="fluis-container">
+              <nav class="navbar fixed-bottom text-center bg-light py-3">
+                <a href="https://katerinakossler.com/">Made by Katerina Kossler</a> 
+                <Link to='/about'>About <img class="mtn" src="/static/img/mountain.png"/></Link>
+              </nav>
+
             </footer>
           </div>
         </Router>

@@ -50,7 +50,7 @@ class GoalsView extends React.Component {
             <button class="btn add" onClick={()=>{this.setState({view: 'add'})}}>Add a Goal</button>  
           </div>
           <hr/>
-          <div class="row justify-content-center align-items-center">
+          <div class="row">
             <CurrentGoals goals={this.state.goals} viewGoals={this.viewGoals}/>
           </div>
 
