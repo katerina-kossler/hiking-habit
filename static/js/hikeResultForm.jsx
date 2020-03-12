@@ -12,6 +12,7 @@ class HikeResultForm extends React.Component {
                     hikeTime: undefined};
       this.handleInput = this.handleInput.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
+      this.reformatDifficulty = this.reformatDifficulty.bind(this);
       // this.props.onSubmitResultsForm
       // this.props.hikeId
       // this.props.trailDetails with:
@@ -54,89 +55,154 @@ class HikeResultForm extends React.Component {
     };
   }
   
+  reformatDifficulty() {
+    let strDiff = this.props.trailDetails.difficulty;
+    if (strDiff == 'green') {
+      return 'Easy'
+    } else if (strDiff == 'blue') {
+      return 'Intermediate'
+    } else if (strDiff == 'black') {
+      return 'Difficult'
+    } else {
+      return this.props.diff
+    }
+  }
+  
   render() {
+    let difficulty = this.reformatDifficulty();
+    const titleColor = 'list-group-item ' + difficulty;
     return(
       <div>
-        <h2>Trail Details: </h2>
-        <div>
-          <h4>{this.props.trailDetails.name}</h4> {this.props.trailDetails.loc}
-          <ul>
-            <li><b>Summary: </b>{this.props.trailDetails.summary}</li>
-            <li><b>Difficulty: </b>{this.props.trailDetails.difficulty}</li>
-            <li><b>Length (mi): </b>{this.props.trailDetails.len}</li>
-            <li><b>Ascent (ft): </b> {this.props.trailDetails.ascent}</li>
-            <li><b>Status: </b> {this.props.trailDetails.condStatus}</li>
-          </ul>
+        <div class="row">
+          <div class="col-md-6">
+              <ul class="list-group">
+                <li class={titleColor}>{this.props.trailDetails.name}</li>
+                <li class="list-group-item">{this.props.trailDetails.loc}</li>
+                <li class="list-group-item">{this.props.trailDetails.summary}</li>
+                <li class="list-group-item">Level: {difficulty}</li>
+                <li class="list-group-item">Length: {this.props.trailDetails.len}mi</li>
+                <li class="list-group-item">Ascent: {this.props.trailDetails.ascent}ft</li>
+                <li class="list-group-item">Status: {this.props.trailDetails.condStatus}</li>
+              </ul>
+          </div>
+          <div class="col-md-6">
+            <ul class="list-group">
+              <li class="list-group-item submit">Results:</li>
+              <li class="list-group-item">
+                <div class="row">
+                  <label for="hikeResultAssess" class="col-sm-6 col-form-label text-center">
+                    Assessment
+                  </label>
+                  <div class="input-group col-sm-6">
+                    <input type="text" class="form-control"
+                          id="hikeResultAssess"
+                          placeholder="Notes on your hike"
+                          name="assessment" 
+                          size='50'
+                          onChange={this.handleInput}/>
+                  </div>
+                </div>
+              </li>
+              <li class="list-group-item">
+                <div class="row">
+                  <label for="hikeResultDistance" class="col-sm-6 col-form-label text-center">
+                    Distance (mi)
+                  </label>
+                  <div class="input-group col-sm-6">
+                    <input type="number" class="form-control"
+                          id="hikeResultDistance"
+                          name="distance" 
+                          placeholder={this.props.trailDetails.len}
+                          onChange={this.handleInput}/>
+                  </div>
+                </div>
+              </li>
+              <li class="list-group-item">
+                <div class="row">
+                  <label for="hikeResultDate" class="col-sm-6 col-form-label text-center">
+                    Date Hiked
+                  </label>
+                  <div class="input-group col-sm-6">
+                    <input type="date" class="form-control"
+                            id="hikeResultDate"
+                            name="hikedOn" 
+                            onChange={this.handleInput}/>
+                  </div>
+                </div>
+              </li>
+              <li class="list-group-item">
+                <div class="row">
+                  <label for="hikeResultTime" class="col-sm-6 col-form-label text-center">
+                    Time Hiked (h)
+                  </label>
+                  <div class="input-group col-sm-6">
+                    <input type="number" class="form-control"
+                          id="hikeResultTime"
+                          minlength="1" 
+                          name="hikeTime" 
+                          onChange={this.handleInput}/>
+                  </div>
+                </div>
+              </li>
+              <li class="list-group-item justify-content-center align-items-center">
+                <h5 class="col-form-label text-center">
+                  Rate the following:
+                </h5>
+                <div class="row">
+                  <label for="hikeResultAscent" class="col-sm-6 col-form-label text-center">
+                    The climb / ascent
+                  </label>
+                  <div class="col-sm-6">
+                    <select name="ascentRating" id="hikeResultAscent"
+                            class="form-control "onChange={this.handleInput}>
+                      <option value="VERY_EASY">Very Easy</option>
+                      <option value="EASY">Easy</option>
+                      <option value="AVERAGE">Average</option>
+                      <option value="DIFFICULT">Difficult</option>
+                      <option value="VERY_DIFFICULT">Very Difficult</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row">
+                  <label for="hikeResultDistance" class="col-sm-6 col-form-label text-center">
+                    The distance
+                  </label>
+                  <div class="col-sm-6">
+                    <select name="distanceRating" id="hikeResultDistance"
+                            class="form-control "onChange={this.handleInput}>
+                      <option value="VERY_EASY">Very Easy</option>
+                      <option value="EASY">Easy</option>
+                      <option value="AVERAGE">Average</option>
+                      <option value="DIFFICULT">Difficult</option>
+                      <option value="VERY_DIFFICULT">Very Difficult</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row">
+                  <label for="hikeResultChallenge" class="col-sm-6 col-form-label text-center">
+                    The rigor / challenge
+                  </label>
+                  <div class="col-sm-6">
+                    <select name="challengeRating" id="hikeResultChallenge"
+                            class="form-control "onChange={this.handleInput}>
+                      <option value="VERY_EASY">Very Easy</option>
+                      <option value="EASY">Easy</option>
+                      <option value="AVERAGE">Average</option>
+                      <option value="DIFFICULT">Difficult</option>
+                      <option value="VERY_DIFFICULT">Very Difficult</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row justify-content-center align-items-center">
+                  <button class="add btn" onClick={this.handleSubmit}>
+                        Submit
+                  </button> 
+                </div>
+              </li>
+            </ul> 
+
+          </div>
         </div>
-        <h2>Hike Results:</h2>
-        <form>
-          <label>
-            Assessment:<input type="text" 
-                              name="assessment" 
-                              size='50'
-                              onChange={this.handleInput}/>
-          </label>
-          <br/>
-          <label>
-            Distance Hiked (mi):<input type="number"
-                                  name="distance" 
-                                  placeholder={this.props.trailDetails.len}
-                                  onChange={this.handleInput}/>
-          </label>
-          [default is full trail length]
-          <br/>
-          <label>
-            Date Hiked:<input type="date" 
-                              name="hikedOn" 
-                              onChange={this.handleInput}/>
-          </label>
-          <br/>
-          <label>
-            Time Hiked (h):<input type="number" 
-                                  minlength="1" 
-                                  name="hikeTime" 
-                                  onChange={this.handleInput}/>
-          </label>
-          <br/>
-          <label>
-            How were the following:
-          </label>
-          <br/>
-          <label>
-            The climb / ascent:
-            <select name="ascentRating" onChange={this.handleInput}>
-              <option value="VERY_EASY">Very Easy</option>
-              <option value="EASY">Easy</option>
-              <option value="AVERAGE">Average</option>
-              <option value="DIFFICULT">Difficult</option>
-              <option value="VERY_DIFFICULT">Very Difficult</option>
-            </select>
-          </label>
-          <br/>
-          <label>
-            Distance:
-            <select name="distanceRating" onChange={this.handleInput}>
-              <option value="VERY_EASY">Very Easy</option>
-              <option value="EASY">Easy</option>
-              <option value="AVERAGE">Average</option>
-              <option value="DIFFICULT">Difficult</option>
-              <option value="VERY_DIFFICULT">Very Difficult</option>
-            </select>
-          </label>
-          <br/>
-          <label>
-            The rigor / challenge of the trail:
-            <select name="challengeRating" onChange={this.handleInput}>
-              <option value="VERY_EASY">Very Easy</option>
-              <option value="EASY">Easy</option>
-              <option value="AVERAGE">Average</option>
-              <option value="DIFFICULT">Difficult</option>
-              <option value="VERY_DIFFICULT">Very Difficult</option>
-            </select>
-          </label>
-          <br/>
-          <button class="btn add" onClick={this.handleSubmit}> Submit </button>
-        </form>
       </div>
     );
   }

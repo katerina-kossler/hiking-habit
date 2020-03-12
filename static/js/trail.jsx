@@ -22,7 +22,6 @@ class Trail extends React.Component {
   }
   
   reformatDifficulty() {
-    console.log(this.props.diff);
     let strDiff = this.props.diff;
     if (strDiff == 'green') {
       return 'Easy'
@@ -65,7 +64,6 @@ class Trail extends React.Component {
                 Trail Status Unknown
               </small>
             </div>
-          
         </div>
       );
     } else {

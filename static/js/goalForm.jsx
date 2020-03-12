@@ -83,13 +83,13 @@ class GoalForm extends React.Component {
           </div>
           <div class="form-group row">
             <label for="goalFormDesc" class="col-sm-4 col-form-label text-center">
-              Description
+              Notes
             </label>
             <div class="input-group col-sm-8">
               <input type="text" name="description" onChange={this.handleInput}/>
             </div>
           </div>
-          <button class="add btn mx-auto" onClick={this.handleSubmit}> Submit</button>
+          <button class="add btn justify-content-center align-items-center" onClick={this.handleSubmit}> Submit</button>
         </form>
         </div>
     );

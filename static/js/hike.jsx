@@ -57,7 +57,7 @@ class Hike extends React.Component {
         <div>
           <h4>{trailName}</h4> {trailDescription}
           <p>
-            <button class='add btn' onClick={this.onViewResults}><b>View Results</b></button>
+            <button class='submit btn' onClick={this.onViewResults}><b>View Results</b></button>
             <button class='submit btn' onClick={this.onCancelHike}><b>Cancel</b></button>
           </p>
         </div>

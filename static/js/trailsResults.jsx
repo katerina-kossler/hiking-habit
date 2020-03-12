@@ -37,7 +37,7 @@ class TrailsResults extends React.Component {
         }
         return (
           <div class="row">
-            <ul class="card-columns p-0">{trailList}</ul>
+            <ul class="card-columns m-4 p-0">{trailList}</ul>
           </div>
         );
       }

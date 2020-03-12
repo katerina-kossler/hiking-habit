@@ -16,7 +16,7 @@ form {
   padding: 1.3em;
   border-radius: 1em;
   border-color: #435861;
-  font-size: 1.5em;
+  font-size: 1.2em;
   margin-left: auto;
   margin-right: auto;
 }
@@ -72,14 +72,12 @@ h4 {
 .card:hover {
   cursor: pointer;
   border-width: 4px;
-  
 }
 
 .trail-content {
   padding: 2em;
 }
 
-/* colors for difficulty */
 .black {
   border-color: black;
 }
@@ -92,6 +90,20 @@ h4 {
   border-color: #4D774D;
 }
 
+.Difficult {
+  background-color: black;
+  color: white;
+}
+
+.Intermediate {
+  background-color: #145DA0;
+  color: white;
+}
+
+.Easy {
+  background-color: #4D774D;
+  color: white;
+}
 
 /* Bootstrap Padding Fix for Responsive Sites */
 [class*="col-"] {

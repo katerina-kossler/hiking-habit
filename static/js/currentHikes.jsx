@@ -13,8 +13,8 @@ class CurrentHikes extends React.Component {
     if (hikes) {
       if (hikes.length == 0) {
         return (
-          <div>
-            You don't have any hikes matching that filter, go to Trail Search to find a trail to hike on!
+          <div class="text-center">
+            You don't have hikes matching that filter, go to Trail Search to make a new hike!
           </div>
         );
       } else {

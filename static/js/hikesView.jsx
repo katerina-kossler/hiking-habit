@@ -151,6 +151,10 @@ class HikesView extends React.Component {
     if (showForm === 'new') {
       return(
         <div>
+          <div class="row justify-content-center align-items-center">
+            <h3>Active Adventures</h3>
+          </div>
+          <hr/>
           <HikeResultForm hikeId={hikeId} 
                           onSubmitResultsForm={this.onSubmitResultsForm} 
                           trailDetails={trailDetails}/>
@@ -159,6 +163,10 @@ class HikesView extends React.Component {
     } else if (showForm === 'existing') {
       return(
         <div>
+          <div class="row justify-content-center align-items-center">
+            <h3>Active Adventures</h3>
+          </div>
+          <hr/>
           <Result hikeId={hikeId}
                   trailDetails={trailDetails}
                   resultDetails={resultDetails} 
@@ -172,6 +180,7 @@ class HikesView extends React.Component {
           <div class="row justify-content-center align-items-center">
             <h3>Active Adventures</h3>
           </div>
+          <hr/>
           <div class="row justify-content-center align-items-center">
             <HikeForm onCheckHikes={this.onCheckHikes} onUpdate={this.onUpdate}/>
           </div>

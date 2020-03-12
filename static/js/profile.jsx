@@ -5,11 +5,11 @@ class Profile extends React.Component {
   
   render() {
     return(
-      <div class="row">
-        <div class="justify-content-center align-items-center">
-          <h3>Welcome {this.props.first} {this.props.last}!</h3><br/>
-          <h4>You've been hiking with us since {this.props.createdOn}.</h4><br/>
-          <h3>Happy Trails!</h3>
+      <div class="row justify-content-center">
+        <div class="justify-content-center align-items-center text-center">
+          <h4>Welcome {this.props.first} {this.props.last}!</h4><br/>
+          <h5>You've been hiking with us since {this.props.createdOn}.</h5><br/>
+          <h4>Happy Trails!</h4>
         </div>
       </div>
     )
