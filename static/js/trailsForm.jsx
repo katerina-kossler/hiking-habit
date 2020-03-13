@@ -96,7 +96,7 @@ class TrailsForm extends React.Component {
                     min="0" max="200" onChange={this.handleInput}/>
             </div>
           </div>
-          <div class="form-group row">
+          <div class="form-group row align-items-center justify-content-center">
             <legend class="col-form-label col-sm-6 pt-0 text-center">Sort By</legend>
             <div class="col-sm-6">
               <div class="form-check-inline">

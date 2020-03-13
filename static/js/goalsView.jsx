@@ -27,12 +27,15 @@ class GoalsView extends React.Component {
     if (view == 'add') {
       return (
         <div>
-          <div class="row justify-content-center align-items-center">
-            <h3 class="text-center">
-              Set Goals, Reach Peaks
-            </h3> 
+          <div class="headerImg justify-content-center align-items-center p-1" id="goals">
+            <div class="row justify-content-center align-items-center">
+              <h3 class="text-center">
+                Set Goals, Reach Peaks
+              </h3> 
+            </div>
+            <p></p>
           </div>
-          <hr/>
+          <p></p>
           <div class="row justify-content-center align-items-center">
             <GoalForm viewGoals={this.viewGoals} />
           </div>
@@ -41,15 +44,18 @@ class GoalsView extends React.Component {
     } else {
       return (  
         <div>
-          <div class="row justify-content-center align-items-center">
-            <h3 class="text-center">
-              Set Goals, Reach Peaks
-            </h3> 
+          <div class="headerImg justify-content-center align-items-center p-1" id="goals">
+            <div class="row justify-content-center align-items-center">
+              <h3 class="text-center">
+                Set Goals, Reach Peaks
+              </h3> 
+            </div>
+            <div class="row justify-content-center align-items-center">
+              <button class="btn add" onClick={()=>{this.setState({view: 'add'})}}>Add a Goal</button>  
+            </div>
+            <p></p>
           </div>
-          <div class="row justify-content-center align-items-center">
-            <button class="btn add" onClick={()=>{this.setState({view: 'add'})}}>Add a Goal</button>  
-          </div>
-          <hr/>
+          <p></p>
           <div class="row justify-content-center align-items-center w-100">
             <CurrentGoals goals={this.state.goals} viewGoals={this.viewGoals}/>
           </div>

@@ -34,7 +34,7 @@ class CurrentHikes extends React.Component {
           );
         };
         return(
-            <ul class="form-inline card-deck">
+            <ul class="form-inline card-deck m-6 p-5">
               {hikeList}          
             </ul>
         );

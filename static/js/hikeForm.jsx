@@ -22,7 +22,7 @@ class HikeForm extends React.Component {
   
   render() {
     return(
-      <div class="input-group col-sm-2 col-md-3">
+      <div class="input-group">
         <select name="type" class="form-control" id="hikeFormChoice" onChange={this.handleChange}>
           <option value='all'>All</option>
           <option value='complete'>Complete</option>

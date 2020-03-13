@@ -48,7 +48,7 @@ class GoalForm extends React.Component {
       <div>
         <h4 class="text-center">Let's sketch this out</h4>
         <form>
-          <div class="form-group row">
+          <div class="form-group row justify-content-center align-items-center">
             <label for="goalFormTitle" class="col-sm-4 col-form-label text-center">
               Title
             </label>
@@ -58,11 +58,11 @@ class GoalForm extends React.Component {
                     name="title" required onChange={this.handleInput}/>
             </div>
           </div>
-          <div class="form-group row">
+          <div class="form-group row justify-content-center align-items-center">
             <label for="goalFormType" class="col-sm-4 col-form-label text-center">
               Type
             </label>
-            <div class="input-group col-sm-8">
+            <div class="input-group col-sm-8 align-items-center">
               <select name="goalType" class="form-control"
                       id="goalFormType" onChange={this.handleInput}>
                 <option value="NUMBER_HIKES" defaultChecked>Number of Hikes Completed</option>
@@ -72,24 +72,26 @@ class GoalForm extends React.Component {
               </select>
             </div>
           </div>
-          <div class="form-group row">
+          <div class="form-group row justify-content-center align-items-center">
             <label for="goalFormGoal" class="col-sm-4 col-form-label text-center">
               Goal
             </label>
-            <div class="input-group col-sm-8">
+            <div class="input-group row col-sm-8 justify-content-center align-items-center">
               <input type="number" name="numericalValue" 
                     id="goalFormGoal" onChange={this.handleInput}/>
             </div>
           </div>
-          <div class="form-group row">
+          <div class="form-group row justify-content-center align-items-center">
             <label for="goalFormDesc" class="col-sm-4 col-form-label text-center">
               Notes
             </label>
-            <div class="input-group col-sm-8">
+            <div class="input-group row col-sm-8 justify-content-center align-items-center">
               <input type="text" name="description" onChange={this.handleInput}/>
             </div>
           </div>
-          <button class="add btn justify-content-center align-items-center" onClick={this.handleSubmit}> Submit</button>
+          <div class="row justify-content-center align-items-center"> 
+            <button class="add btn" onClick={this.handleSubmit}> Submit</button>
+          </div>
         </form>
         </div>
     );
