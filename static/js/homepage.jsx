@@ -22,7 +22,7 @@ class App extends React.Component {
     $.post('/api/register', data, (response) => {
       let type = typeof(response);
       if (type == 'string') {
-        alert(response);
+        alertify.error(response);
       } else {
         this.setState({userId: response.userId});
         this.checkIfLoggedIn();
@@ -34,7 +34,7 @@ class App extends React.Component {
     $.post('/api/login', data, (response) => {
       let type = typeof(response);
       if (type == 'string') {
-        alert(response);
+        alertify.error(response);
       } else {
         let user = response.userId;
         this.setState({userId: response.userId});
@@ -77,7 +77,7 @@ class App extends React.Component {
       return(
         <Router>
           <div>
-            <nav class='navbar navbar-expand-md navbar-light bg-light border-bottom'>
+            <nav class='navbar navbar-expand-md navbar-light bg-light'>
               <div class='container-fluid'>     
                 <div>
                   <a class='navbar-brand' id='logo' href='/'>

@@ -12,7 +12,6 @@ class Progress extends React.Component {
     this.reformatData = this.reformatData.bind(this);
     // rawData, status, dataTitle, goal (value), type
   }
-
   
   reformatData() {
     const goal = this.props.goal;

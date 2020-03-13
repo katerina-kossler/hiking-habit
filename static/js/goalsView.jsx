@@ -10,7 +10,7 @@ class GoalsView extends React.Component {
   viewGoals() {
     $.get('/api/goals', (response) => {
       if (typeof response == "string") {
-        alert(response);
+        alertify.error(response);
       } else {
         this.setState({goals:response,
                       view: undefined});
@@ -50,7 +50,7 @@ class GoalsView extends React.Component {
             <button class="btn add" onClick={()=>{this.setState({view: 'add'})}}>Add a Goal</button>  
           </div>
           <hr/>
-          <div class="row">
+          <div class="row justify-content-center align-items-center w-100">
             <CurrentGoals goals={this.state.goals} viewGoals={this.viewGoals}/>
           </div>
 

@@ -47,6 +47,7 @@ class TrailsResults extends React.Component {
           <br/>
           {this.props.quote}
           <br/>
+          <p></p>
         </div>
       );
     }

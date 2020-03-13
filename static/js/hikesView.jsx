@@ -57,7 +57,7 @@ class HikesView extends React.Component {
       const showForm = 'new';
       $.get('/api/trail_from_hike_id', hikeData, (response) => {
         if (typeof(response) === 'string') {
-          alert(response);
+          alertify.error(response);
         } else {
           const name = response.name;
           const summary = response.summary;
@@ -132,7 +132,7 @@ class HikesView extends React.Component {
   onSubmitResultsForm(data) {
     $.post('/api/hike_result', data, (response) => {
       if ((typeof(response)) === 'string') {
-        alert(response);
+        alertify.error(response);
       };
     });
     this.onUpdate();
@@ -180,17 +180,15 @@ class HikesView extends React.Component {
           <div class="row justify-content-center align-items-center">
             <h3>Active Adventures</h3>
           </div>
+          <div class="row justify-content-center align-items-center">
+              <HikeForm class="w-50" onCheckHikes={this.onCheckHikes} onUpdate={this.onUpdate}/>
+          </div>
           <hr/>
           <div class="row justify-content-center align-items-center">
-            <HikeForm onCheckHikes={this.onCheckHikes} onUpdate={this.onUpdate}/>
-          </div>
-          <div class="row">
             <CurrentHikes hikes={results} 
                           onUpdate={this.onUpdate} 
                           renderForm={this.renderForm}/>
           </div>
-        
-
         </div>
       );
     }

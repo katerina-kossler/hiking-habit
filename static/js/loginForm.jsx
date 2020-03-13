@@ -24,30 +24,36 @@ class LoginForm extends React.Component {
   
   render() {
   return (
-    <div class="container mx-auto">
+    <div  class="headerImg" id="login">
       <div class="row justify-content-center align-items-center">
-        <h3>You're signed out</h3>
+        <h3>Welcome!</h3>
       </div>
       <div class="row justify-content-center align-items-center">
         <h4>Log in to plan new adventures!</h4>   
       </div>
       <div class="row mw-50">
         <form>
-          <div class="form-group">
-            <label for="loginFormUserOrEmail">Username or email:</label>
-            <input type="text" class="form-control" 
-                  id="loginFormUserOrEmail"
-                  placeholder="name@example.com" 
-                  name="user" onChange={this.handleInput}/>
+          <div class="form-group row justify-content-center align-items-center">
+            <label for="loginFormUserOrEmail" class="text-center col-lg-4 col-md-6">Username or email:</label>
+            <div class="col-lg-4 col-md-6">
+              <input type="text" class="form-control" 
+                id="loginFormUserOrEmail"
+                placeholder="name@example.com" 
+                name="user" onChange={this.handleInput}/>
+            </div>
           </div>
-          <div class="form-group">
-            <label for="loginFormPassword">Password:</label>
-            <input type="password" class="form-control" 
-                  id="loginFormPassword"
-                  placeholder="password"
-                  name="password" onChange={this.handleInput}/>
+          <div class="form-group row justify-content-center align-items-center">
+            <label for="loginFormPassword" class="text-center col-lg-4 col-md-6">Password:</label>
+            <div class="col-lg-4 col-md-6">
+              <input type="password" class="form-control" 
+                id="loginFormPassword"
+                placeholder="password"
+                name="password" onChange={this.handleInput}/>
+            </div>
           </div>
-          <button class='submit btn' onClick={this.handleSubmit}> Login </button>
+          <div class="form-group row justify-content-center align-items-center">
+            <button class='submit btn' onClick={this.handleSubmit}> Login </button>
+          </div>
         </form>
       </div>
     </div>

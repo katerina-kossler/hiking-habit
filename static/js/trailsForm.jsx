@@ -24,19 +24,19 @@ class TrailsForm extends React.Component {
     let maxRadius = this.state.maxRadius;
     let length = this.state.length;
     if (zipcode === undefined) {
-      alert('Please Enter a zipcode.');
+      alertify.error('Please Enter a zipcode.');
     } else if (maxResults > 500) {
-      alert('Maximum number of results is 500, please reduce.');
+      alertify.error('Maximum number of results is 500, please reduce.');
     } else if (maxResults < 10) {
-      alert('Minimum number of max results is 10, please increase.') 
+      alertify.error('Minimum number of max results is 10, please increase.') 
     } else if (maxRadius > 200) {
-      alert('Maximum radius is 200 miles, please reduce.')
+      alertify.error('Maximum radius is 200 miles, please reduce.')
     } else if (maxRadius < 30) {
-      alert('Minimum radius is 30 miles, please increase.')
+      alertify.error('Minimum radius is 30 miles, please increase.')
     } else if (length < 0) {
-      alert('Minimum minimum trail length is 0 miles, please increase') 
+      alertify.error('Minimum minimum trail length is 0 miles, please increase') 
     } else if (length > 200) {
-      alert('Maximum minimum trail length is 200 miles, please reduce.')
+      alertify.error('Maximum minimum trail length is 200 miles, please reduce.')
     } else {
       let sort = this.state.sort;
       let trailSearchData = {zipcode: zipcode,

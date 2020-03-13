@@ -77,13 +77,23 @@ def intake_user_info():
        email are chosen"""
     
     username = request.form.get("username")
+    if not username:
+        return 'Enter a username'
     email = request.form.get("email")
+    if not email:
+        return "Enter an email"
     username_in_system = User.query.filter_by(username=username).first()
     email_in_system = User.query.filter_by(email=email).first()
-    password = request.form.get("password") # hash with salt later
+    password = request.form.get("password")
+    if not password:
+        return "Enter a password"
     created_on = date.today()
     first_name = request.form.get("first")
+    if not first_name:
+        return "Enter your first name"
     last_name = request.form.get("last")
+    if not last_name:
+        return "Enter your last name"
     username_in_system = User.query.filter_by(username=username).first()
     email_in_system = User.query.filter_by(email=email).first()
     if username_in_system:

@@ -35,13 +35,13 @@ class HikeResultForm extends React.Component {
     const challengeRating = this.state.challengeRating;
     const hikeTime = this.state.hikeTime; 
     if (distance === undefined) {
-      alert('Please enter the distance you hiked.')
+      alertify.error('Please enter the distance you hiked.')
     } else if (hikedOn === undefined) {
-      alert('Please enter the day you hiked.')
+      alertify.error('Please enter the day you hiked.')
     } else if (distance < 0) {
-      alert('Please provide a positive length you hiked.')
+      alertify.error('Please provide a positive length you hiked.')
     } else if (hikeTime < 0) {
-      alert('Please provide a positive amount of time.')
+      alertify.error('Please provide a positive amount of time.')
     } else {
       let result_data = {hikeId: hikeId,
                         assessment: assessment,
@@ -73,7 +73,7 @@ class HikeResultForm extends React.Component {
     const titleColor = 'list-group-item ' + difficulty;
     return(
       <div>
-        <div class="row">
+        <div class="row p-2">
           <div class="col-md-6">
               <ul class="list-group">
                 <li class={titleColor}>{this.props.trailDetails.name}</li>

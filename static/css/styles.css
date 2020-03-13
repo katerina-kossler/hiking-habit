@@ -21,14 +21,14 @@ form {
 
 body {
   font-family: 'Montserrat', sans-serif;
+  height: 100%;
+  background-size:contain;
   font-size: 100%;
   justify-content: center;
   font-size: small;
   background-color: 
   #f8f9fa;
 }
-
-
 
 h3 {
   font-size: 2em;
@@ -72,7 +72,20 @@ h4 {
 }
 
 #landing {
-  background-image: url(/static/img/forest-wide.jpg);
+  background-image: url('/static/img/forest-wide.jpg');
+}
+
+#login {
+  background-image: url('/static/img/sea.jpeg');
+  height: 120%;
+  background-position: center;
+  margin-bottom: 0;
+}
+
+#register {
+  background-image: url('/static/img/fog.jpeg');
+  height: 100%;
+  background-position: center;
 }
 
 .landingContent {

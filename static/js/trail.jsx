@@ -17,7 +17,7 @@ class Trail extends React.Component {
   onAddHike() {
     let data = {apiId: this.props.apiId};
     $.post('/api/hikes', data, (response) => {
-      alert(response);
+      alertify.success(response);
     });
   }
   

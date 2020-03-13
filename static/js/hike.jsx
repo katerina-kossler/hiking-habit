@@ -24,7 +24,7 @@ class Hike extends React.Component {
     const data = {hikeId: hikeId,
                   type: type};
     $.post('/api/complete_hike', data, (response) => {
-      alert(response);
+      alertify.success(response);
       this.props.renderForm(data);
     });
   }
@@ -33,7 +33,7 @@ class Hike extends React.Component {
     const hikeId = this.props.hikeId;
     const data = {hikeId: hikeId};
     $.post('/api/cancel_hike', data, (response) => {
-      alert(response);
+      success(response);
       this.props.onUpdate();
       });
   }
@@ -44,24 +44,36 @@ class Hike extends React.Component {
     const isComplete = this.props.isComplete;
     if (isComplete === false) {
       return (
-        <div>
-          <h4>{trailName}</h4> {trailDescription}
-          <p>
-            <button class='add btn' onClick={this.onCompleteHike}><b>Complete</b></button>
-            <button class='submit btn' onClick={this.onCancelHike}><b>Cancel</b></button>
-          </p>
+        <div class="form-group display-flex col-md-6">
+          <ul class="list-group w-100 p-3">
+            <li class="list-group-item flex-column align-items-start">
+              <h4 class="mb-1">{trailName}</h4>
+              <p class="mb-1">{trailDescription}</p>
+              <br/>
+              <div class="justify-content-between d-flex w-80">
+                <button class='add btn' onClick={this.onCompleteHike}><b>Complete</b></button>
+                <button class='submit btn' onClick={this.onCancelHike}><b>Cancel</b></button>
+              </div>
+            </li>
+          </ul>
         </div>
-        );
+      );
     } else if (isComplete === true) {
       return (
-        <div>
-          <h4>{trailName}</h4> {trailDescription}
-          <p>
-            <button class='submit btn' onClick={this.onViewResults}><b>View Results</b></button>
-            <button class='submit btn' onClick={this.onCancelHike}><b>Cancel</b></button>
-          </p>
-        </div>
-        );
+      <div class="form-group display-flex col-sm-6">
+        <ul class="list-group w-100 p-3">
+          <li class="list-group-item flex-column align-items-start">
+            <h4 class="mb-1">{trailName}</h4>
+            <p class="mb-1">{trailDescription}</p>
+            <br/>
+            <div class="justify-content-between d-flex w-80">
+              <button class='submit btn' onClick={this.onViewResults}><b>View Results</b></button>
+              <button class='submit btn' onClick={this.onCancelHike}><b>Cancel</b></button>
+            </div>
+          </li>
+        </ul>
+      </div>
+      );
     };
   };
 }

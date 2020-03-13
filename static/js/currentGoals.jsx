@@ -28,14 +28,12 @@ class CurrentGoals extends React.Component {
                 numericalValue={goal.numericalValue}
                 description={goal.description}
                 createdOn={goal.createdOn}
-                status={goal.status}
-                viewGoals={this.props.viewGoals}
-          />
+                status={goal.status}/>
           );
         }
         return (
-          <div>
-            <ul class="card-columns">{goalList}</ul>
+          <div class="w-100 justify-content-center align-items-center">
+              {goalList}
           </div>
         );
       };

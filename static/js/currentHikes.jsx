@@ -34,11 +34,9 @@ class CurrentHikes extends React.Component {
           );
         };
         return(
-          <div class="row justify-content-center align-items-center">
-            <ul>
+            <ul class="form-inline card-deck">
               {hikeList}          
             </ul>
-          </div>
         );
       };
     } else {

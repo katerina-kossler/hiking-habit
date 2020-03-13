@@ -78,7 +78,6 @@ class HikeChart extends React.Component {
   });
   }
   
-  
   componentDidMount() {
     this.makeChart()
   }

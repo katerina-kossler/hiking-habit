@@ -22,22 +22,22 @@ class GoalForm extends React.Component {
     const numericalValue = this.state.numericalValue;
     const description = this.state.description;
     if (title == undefined) {
-      alert("Please enter a title")
+      alertify.error("Please enter a title");
     } else if (numericalValue == undefined) {
-      alert("Please enter a goal value")
+      alertify.error("Please enter a goal value")
     } else if (isNaN(numericalValue)) {
-      alert("Please enter goal value in numbers")
+      alertify.error("Please enter goal value in numbers")
     } else if (numericalValue < 0) {
-      alert("Please enter a positive goal value")
+      alertify.error("Please enter a positive goal value")
     } else if (description == undefined) {
-      alert("Please enter a goal description")
+      alertify.error("Please enter a goal description")
     } else {
       let result_data = {title: title,
                         type: goalType,
                         numericalValue: numericalValue,
                         description: description};
       $.post("/api/goals", result_data, (response) => {
-        alert(response);
+        alertify.success(response);
         this.props.viewGoals();
       });
     }

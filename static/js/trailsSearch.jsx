@@ -13,7 +13,7 @@ class TrailsSearch extends React.Component {
     $.post('/api/trails', searchParams, (response) => {
       const type = typeof(response);
       if (type == "string") {
-        alert(response)
+        alertify.error(response)
       } else {
         this.setState({results:response});
       }

@@ -33,53 +33,74 @@ class RegisterForm extends React.Component {
   
   render() {
     return(
-    <div class="container mx-auto">
+    <div class="headerImg whiteText" id="register">
       <div class="row justify-content-center align-items-center">
         <h3>Welcome</h3>
       </div>
       <div class="row justify-content-center align-items-center">
         <h4>Sign up to start your hiking journey!</h4>   
       </div>
-      <div class="row  justify-content-center align-items-center mw-50">
+      <div class="row mw-50">
         <form>
-          <div class="form-group">
-            <label for="registerFormUser col-sm-4 col-form-label" clas>
+          <div class="form-group row justify-content-center align-items-center">
+            <label for="registerFormUser" class="text-center col-lg-4 col-md-6">
               Username:
             </label>
-            <input type="text" class="form-control" 
-                  id="registerFormUser"
-                  placeholder="JohnMuir" 
-                  name="username" onChange={this.handleInput}/>
+            <div class="col-lg-4 col-md-6">
+              <input type="text" class="form-control" 
+                    id="registerFormUser"
+                    placeholder="JohnMuir" 
+                    name="username" onChange={this.handleInput}/>
+            </div>
           </div>
-          <div class="form-group">
-            <label for="registerFormEmail">Email:</label>
-            <input type="email" class="form-control" 
+          <div class="form-group row justify-content-center align-items-center">
+            <label for="registerFormEmail" class="text-center col-lg-4 col-md-6">
+              Email:
+            </label>
+            <div class="col-lg-4 col-md-6">
+              <input type="email" class="form-control" 
                   id="registerFormEmail" 
                   placeholder="name@example.com"
                   name="email" onChange={this.handleInput}/>
+            </div>
+
           </div>
-          <div class="form-group">
-            <label for="registerFormFirst">First Name:</label>
-            <input type="text" class="form-control" 
-                  id="registerFormFirst"
-                  placeholder="John" 
-                  name="first" onChange={this.handleInput}/>
+          <div class="form-group row justify-content-center align-items-center">
+            <label for="registerFormFirst" class="text-center col-lg-4 col-md-6">
+              First Name:
+            </label>
+            <div class="col-lg-4 col-md-6">
+              <input type="text" class="form-control" 
+                      id="registerFormFirst"
+                      placeholder="John" 
+                      name="first" onChange={this.handleInput}/>
+            </div>
           </div>
-          <div class="form-group">
-            <label for="registerFormLast">Last Name:</label>
-            <input type="text" class="form-control" 
+          <div class="form-group row justify-content-center align-items-center">
+            <label for="registerFormLast" class="text-center col-lg-4 col-md-6">
+              Last Name:
+            </label>
+            <div class="col-lg-4 col-md-6">
+              <input type="text" class="form-control" 
                   id="registerFormLast" 
                   placeholder="Muir"
                   name="last" onChange={this.handleInput}/>
+            </div>
           </div>
-          <div class="form-group">
-            <label for="loginFormPassword">Password:</label>
-            <input type="password" class="form-control" 
-                  id="loginFormPassword"
-                  placeholder="password"
-                  name="password" onChange={this.handleInput}/>
+          <div class="form-group row justify-content-center align-items-center">
+            <label for="loginFormPassword" class="text-center col-lg-4 col-md-6">
+              Password:
+            </label>
+            <div class="col-lg-4 col-md-6">
+              <input type="password" class="form-control" 
+                    id="loginFormPassword"
+                    placeholder="password"
+                    name="password" onChange={this.handleInput}/>
+            </div>
           </div>
-          <button class='submit btn' onClick={this.handleSubmit}> Register </button>
+          <div class="form-group row justify-content-center align-items-center">
+            <button class='submit btn' onClick={this.handleSubmit}> Register </button>
+          </div>
         </form>
       </div>
     </div>
