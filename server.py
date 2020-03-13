@@ -3,7 +3,6 @@ import json
 from sqlalchemy import func, and_, desc
 from model import User, Goal, Trail, Hike, HikeResult, connect_to_db, db
 from datetime import date, datetime
-import jinja2
 import re
 import os
 import pgeocode
@@ -14,7 +13,6 @@ key = os.environ["HIKINGPROJECT_KEY"]
 coordinates = pgeocode.Nominatim('us')
 app = Flask(__name__)
 app.secret_key = 'this-should-be-something-unguessable'
-app.jinja_env.undefined = jinja2.StrictUndefined
 
 # ---------- Initial set up and user authentication  ---------- #
 @app.route("/")
@@ -551,8 +549,6 @@ def redirect_to_root(e):
 # ---------- Flask App Bits ---------- #
 if __name__ == "__main__":
     app.debug = True
-    # prevent template cacheing
-    app.jinja_env.auto_reload = app.debug
 
     connect_to_db(app)
     # run locally

@@ -44,7 +44,9 @@ class TrailsResults extends React.Component {
     } else {
       return (
         <div class="spotLight">
+          <br/>
           {this.props.quote}
+          <br/>
         </div>
       );
     }
