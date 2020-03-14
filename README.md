@@ -5,7 +5,6 @@
 * [The Stack](#techstack)
 * [Set-up & Installation](#installation)
 * [Version 2.0](#v2)
-* [How to Contribute](#contributions)
 
 - screenshots / gifs of accessing site
 - steps to get app up and running
@@ -19,16 +18,14 @@ hiking habit is a personal project built over the course of two months to gain e
 a web-app. Hiking-habit was not built was the intention of building usual users or for comercial gain.
 
 ## <a name="features"></a>Features
-**Users**
-* User Registration & Log-in
-**Trails**
+
 
 ## <a name="techstack"></a>The Stack
-### Languages, Frameworks, Libraries, & Related Technologies
+Languages, Frameworks, Libraries, & Related Technologies
 **Backend**
-Python, Flask, SQLAlchemy, PostgreSQL, pgeocode
+Python, Flask, SQLAlchemy, PostgreSQL, pgeocode <br/>
 **Frontend**
-Javascript, jQuery, React, React Router, Babel, Chart.js, Bootstrap, Alertify.js, Popper.js, Google Fonts, HTML5, CSS3
+Javascript, jQuery, React, React Router, Babel, Chart.js, Bootstrap, Alertify.js, Popper.js, Google Fonts, HTML5, CSS3 <br/>
 **APIs:**
 REI's The Hiking Project
 
@@ -50,7 +47,7 @@ Install dependencies:
 ```
 $ pip install -r requirements.txt
 ```
-Make an account with [The Hiking Project](https://www.hikingproject.com/) & go to the [API Page](https://www.hikingproject.com/data) to get your API key
+Make an account with [The Hiking Project](https://www.hikingproject.com/) & get an API key from the [API Page](https://www.hikingproject.com/data).<br/>
 Store this key in a file named 'secrets.sh'; do NOT check this file in using Git:
 ```
 $ code secrets.sh
@@ -59,7 +56,7 @@ Create the hiking-habit database (uses postgreSQL):
 ```
 $ createdb hiking-habit
 ```
-Create all tables and relations in the database from the model in model.py:
+Create all tables and relations in the database (stored in model.py):
 ```
 $ python3 -i model.py
 >>> db.create_all()
@@ -69,4 +66,9 @@ Run the app from the command line:
 ```
 $ python server.py
 ```
-Hike!
+
+## <a name="v2">Version 2.0</a>
+In the next iteration of this project, I want to:
+* Move the goal progress display to a progress dashboard
+* Integrate a map display using the Google Maps Api to show markers for trail locations
+* Futher streamline the styling and design of the app
