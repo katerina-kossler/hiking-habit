@@ -31,7 +31,6 @@ Hiking-habit was not built was the intention of building usual users or for come
 ![](http://g.recordit.co/rEg7f4VpNf.gif)
 
 ## <a name="techstack"></a>The Stack
-###Languages, Frameworks, Libraries, & Related Technologies <br/>
 **Backend**
 Python, Flask, SQLAlchemy, PostgreSQL, pgeocode <br/>
 **Frontend**
@@ -40,6 +39,7 @@ Javascript, jQuery, React, React Router, Babel, Chart.js, Bootstrap, Alertify.js
 REI's The Hiking Project
 
 ## <a name="installation"></a>Set-up & Installation
+### A step-by-step guide
 Install a code editor like [VS code](https://code.visualstudio.com/download).<br/>
 Install [postgreSQL](https://www.postgresql.org/) for the relational database.<br/>
 Install [python3](https://www.python.org/downloads/mac-osx/)<br/>
@@ -78,8 +78,8 @@ $ python server.py
 ```
 
 ## <a name="v2">Version 2.0</a>
-In the next iteration of this project, I want to:
-* Move the goal progress display to a progress dashboard
-* Integrate a map display using the Google Maps Api to show markers for trail locations
-* Futher streamline the styling and design of the app
-* Include more information in a dashboard from the ratings in hike results to add another dimension of progress
+In the next iteration of this project, I want to on features including:
+* move the goal progress display to a progress dashboard
+* integrate a map display using the Google Maps Api to show markers for trail locations
+* futher streamline the styling and design of the app
+* include more information in a dashboard from the ratings in hike results to add another dimension of progress
