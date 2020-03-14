@@ -4,6 +4,7 @@ from model import User, Goal, Trail, Hike, HikeResult, connect_to_db, db
 from server import app
 from datetime import datetime
 import re
+import hashlib
 
 def load_users():
     """Load a fake set of users from a users.csv"""
@@ -13,7 +14,8 @@ def load_users():
         items = re.split(r',',row)
         username = items[1]
         email = items[2]
-        password = items[3] 
+        password = items[3]
+        password_256 = hashlib.sha256(password.encode()).hexdigest()
         first_name = items[4]
         last_name = items[5]
         created_on = items[7]
@@ -24,7 +26,7 @@ def load_users():
             canceled_by_user = False
         user = User(username=username,
                     email=email,
-                    password=password,
+                    password=password_256,
                     first_name=first_name,
                     last_name=last_name,
                     created_on=created_on,
@@ -102,6 +104,7 @@ def load_hikes():
         ascent_rating = items[5]
         distance_rating = items[6]
         challenge_rating = items[7]
+        distance = items[2]
         hike_time = items[8]
         canceled_by_user = items[9]
         if canceled_by_user == 'true':
@@ -116,7 +119,7 @@ def load_hikes():
                     canceled_by_user=canceled_by_user)
         result = HikeResult(hike_id=hike_id,
                             assessment=assessment,
-                            distance_in_miles=0,
+                            distance_in_miles=distance,
                             hiked_on=hiked_on,
                             ascent_rating=ascent_rating,
                             distance_rating=distance_rating,

@@ -24,6 +24,7 @@ class Result extends React.Component {
   
   render() {
     let difficulty = this.reformatDifficulty();
+    console.log(difficulty);
     const titleColor = 'list-group-item ' + difficulty;
     return(
       <div>
@@ -43,7 +44,6 @@ class Result extends React.Component {
             <ul class="list-group">
               <li class="list-group-item submit">Results from {this.props.resultDetails.hikedOn}</li>
               <li class="list-group-item">Assessment: {this.props.resultDetails.assessment}</li>
-              <li class="list-group-item">Distance: {this.props.resultDetails.distance}</li>
               <li class="list-group-item">Distance: {this.props.resultDetails.distance}</li>
               <li class="list-group-item">Time Hiked (h): {this.props.resultDetails.hikeTime}</li>
               <li class="list-group-item">

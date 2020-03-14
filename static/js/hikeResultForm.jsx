@@ -6,9 +6,9 @@ class HikeResultForm extends React.Component {
       this.state = {assessment: undefined,
                     distance: this.props.trailDetails.len,
                     hikedOn: undefined,
-                    ascentRating: "VERY_EASY",
-                    distanceRating: "VERY_EASY",
-                    challengeRating: "VERY_EASY",
+                    ascentRating: "AVERAGE",
+                    distanceRating: "AVERAGE",
+                    challengeRating: "AVERAGE",
                     hikeTime: undefined};
       this.handleInput = this.handleInput.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
@@ -157,7 +157,7 @@ class HikeResultForm extends React.Component {
                             class="form-control "onChange={this.handleInput}>
                       <option value="VERY_EASY">Very Easy</option>
                       <option value="EASY">Easy</option>
-                      <option value="AVERAGE">Average</option>
+                      <option value="AVERAGE" selected>Average</option>
                       <option value="DIFFICULT">Difficult</option>
                       <option value="VERY_DIFFICULT">Very Difficult</option>
                     </select>
@@ -172,7 +172,7 @@ class HikeResultForm extends React.Component {
                             class="form-control "onChange={this.handleInput}>
                       <option value="VERY_EASY">Very Easy</option>
                       <option value="EASY">Easy</option>
-                      <option value="AVERAGE">Average</option>
+                      <option value="AVERAGE" selected>Average</option>
                       <option value="DIFFICULT">Difficult</option>
                       <option value="VERY_DIFFICULT">Very Difficult</option>
                     </select>
@@ -187,7 +187,7 @@ class HikeResultForm extends React.Component {
                             class="form-control "onChange={this.handleInput}>
                       <option value="VERY_EASY">Very Easy</option>
                       <option value="EASY">Easy</option>
-                      <option value="AVERAGE">Average</option>
+                      <option value="AVERAGE" selected>Average</option>
                       <option value="DIFFICULT">Difficult</option>
                       <option value="VERY_DIFFICULT">Very Difficult</option>
                     </select>
