@@ -40,6 +40,7 @@ class Goal extends React.Component {
     let view = this.state.view;
     if (view) {
       return(
+      <div class="row justify-content-center align-items-center">
         <ul class="list-group w-100 p-3 col-md-8">
           <li class="list-group-item flex-column align-items-start submit">
             <div class="d-flex w-100 justify-content-between">
@@ -69,9 +70,11 @@ class Goal extends React.Component {
             </div>
           </li>
         </ul>
+      </div>
       )
     } else {
       return (
+      <div class="row justify-content-center align-items-center">
         <ul class="list-group w-100 p-3 col-md-8">
           <li class="list-group-item flex-column align-items-start submit">
             <div class="d-flex w-100 justify-content-between">
@@ -88,6 +91,7 @@ class Goal extends React.Component {
             </div>
           </li>
         </ul>
+      </div>
       ); 
     }
   }

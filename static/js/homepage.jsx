@@ -16,6 +16,7 @@ class App extends React.Component {
     this.tryLogIn=this.tryLogIn.bind(this);
     this.onLogOut=this.onLogOut.bind(this);
     this.checkIfLoggedIn=this.checkIfLoggedIn.bind(this);
+    this.checkIfLoggedIn(); 
   };
   
   tryRegistration = (data) => {
@@ -24,7 +25,6 @@ class App extends React.Component {
       if (type == 'string') {
         alertify.error(response);
       } else {
-        this.setState({userId: response.userId});
         this.checkIfLoggedIn();
       }
     });
@@ -36,39 +36,41 @@ class App extends React.Component {
       if (type == 'string') {
         alertify.error(response);
       } else {
-        let user = response.userId;
-        this.setState({userId: response.userId});
+        this.checkIfLoggedIn();
       }
     });
   }
 
   onLogOut() {
     $.get('/api/logout', () => {
-      this.setState({userId: undefined});
+      this.setState({userId: undefined,
+                    first: undefined,
+                    last: undefined,
+                    createdOn: undefined});
     });
   }
   
   checkIfLoggedIn() {
-    $.get('/api/profile', (response) => {
-      let type = typeof(response);
-      if (type == 'string') {
-        this.setState({userId: undefined,
-          first: undefined});
-      } else {
-        const id = response.userId;
-        const first = response.first;
-        const last = response.last;
-        const createdOn = response.createdOn;
-        this.setState({userId: id,
-                       first: first,
-                       last: last,
-                       createdOn: createdOn});
-      }
-    });
-  }
-
-  componentDidMount() {
-    this.checkIfLoggedIn()  
+    if (this.state.userId == undefined) {
+      $.get('/api/profile', (response) => {
+        let type = typeof(response);
+        if (type == 'string') {
+          this.setState({userId: undefined,
+                         first: undefined,
+                         last: undefined,
+                         createdOn: undefined});
+        } else {
+          const id = response.userId;
+          const first = response.first;
+          const last = response.last;
+          const createdOn = response.createdOn;
+          this.setState({userId: id,
+                         first: first,
+                         last: last,
+                         createdOn: createdOn});
+        }
+      });
+    };
   }
   
   render() {

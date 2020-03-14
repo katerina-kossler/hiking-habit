@@ -44,7 +44,8 @@ class Hike extends React.Component {
     const isComplete = this.props.isComplete;
     if (isComplete === false) {
       return (
-        <div class="form-group display-flex col-md-6">
+      <div class="col-md-6">
+        <div class="form-group display-flex w-100">
           <ul class="list-group w-100 p-3">
             <li class="list-group-item flex-column align-items-start">
               <h4 class="mb-1">{trailName}</h4>
@@ -57,21 +58,24 @@ class Hike extends React.Component {
             </li>
           </ul>
         </div>
+      </div>
       );
     } else if (isComplete === true) {
       return (
-      <div class="form-group display-flex col-sm-6">
-        <ul class="list-group w-100 p-3">
-          <li class="list-group-item flex-column align-items-start">
-            <h4 class="mb-1">{trailName}</h4>
-            <p class="mb-1">{trailDescription}</p>
-            <br/>
-            <div class="justify-content-between d-flex w-80">
-              <button class='submit btn' onClick={this.onViewResults}><b>View Results</b></button>
-              <button class='submit btn' onClick={this.onCancelHike}><b>Cancel</b></button>
-            </div>
-          </li>
-        </ul>
+      <div class="col-md-6">  
+        <div class="form-group display-flex w-100">
+          <ul class="list-group w-100 p-3">
+            <li class="list-group-item flex-column align-items-start">
+              <h4 class="mb-1">{trailName}</h4>
+              <p class="mb-1">{trailDescription}</p>
+              <br/>
+              <div class="justify-content-between d-flex w-80">
+                <button class='submit btn' onClick={this.onViewResults}><b>View Results</b></button>
+                <button class='submit btn' onClick={this.onCancelHike}><b>Cancel</b></button>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
       );
     };
