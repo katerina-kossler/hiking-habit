@@ -61,6 +61,7 @@ Make an account with [The Hiking Project](https://www.hikingproject.com/) & get 
 Store this key in a file named 'secrets.sh'; do NOT check this file in using Git:
 ```
 $ code secrets.sh
+$ source secrets.sh
 ```
 Create the hiking-habit database (uses postgreSQL):
 ```
@@ -82,4 +83,4 @@ In the next iteration of this project, I want to on features including:
 * move the goal progress display to a progress dashboard
 * integrate a map display using the Google Maps Api to show markers for trail locations
 * futher streamline the styling and design of the app
-* include more information in a dashboard from the ratings in hike results to add another dimension of progress
+* include more information from the hike result in goal progress
