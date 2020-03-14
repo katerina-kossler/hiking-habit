@@ -11,6 +11,7 @@ Hiking-habit was not built was the intention of building usual users or for come
 
 ## <a name="features"></a>Features
 * user registration & log-in
+![](https://recordit.co/WDYLfoq26i)
 * trail search based on zipcode and other optional criteria
 * hike creation from trail search
 * hike completion & cancelation
