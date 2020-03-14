@@ -1,27 +1,25 @@
 # Hiking Habit
+Hiking Habit is a personal project built over the course of two months to gain experience designing, building and deploying full-stack web-application.<br/>
+This project was inspired by my love of hiking and was built to help me track my progress as a novice hiker.<br/>
+Hiking-habit was not built was the intention of building usual users or for comercial gain.<br/>
 
-# Motivation
+## Contents
 * [Features](#features)
 * [The Stack](#techstack)
 * [Set-up & Installation](#installation)
 * [Version 2.0](#v2)
 
-- screenshots / gifs of accessing site
-- steps to get app up and running
-features
-- info on seeding, etc
-- links to deployed project
-- next steps
-- how to contribute
-
-hiking habit is a personal project built over the course of two months to gain experience building and fully deploying
-a web-app. Hiking-habit was not built was the intention of building usual users or for comercial gain.
-
 ## <a name="features"></a>Features
-
+* user registration & log-in
+* trail search based on zipcode and other optional criteria
+* hike creation from trail search
+* hike completion & cancelation
+* hike result generation for completed hikes
+* goal creation & cancelation
+* view progress (via completed hikes) towards different goals
 
 ## <a name="techstack"></a>The Stack
-Languages, Frameworks, Libraries, & Related Technologies
+###Languages, Frameworks, Libraries, & Related Technologies <br/>
 **Backend**
 Python, Flask, SQLAlchemy, PostgreSQL, pgeocode <br/>
 **Frontend**
@@ -30,10 +28,10 @@ Javascript, jQuery, React, React Router, Babel, Chart.js, Bootstrap, Alertify.js
 REI's The Hiking Project
 
 ## <a name="installation"></a>Set-up & Installation
-Install a code editor like [VS code](https://code.visualstudio.com/download)
-Install [postgreSQL](https://www.postgresql.org/) for the database
-Install [python3](https://www.python.org/downloads/mac-osx/)
-Install the package installer for Python [pip](https://pip.pypa.io/en/stable/installing/)
+Install a code editor like [VS code](https://code.visualstudio.com/download).<br/>
+Install [postgreSQL](https://www.postgresql.org/) for the relational database.<br/>
+Install [python3](https://www.python.org/downloads/mac-osx/)<br/>
+Install the package installer for Python [pip](https://pip.pypa.io/en/stable/installing/)<br/>
 Clone or fork repository:
 ```
 $ git clone https://github.com/katerina-kossler/hiking-habit.git
@@ -72,3 +70,4 @@ In the next iteration of this project, I want to:
 * Move the goal progress display to a progress dashboard
 * Integrate a map display using the Google Maps Api to show markers for trail locations
 * Futher streamline the styling and design of the app
+* Include more information in a dashboard from the ratings in hike results to add another dimension of progress
