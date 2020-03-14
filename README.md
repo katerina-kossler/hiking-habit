@@ -11,13 +11,15 @@ Hiking-habit was not built was the intention of building usual users or for come
 
 ## <a name="features"></a>Features
 * user registration & log-in
-![](https://recordit.co/WDYLfoq26i)
+![](http://g.recordit.co/WDYLfoq26i.gif)
 * trail search based on zipcode and other optional criteria
 * hike creation from trail search
 * hike completion & cancelation
 * hike result generation for completed hikes
 * goal creation & cancelation
 * view progress (via completed hikes) towards different goals
+* reactive display & design
+![](http://g.recordit.co/gYSwAEFNqw.gif)
 
 ## <a name="techstack"></a>The Stack
 ###Languages, Frameworks, Libraries, & Related Technologies <br/>
