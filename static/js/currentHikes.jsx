@@ -13,10 +13,12 @@ class CurrentHikes extends React.Component {
     if (hikes) {
       if (hikes.length == 0) {
         return (
-          <div class="row justify-content-center align-items-center text-center">
-            <h4>
+          <div class="row m-6 p-5">
+            <div class="text-center">
+              <h4>
               You don't have hikes matching that filter, go to Trail Search to make a new hike!
-            </h4>
+              </h4>
+            </div>
           </div>
         );
       } else {
@@ -42,7 +44,7 @@ class CurrentHikes extends React.Component {
     } else {
       return (
         <div>
-          Choose a (hike) view to get started!
+          Error, please reload!
         </div>
       )
     };

@@ -13,6 +13,7 @@ class HikesView extends React.Component {
     this.onUpdate=this.onUpdate.bind(this);
     this.renderForm=this.renderForm.bind(this);
     this.onSubmitResultsForm=this.onSubmitResultsForm.bind(this);
+    this.onCheckHikes('all');
   }
   
   onCheckHikes(filter) {
@@ -132,14 +133,14 @@ class HikesView extends React.Component {
   onSubmitResultsForm(data) {
     $.post('/api/hike_result', data, (response) => {
       if ((typeof(response)) === 'string') {
-        alertify.error(response);
+        alertify.success(response);
       };
     });
     this.onUpdate();
   }
   
   componentDidMount() {
-    this.onCheckHikes('all');
+
   }
   
   render() {
@@ -151,10 +152,11 @@ class HikesView extends React.Component {
     if (showForm === 'new') {
       return(
         <div>
-          <div class="row justify-content-center align-items-center">
-            <h3>Active Adventures</h3>
+          <div class="headerImg" id="hikes">
+            <div class="row justify-content-center align-items-center">
+              <h3>Active Adventures</h3>
+            </div>
           </div>
-          <hr/>
           <HikeResultForm hikeId={hikeId} 
                           onSubmitResultsForm={this.onSubmitResultsForm} 
                           trailDetails={trailDetails}/>
@@ -162,26 +164,26 @@ class HikesView extends React.Component {
       );
     } else if (showForm === 'existing') {
       return(
-        <div class="headerImg" id="hikes">
-          <div class="row justify-content-center align-items-center">
-            <h3>Active Adventures</h3>
+        <div>
+          <div class="headerImg" id="hikes">
+            <div class="row justify-content-center align-items-center">
+              <h3>Active Adventures</h3>
+            </div>
           </div>
-          <hr/>
           <Result hikeId={hikeId}
                   trailDetails={trailDetails}
                   resultDetails={resultDetails} 
                   onUpdate={this.onUpdate}/>
         </div>
       );
-      
     } else {
       return(
-        <div class="headerImg" id="hikes">
-          <div class="row justify-content-center align-items-center">
-            <h3>Active Adventures</h3>
-          </div>
-          <div class="row justify-content-center align-items-center">
-            <div class="col-2">
+        <div>
+          <div class="headerImg" id="hikes">
+            <div class="row justify-content-center align-items-center">
+              <h3>Active Adventures</h3>
+            </div>
+            <div class="row justify-content-center align-items-center">
               <HikeForm class="w-100 align-items-center" onCheckHikes={this.onCheckHikes} onUpdate={this.onUpdate}/>
             </div>
           </div>

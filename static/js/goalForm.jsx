@@ -77,7 +77,7 @@ class GoalForm extends React.Component {
               Goal
             </label>
             <div class="input-group row col-sm-8 justify-content-center align-items-center">
-              <input type="number" name="numericalValue" 
+              <input type="number" class="form-control" name="numericalValue" 
                     id="goalFormGoal" onChange={this.handleInput}/>
             </div>
           </div>
@@ -86,7 +86,7 @@ class GoalForm extends React.Component {
               Notes
             </label>
             <div class="input-group row col-sm-8 justify-content-center align-items-center">
-              <input type="text" name="description" onChange={this.handleInput}/>
+              <input type="text" class="form-control" name="description" onChange={this.handleInput}/>
             </div>
           </div>
           <div class="row justify-content-center align-items-center"> 
