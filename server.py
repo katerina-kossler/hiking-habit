@@ -3,6 +3,7 @@ import json
 from sqlalchemy import func, and_, desc
 from model import User, Goal, Trail, Hike, HikeResult, connect_to_db, db
 from datetime import date, datetime
+import hashlib
 import re
 import os
 import pgeocode
@@ -49,11 +50,15 @@ def authenticate_user():
     
     user = request.form.get("user")
     password = request.form.get("password")
+    print(password)
+    password_256 = hashlib.sha256(password.encode()).hexdigest()
+    print(password_256)
     user_in_system = User.query.filter_by(username=user).first()
     email_in_system = User.query.filter_by(email=user).first()
     if user_in_system:
         user_password = user_in_system.password
-        if (user_password == password):
+        print(user_password)
+        if (user_password == password_256):
             session['current_user'] = user_in_system.user_id
             return {'userId': session['current_user'],
                     'first': user_in_system.first_name}
@@ -61,7 +66,7 @@ def authenticate_user():
             return 'Incorrect password; try again'
     if email_in_system:
         email_password = email_in_system.password
-        if (email_password == password):
+        if (email_password == password_256):
             session['current_user'] = email_in_system.user_id
             flash('Successfully Logged in')
             return {'userId': session['current_user'],
@@ -87,6 +92,7 @@ def intake_user_info():
     password = request.form.get("password")
     if not password:
         return "Enter a password"
+    password_256 = hashlib.sha256(password.encode()).hexdigest()
     created_on = date.today()
     first_name = request.form.get("first")
     if not first_name:
@@ -102,7 +108,7 @@ def intake_user_info():
         return 'That email is taken, please choose a different one'
     user = User(username=username,
                 email=email,
-                password=password,
+                password=password_256,
                 created_on=created_on,
                 first_name=first_name,
                 last_name=last_name,
