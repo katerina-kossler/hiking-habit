@@ -411,19 +411,6 @@ def show_goal_progress():
                 if hike['value'] >= selected_goal.numerical_value:
                     selected_goal.status = 'COMPLETE'
                     db.session.commit()
-        # elif goal_type == "GoalType.HIKE_DIFFICULTY": # decomissioning this goal type
-        #     for result in hike_results:
-        #         trail = Hike.query.filter_by(hike_id=result.hike_id).first()
-        #         trail_details=Trail.query.filter_by(trail_id=trail.trail_id).first()
-        #         rating_from_enum = str(result.challenge_rating).split('.')[1].lower()
-        #         hike = {'hikeId': result.hike_id,
-        #                 'difficulty': trail_details.difficulty,
-        #                 'rating': rating_from_enum,
-        #                 'hikedOn': result.hiked_on.isoformat}
-        #         hikes.append(hike)
-        #         if hike['difficulty'] >= selected_goal.numerical_value:
-        #             selected_goal.status = 'COMPLETE'
-        #             db.session.commit()
         else:
             return 'Invalid goal type.'
         if hikes and status_from_enum == 'NOT_STARTED':
@@ -564,10 +551,7 @@ def redirect_to_root(e):
 
 # ---------- Flask App Bits ---------- #
 if __name__ == "__main__":
-    app.debug = True
-
     connect_to_db(app)
-    # run locally
-    app.run(port=5000, host='0.0.0.0')
+    app.run()
 
 
