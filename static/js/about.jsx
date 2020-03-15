@@ -35,7 +35,7 @@ class About extends React.Component {
           </div>
         </div>
         <div class="row justify-content-center align-items-center p-3">
-          <div class="justify-content-center align-items-center">  
+          <div class="row justify-content-center align-items-center">  
             <img src='/static/img/butterfree.jpeg' class="w-50 rounded"></img>
           </div>
           <div> 
