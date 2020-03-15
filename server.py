@@ -50,14 +50,11 @@ def authenticate_user():
     
     user = request.form.get("user")
     password = request.form.get("password")
-    print(password)
     password_256 = hashlib.sha256(password.encode()).hexdigest()
-    print(password_256)
     user_in_system = User.query.filter_by(username=user).first()
     email_in_system = User.query.filter_by(email=user).first()
     if user_in_system:
         user_password = user_in_system.password
-        print(user_password)
         if (user_password == password_256):
             session['current_user'] = user_in_system.user_id
             return {'userId': session['current_user'],
