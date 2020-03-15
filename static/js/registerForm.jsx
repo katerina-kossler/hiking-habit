@@ -43,10 +43,10 @@ class RegisterForm extends React.Component {
       <div class="row mw-50">
         <form>
           <div class="form-group row justify-content-center align-items-center">
-            <label for="registerFormUser" class="text-center col-lg-4 col-md-6">
+            <label for="registerFormUser" class="text-center col-lg-4 col-6">
               Username:
             </label>
-            <div class="col-lg-4 col-md-6">
+            <div class="col-lg-4 col-6">
               <input type="text" class="form-control" 
                     id="registerFormUser"
                     placeholder="JohnMuir" 
@@ -54,10 +54,10 @@ class RegisterForm extends React.Component {
             </div>
           </div>
           <div class="form-group row justify-content-center align-items-center">
-            <label for="registerFormEmail" class="text-center col-lg-4 col-md-6">
+            <label for="registerFormEmail" class="text-center col-lg-4 col-6">
               Email:
             </label>
-            <div class="col-lg-4 col-md-6">
+            <div class="col-lg-4 col-6">
               <input type="email" class="form-control" 
                   id="registerFormEmail" 
                   placeholder="name@example.com"
@@ -66,10 +66,10 @@ class RegisterForm extends React.Component {
 
           </div>
           <div class="form-group row justify-content-center align-items-center">
-            <label for="registerFormFirst" class="text-center col-lg-4 col-md-6">
+            <label for="registerFormFirst" class="text-center col-lg-4 col-6">
               First Name:
             </label>
-            <div class="col-lg-4 col-md-6">
+            <div class="col-lg-4 col-6">
               <input type="text" class="form-control" 
                       id="registerFormFirst"
                       placeholder="John" 
@@ -77,10 +77,10 @@ class RegisterForm extends React.Component {
             </div>
           </div>
           <div class="form-group row justify-content-center align-items-center">
-            <label for="registerFormLast" class="text-center col-lg-4 col-md-6">
+            <label for="registerFormLast" class="text-center col-lg-4 col-6">
               Last Name:
             </label>
-            <div class="col-lg-4 col-md-6">
+            <div class="col-lg-4 col-6">
               <input type="text" class="form-control" 
                   id="registerFormLast" 
                   placeholder="Muir"
@@ -88,10 +88,10 @@ class RegisterForm extends React.Component {
             </div>
           </div>
           <div class="form-group row justify-content-center align-items-center">
-            <label for="loginFormPassword" class="text-center col-lg-4 col-md-6">
+            <label for="loginFormPassword" class="text-center col-lg-4 col-6">
               Password:
             </label>
-            <div class="col-lg-4 col-md-6">
+            <div class="col-lg-4 col-6">
               <input type="password" class="form-control" 
                     id="loginFormPassword"
                     placeholder="password"

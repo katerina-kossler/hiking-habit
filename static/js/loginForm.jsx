@@ -34,8 +34,8 @@ class LoginForm extends React.Component {
       <div class="row mw-50">
         <form>
           <div class="form-group row justify-content-center align-items-center">
-            <label for="loginFormUserOrEmail" class="text-center col-lg-4 col-md-6">Username or email:</label>
-            <div class="col-lg-4 col-md-6">
+            <label for="loginFormUserOrEmail" class="text-center col-lg-4 col-6">Username or email:</label>
+            <div class="col-lg-4 col-6">
               <input type="text" class="form-control" 
                 id="loginFormUserOrEmail"
                 placeholder="name@example.com" 
@@ -43,8 +43,8 @@ class LoginForm extends React.Component {
             </div>
           </div>
           <div class="form-group row justify-content-center align-items-center">
-            <label for="loginFormPassword" class="text-center col-lg-4 col-md-6">Password:</label>
-            <div class="col-lg-4 col-md-6">
+            <label for="loginFormPassword" class="text-center col-lg-4 col-6">Password:</label>
+            <div class="col-lg-4 col-6">
               <input type="password" class="form-control" 
                 id="loginFormPassword"
                 placeholder="password"

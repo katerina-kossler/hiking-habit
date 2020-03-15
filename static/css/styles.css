@@ -77,9 +77,6 @@ h4 {
 
 #login {
   background-image: url('/static/img/sea.jpeg');
-  height: 120%;
-  background-position: center;
-  margin-bottom: 0;
 }
 
 #register {
