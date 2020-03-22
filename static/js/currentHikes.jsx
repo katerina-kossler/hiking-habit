@@ -16,7 +16,9 @@ class CurrentHikes extends React.Component {
           <div class="row m-6 p-5">
             <div class="text-center">
               <h4>
-              You don't have hikes matching that filter, go to Trail Search to make a new hike!
+              You don't have hikes matching that filter, go to 
+              <a href="/trails"> Trail Search </a>
+              to make a new hike!
               </h4>
             </div>
           </div>

@@ -55,7 +55,6 @@ class HikesView extends React.Component {
     const type = data.type;
     const hikeData = {hikeId: hikeId};
     if (type === 'new') {
-      const showForm = 'new';
       $.get('/api/trail_from_hike_id', hikeData, (response) => {
         if (typeof(response) === 'string') {
           alertify.error(response);
@@ -80,13 +79,41 @@ class HikesView extends React.Component {
                                       condDetails: condDetails};
           this.setState({trailDetails: trailDetailsObject,
                          resultFrom: hikeId,
-                         showForm: showForm});
+                         showForm: 'new'});
         };
       }); 
     } else {
       $.get('/api/hike_result_and_trail_by_id', hikeData, (response) => {
         if (typeof(response) === 'string') {
-          this.setState({showForm: 'new'});
+          let error = response;
+          $.get('/api/trail_from_hike_id', hikeData, (response) => {
+            if (typeof(response) === 'string') {
+              alertify.error(response);
+            } else {
+              const name = response.name;
+              const summary = response.summary;
+              const difficulty = response.difficulty;
+              const loc = response.loc;
+              const len = response.len;
+              const ascent = response.asc;
+              const condOn = response.date;
+              const condStatus = response.status;
+              const condDetails = response.details;
+              const trailDetailsObject = {name: name,
+                                          summary: summary,
+                                          difficulty: difficulty,
+                                          loc: loc,
+                                          len: len,
+                                          condOn: condOn,
+                                          ascent: ascent,
+                                          condStatus: condStatus,
+                                          condDetails: condDetails};
+              this.setState({trailDetails: trailDetailsObject,
+                             resultFrom: hikeId,
+                             showForm: 'new'});
+            };
+          });
+          alertify.error(error);
         } else {
           const name = response.name;
           const summary = response.summary;

@@ -479,7 +479,8 @@ def show_hike_result():
                           'challengeRating': challenge_from_enum.lower(),
                           'hikeTime': result.hike_time}
         return jsonify(result_details)
-    return 'Add Hike Result'
+    else:
+        return 'Add Hike Result'
     
     
 @app.route("/api/hike_result", methods=["POST"])
