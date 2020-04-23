@@ -2,6 +2,8 @@
 Hiking Habit is a personal project built over the course of two months to gain experience designing, building and deploying full-stack web-application.<br/>
 This project was inspired by my love of hiking and was built to help me track my progress as a novice hiker.<br/>
 Hiking-habit was not built was the intention of building usual users or for comercial gain.<br/>
+Check out the web-app at [hiking-habit.com](https://hiking-habit.com/) (deployed using AWS Lightsail)<br/>
+
 
 ## Contents
 * [Features](#features)
