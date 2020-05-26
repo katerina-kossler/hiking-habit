@@ -15,6 +15,8 @@ coordinates = pgeocode.Nominatim('us')
 app = Flask(__name__)
 app.secret_key = 'this-should-be-something-unguessable'
 
+
+
 # ---------- Initial set up and user authentication  ---------- #
 @app.route("/")
 def show_homepage():
